@@ -26,30 +26,28 @@
 
 %% Obs.: Alguns acentos foram omitidos.
 
-\titulo{T\'itulo} %% Colocar, dentro de chaves {}, o t\'itulo do trabalho. 
-\subtitulo{subt\'itulo}  %% Colocar % no in\'icio desta linha se nao tiver subt\'itulo 
-\autor{Jakson da Rocha Almeida} %%Colocar, dentro de chaves {}, o nome completo do autor
-\autorVirg{Sobrenome, Nome do autor} %%Colocar o sobrenome do autor, separado por v\'rgula, antes do restante do nome do autor. Ex.: Santos, Maria dos
+\titulo{Desenvolvimento de um Analisador de Espectro Óptico de Baixo Custo para Faixa Visível} %% Colocar, dentro de chaves {}, o t\'itulo do trabalho. 
+\subtitulo{Calibração Automatizada via Visão Computacional}  %% Colocar % no in\'icio desta linha se nao tiver subt\'itulo 
+\autor{Jakson Almeida} %%Colocar, dentro de chaves {}, o nome completo do autor
+\autorVirg{Almeida, Jakson} %%Colocar o sobrenome do autor, separado por v\'rgula, antes do restante do nome do autor. Ex.: Santos, Maria dos
 \local{Juiz de Fora} %%Governador Valadares % N\~ao usar MG.
-\data{Ano} %%Colocar o ano da entrega. Por exemplo, 2019. N\~ao usar m\^es.
+\data{2025} %%Colocar o ano da entrega. Por exemplo, 2019. N\~ao usar m\^es.
 \orientador[Orientador:]{Nome e sobrenome} %%Se precisar, troque [Orientador:] por [Orientadora:]
 \coorientador[Coorientador:]{Nome e sobrenome} %% Colocar ``%'' no in\'icio desta linha se n\~ao tiver coorientador. Se precisar, troque por [Cooorientadora:]. 
 \orientadorTitulo{Titula\c{c}\~ao} %%Colocar, dentro de chaves {}, a titula\c{c}\~ao do(a) orientador(a). Por exemplo, Prof. Dr.
 \coorientadorTitulo{Titula\c{c}\~ao} %%Colocar, dentro de chaves {}, a titula\c{c}\~ao do(a) cooorientador(a). 
 \instituicao{Universidade Federal de Juiz de Fora}
-\faculdade{Faculdade de Engenharia El\'etricrica} %%Colocar, dentro de chaves {}, o nome da faculdade ou do instituto.
-\programa{Engenharia El\'etricrica - Robótica e Automação Industrial} %%Colocar, dentro de chaves {}, o nome do curso. Por exemplo: Programa de P\'os\mbox{-Gra}dua\c{c}\~ao em Matem\'atica
-\objeto{Disserta\c{c}\~ao (Mestrado)}  %%Tese (Doutorado)  %%%Trabalho de Conclus\~ao de Curso (gradua\c{c}\~ao)
-\natureza{Disserta\c{c}\~ao  %%Tese 
-apresentada ao \insereprograma ~da   %% %%%Trabalho de conclus\~ao de curso apresentado \'a \inserefaculdade da %%%%SUBSTITUIR \'a POR ao SE FOR INSTITUTO    
+\faculdade{Faculdade de Engenharia El\'etrica} %%Colocar, dentro de chaves {}, o nome da faculdade ou do instituto.
+\programa{Engenharia El\'etrica} %%Colocar, dentro de chaves {}, o nome do curso. Por exemplo: Programa de P\'os\mbox{-Gra}dua\c{c}\~ao em Matem\'atica
+\objeto{Trabalho de Conclus\~ao de Curso (gradua\c{c}\~ao)}  %%Tese (Doutorado)  %%%Trabalho de Conclus\~ao de Curso (gradua\c{c}\~ao)
+\natureza{Trabalho de conclus\~ao de curso apresentado \'a \inserefaculdade da   %% %%%Trabalho de conclus\~ao de curso apresentado \'a \inserefaculdade da %%%%SUBSTITUIR \'a POR ao SE FOR INSTITUTO    
 Universidade Federal de Juiz de Fora como requisito parcial \`a obten\c{c}\~ao do 
-t\'itulo de Mestre em  %%Doutor em    %%%grau de bacharel em 
-Matem\'atica. %%Trocar Matem\'atica por outro, se precisar.
-\'Area de concentra\c{c}\~ao: %%PREENCHER   %%%N\~ao usar esta linha se for trabalho de conclus\~ao de curso da gradua\c{c}\~ao
+grau de bacharel em  %%Doutor em    %%%grau de bacharel em 
+Engenharia Elétrica. %%Trocar Matem\'atica por outro, se precisar.
 }
 
 %% Abaixo, prencher com os dados da parte final da ficha catalografica
-\finalcatalog{1. Palavra-chave. 2. Palavra-chave. 3. Palavra-chave. I. Sobrenome, Nome do orientador, orient. II. T\'itulo.} %% Aqui fica 
+\finalcatalog{1. Analisador de espectro óptico. 2. Calibração automatizada. 3. Visão computacional. 4. Espectro visível. I. Sobrenome, Nome do orientador, orient. II. T\'itulo.} %% Aqui fica 
 % escrito a palavra ``T\'itulo'' mesmo, nao o do trabalho. Se tiver coorientador, os dados ficam depois dos dados 
 %% do orientador (II. Sobrenome, Nome do coorientador, coorient.) e antes de ``II. T\'itulo'', o qual passa a ``III. T\'itulo''.
 
@@ -127,11 +125,8 @@ Agrade\c{c}o aos ...
 %% Resumo em Portugu\^es. OBRIGAT\'ORIO. \'E obrigat\'orio o uso de par\'agrafo \'unico.
 \begin{resumo}
 
-De acordo com a Associa\c{c}\~ao Brasileira de Normas T\'ecnicas NBR 6028 (2003, p.2), ``o resumo deve ressaltar 
-o objetivo, o m\'etodo, os resultados e as conclus\~oes do documento. [...] Deve ser composto de uma sequ\^encia de frases 
-concisas, afirmativas e n\~ao de enumera\c{c}\~ao de t\'opicos. Recomenda-se o uso de par\'agrafo \'unico.'' 
-O resumo deve ter de 150 a 500 palavras. \\[18pt]
-Palavras-chave: palavra-chave; palavra-chave; palavra-chave. %Separadas por ``;'' e iniciadas por letras min\'usculas.
+Este trabalho apresenta o desenvolvimento de um Analisador de Espectro Óptico (OSA) de baixo custo para a faixa visível (380–750 nm), combinando um espectrômetro impresso em 3D ("Osinha") e um software customizado ("OSA Visível"). O processo de calibração emprega técnicas de visão computacional para mapear a relação comprimento de onda-posição de pixel, utilizando luz branca e lasers (532 nm e 650 nm). Etapas-chave incluem cálculo de centróide, limiarização de intensidade e regressão linear via bibliotecas OpenCV e Pillow. O software atinge precisão de ±1.8 nm, validada em experimentos com fontes de luz controladas. Ao reduzir custos de mais de \$30.000 (OSA Comercial) para menos de \$200, esta solução democratiza a análise espectral para aplicações educacionais e de pesquisa. A interface intuitiva permite visualização em tempo real e exportação de dados, dispensando conhecimentos em programação. \\[18pt]
+Palavras-chave: analisador de espectro óptico; calibração automatizada; visão computacional; espectro visível; regressão linear. %Separadas por ``;'' e iniciadas por letras min\'usculas.
 \end{resumo}
  
  
@@ -139,10 +134,8 @@ Palavras-chave: palavra-chave; palavra-chave; palavra-chave. %Separadas por ``;'
 \begin{resumo}[ABSTRACT]
  \begin{otherlanguage*}{english}
 
-Trata-se da vers\~ao do resumo em l\'ingua estrangeira para divulga\c{c}\~ao internacional. Segue as mesmas caracter\'isticas do resumo em 
-l\'ingua vern\'acula. O t\'itulo \'e atribu\'ido de acordo com o idioma escolhido (ABSTRACT, em ingl\^es; RESUMEN, em espanhol; etc.), bem como 
-as palavras-chave (Keywords, em ing\^es; Palabras-clave, em espanhol; etc.). \\[18pt]
-Keywords: keyword; keyword; keyword. %Separadas por ``;'' e iniciadas por letras min\'usculas.
+This work presents the development of a low-cost Optical Spectrum Analyzer (OSA) for visible light spectra (380–750 nm), combining a 3D-printed spectrometer ("Osinha") and custom software ("OSA Visível"). The calibration process employs computer vision techniques to map wavelength-to-pixel relationships using white light and laser sources (532 nm and 650 nm). Key steps include centroid calculation, intensity thresholding, and linear regression via OpenCV and Pillow libraries. The software achieves a calibration accuracy of ±1.8 nm, validated through experiments with controlled light sources. By reducing costs from over \$30,000 (commercial OSA) to under \$200, this solution democratizes spectral analysis for educational and research applications. The intuitive interface allows real-time visualization and data export, eliminating the need for specialized programming skills. \\[18pt]
+Keywords: optical spectrum analyzer; automated calibration; computer vision; visible spectrum; linear regression. %Separadas por ``;'' e iniciadas por letras min\'usculas.
  \end{otherlanguage*}
 \end{resumo}
 
@@ -175,16 +168,24 @@ Keywords: keyword; keyword; keyword. %Separadas por ``;'' e iniciadas por letras
 
 \begin{siglas} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
   \item[ABNT] Associa\c{c}\~ao Brasileira de Normas T\'ecnicas
-  \item[Fil.] Filosofia 
-  \item[IBGE] Instituto Brasileiro de Geografia e Estat\'istica 
-  \item[INMETRO] Instituto Nacional de Metrologia, Normaliza\c{c}\~ao e Qualidade Industrial
+  \item[OSA] Optical Spectrum Analyzer (Analisador de Espectro Óptico)
+  \item[LITel] Laboratório de Instrumentação e Telemetria
+  \item[UFJF] Universidade Federal de Juiz de Fora
+  \item[CRI] Color Rendering Index (Índice de Reprodução de Cor)
+  \item[RMS] Root Mean Square (Raiz Quadrada da Média dos Quadrados)
   \end{siglas}
 
 %% Lista de s\'imbolos. OPCIONAL. Nao deve haver sinal grafico entre o simbolo e o seu significado.
 
 \begin{simbolos} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
-  \item[$ \forall $] Para todo
-  \item[$ \in $] Pertence
+  \item[$ \lambda $] Comprimento de onda
+  \item[$ \theta $] Ângulo de difração
+  \item[$ \alpha $] Ângulo de incidência
+  \item[$ d $] Espaçamento da grade de difração
+  \item[$ n $] Ordem de difração
+  \item[$ I(x,y) $] Intensidade do pixel na posição (x,y)
+  \item[$ x_c, y_c $] Coordenadas do centróide
+  \item[$ R^2 $] Coeficiente de determinação
  \end{simbolos}
 
  
