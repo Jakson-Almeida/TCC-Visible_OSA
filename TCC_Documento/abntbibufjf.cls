@@ -34,7 +34,7 @@
 %------------------------------------
 
 \RequirePackage{ifthen}
-\RequirePackage[brazil]{babel}
+\RequirePackage[english]{babel}
 \RequirePackage{enumitem}
 \RequirePackage{calc} 
 
