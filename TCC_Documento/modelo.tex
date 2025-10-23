@@ -203,25 +203,32 @@ Keywords: optical spectrum analyzer; automated calibration; computer vision; vis
 
 \chapter{INTRODU\c{C}\~AO}  %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui
 
-Este elemento \'e obrigat\'orio. Na introdu\c{c}\~ao s\~ao descritos os objetivos da pesquisa, a raz\~ao de sua elabora\c{c}\~ao e limita\c{c}\~ao acerca da 
-tem\'atica. Neste momento, o pesquisador situa o leitor acerca do tema. Este \'e o primeiro elemento textual e a partir dele a numera\c{c}\~ao de p\'agina 
-estar\'a vis\'ivel na parte superior da p\'agina, por\'em a contagem iniciou na folha de rosto. 
+A análise espectral é uma ferramenta fundamental em diversas áreas da ciência e tecnologia, permitindo a caracterização de fontes de luz e materiais através da decomposição de sua radiação eletromagnética em componentes de diferentes comprimentos de onda. No contexto educacional e de pesquisa, os Analisadores de Espectro Óptico (OSA) desempenham um papel crucial para o ensino de óptica e o desenvolvimento de novas tecnologias.
 
-Elaborada conforme a ABNT 10520.
+Analisadores de Espectro Óptico comerciais que operam na faixa visível apresentam custos elevados, frequentemente superiores a \$30.000, conforme pesquisa realizada em março de 2025. Isso restringe significativamente o acesso desses equipamentos para muitas instituições acadêmicas e laboratórios de pequeno porte, limitando o desenvolvimento de pesquisas e o ensino prático de espectroscopia.
 
-\begin{citacao}
-As cita\c{c}\~oes diretas, no texto, com mais de tr\^es linhas, devem ser destacadas
-com recuo padronizado em rela\c{c}\~ao \'a margem esquerda, com letra menor que a do texto utilizado
-e sem as aspas. Recomenda-se o recuo de 4 cm. [...] Para enfatizar trechos da cita\c{c}\~ao, deve-se destac\'a-los indicando esta
-altera\c{c}\~ao com express\~ao grifo nosso entre par\^enteses, ap\'os a chamada da cita\c{c}\~ao, ou grifo 
-do autor, caso o destaque j\'a fa\c{c}a parte da obra consultada. (Associa\c{c}\~ao Brasileira de Normas
-T\'ecnicas, 2023, p. 12-13)
-\end{citacao}
+Como alternativa, o desenvolvimento de soluções de baixo custo tem ganhado destaque na literatura científica. O projeto "Osinha" foi desenvolvido com uma abordagem inovadora, utilizando impressão 3D, uma webcam e uma grade de difração, totalizando menos de \$200 USD, tornando-o uma solução acessível para pesquisa e ensino.
 
-%As instru\c{c}\~oes aqui contidas buscam ajudar a direcionar e orientar quanto \`a padroniza\c{c}\~ao das monografias, dissertac\~oes e teses na UFJF. 
-%Ser\~ao apresentados alguns exemplos de refer\^encias apenas como modelo de documento. Detalhes completos sobre como apresentar as refer\^encias se 
-%encontram na norma ABNT NBR 6023:2018. Mais informa\c{c}\~oes sobre as normas de padroniza\c{c}\~ao s\~ao encontradas diretamente nas bibliotecas da UFJF e em 
-%http://www.ufjf.br/biblioteca/servicos/normalizacao-2
+Este trabalho propõe uma solução de baixo custo baseada em hardware aberto ("Osinha") e software customizado ("OSA Visível"), desenvolvido pelo Laboratório de Instrumentação e Telemetria (LITel/UFJF). O diferencial reside no uso de técnicas de visão computacional para calibração automática, substituindo métodos manuais ou baseados em hardware dedicado.
+
+A calibração combina duas etapas principais: (i) captura do espectro contínuo de luz branca, com detecção do centróide e ajuste inicial de uma reta via regressão linear; e (ii) correlação direta entre picos de intensidade de lasers (532 nm e 650 nm) e suas posições na imagem, definindo a relação comprimento de onda-posição de pixel.
+
+O objetivo geral deste trabalho é desenvolver um Analisador de Espectro Óptico de baixo custo para a faixa visível (380-750 nm), integrando hardware acessível e software customizado com calibração automatizada via visão computacional.
+
+Os objetivos específicos incluem:
+
+\begin{itemize}
+    \item Desenvolver um espectrômetro 3D-printed de baixo custo baseado no projeto "Osinha";
+    \item Implementar software "OSA Visível" para análise espectral com interface intuitiva;
+    \item Criar sistema de calibração automatizada utilizando técnicas de visão computacional;
+    \item Validar a precisão do sistema através de experimentos com fontes de luz controladas;
+    \item Reduzir custos de mais de \$30.000 (OSA comercial) para menos de \$200;
+    \item Alcançar precisão de calibração de ±2 nm na faixa visível.
+\end{itemize}
+
+A metodologia adotada compreende o desenvolvimento de hardware baseado em impressão 3D, implementação de algoritmos de visão computacional em Python, calibração híbrida com luz branca e lasers de referência, e validação experimental com fontes de luz controladas.
+
+Este trabalho está organizado da seguinte forma: o Capítulo 2 apresenta a fundamentação teórica sobre espectroscopia óptica e analisadores de espectro; o Capítulo 3 detalha a metodologia de desenvolvimento do hardware e software; o Capítulo 4 descreve os resultados experimentais e validação do sistema; e o Capítulo 5 apresenta as conclusões e trabalhos futuros.
 
 
 \chapter{NOME DA SE\c{C}\~{A}O} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui
