@@ -1,0 +1,21 @@
+# Arquivos auxiliares do LaTeX
+TCC_Documento/modelo.aux
+TCC_Documento/modelo.log
+TCC_Documento/modelo.toc
+TCC_Documento/modelo.lof
+TCC_Documento/modelo.lot
+TCC_Documento/modelo.out
+TCC_Documento/modelo.synctex.gz
+TCC_Documento/*.aux
+TCC_Documento/*.log
+TCC_Documento/*.toc
+TCC_Documento/*.lof
+TCC_Documento/*.lot
+TCC_Documento/*.out
+
+# Arquivos de planejamento
+SEMANA2.MD
+
+# Manter no git:
+# - TCC_Documento/modelo.pdf (mantido no git)
+# - OSAs_ Aplicações e Princípios de Funcionamento.md (mantido no git)
