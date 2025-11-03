@@ -32,9 +32,9 @@
 \autorVirg{Almeida, Jakson} %%Colocar o sobrenome do autor, separado por v\'rgula, antes do restante do nome do autor. Ex.: Santos, Maria dos
 \local{Juiz de Fora} %%Governador Valadares % N\~ao usar MG.
 \data{2025} %%Colocar o ano da entrega. Por exemplo, 2019. N\~ao usar m\^es.
-\orientador[Orientador:]{Nome e sobrenome} %%Se precisar, troque [Orientador:] por [Orientadora:]
+\orientador[Orientador:]{Alexandre Bessa dos Santos} %%Se precisar, troque [Orientador:] por [Orientadora:]
 \coorientador[Coorientador:]{Nome e sobrenome} %% Colocar ``%'' no in\'icio desta linha se n\~ao tiver coorientador. Se precisar, troque por [Cooorientadora:]. 
-\orientadorTitulo{Titula\c{c}\~ao} %%Colocar, dentro de chaves {}, a titula\c{c}\~ao do(a) orientador(a). Por exemplo, Prof. Dr.
+\orientadorTitulo{Professor} %%Colocar, dentro de chaves {}, a titula\c{c}\~ao do(a) orientador(a). Por exemplo, Prof. Dr.
 \coorientadorTitulo{Titula\c{c}\~ao} %%Colocar, dentro de chaves {}, a titula\c{c}\~ao do(a) cooorientador(a). 
 \instituicao{Universidade Federal de Juiz de Fora}
 \faculdade{Faculdade de Engenharia El\'etrica} %%Colocar, dentro de chaves {}, o nome da faculdade ou do instituto.
@@ -203,32 +203,44 @@ Keywords: optical spectrum analyzer; automated calibration; computer vision; vis
 
 \chapter{INTRODU\c{C}\~AO}  %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui
 
-A análise espectral é uma ferramenta fundamental em diversas áreas da ciência e tecnologia, permitindo a caracterização de fontes de luz e materiais através da decomposição de sua radiação eletromagnética em componentes de diferentes comprimentos de onda. No contexto educacional e de pesquisa, os Analisadores de Espectro Óptico (OSA) desempenham um papel crucial para o ensino de óptica e o desenvolvimento de novas tecnologias.
+O Analisador de Espectro Óptico (OSA) é um instrumento metrológico cuja importância reside na sua capacidade de quantificar a distribuição de potência da radiação eletromagnética em função do comprimento de onda ($\lambda$). Tradicionalmente, o campo de estudo da espectrofotometria Ultravioleta-Visível (UV-Vis) abrange a região que vai de aproximadamente $190$ nm a $900$ nm \cite{agilent_uvvis}. Dentro deste intervalo, a faixa visível (VIS) é estritamente definida, compreendendo comprimentos de onda entre aproximadamente $400$ nm (violeta) e $700$ nm (vermelho).
 
-Analisadores de Espectro Óptico comerciais que operam na faixa visível apresentam custos elevados, frequentemente superiores a \$30.000, conforme pesquisa realizada em março de 2025. Isso restringe significativamente o acesso desses equipamentos para muitas instituições acadêmicas e laboratórios de pequeno porte, limitando o desenvolvimento de pesquisas e o ensino prático de espectroscopia.
+Esta região espectral é particularmente crítica, pois as transições de energia atômicas e moleculares que ocorrem neste domínio são a base de diversas aplicações químicas, biológicas e de metrologia de cor. A radiação UV e VIS possui energia suficiente para induzir transições entre diferentes níveis de energia eletrônica em moléculas \cite{agilent_uvvis}. Quando a radiação eletromagnética interage com a matéria, diversos fenômenos podem ocorrer, incluindo reflexão, espalhamento, absorção, fluorescência/fosforescência e reações fotoquímicas \cite{agilent_uvvis}.
+
+A relevância do OSA na faixa visível está intrinsecamente ligada à capacidade de quantificar a presença de compostos ou biomarcadores que exibem absorção seletiva nesta faixa. Por exemplo, a utilização da faixa visível (em especial o vermelho, $660$ nm) para diagnósticos, como na oximetria de pulso \cite{smartphone_spectroscopy}, não é acidental, mas sim uma consequência direta das diferenças de absorção espectral entre a hemoglobina oxigenada e a desoxigenada. Essa sensibilidade à composição química enfatiza a necessidade fundamental de calibração ultra-precisa do eixo de comprimento de onda ($\lambda$). Um desvio mínimo no mapeamento espectral pode resultar em erros significativos na medição da concentração, particularmente em regiões de alta inclinação do espectro de absorção.
+
+Um Analisador de Espectro Óptico (OSA) é um instrumento de precisão projetado para medir e exibir a distribuição de \textbf{potência óptica} de uma fonte de luz sobre um determinado intervalo de comprimento de onda \cite{viavi_osa}. Os três parâmetros-chave quantificados por um OSA são o comprimento de onda, o nível de potência e a Relação Sinal-Ruído Óptico (\textit{Optical Signal-to-Noise Ratio} - OSNR) \cite{viavi_osa}. É crucial distinguir a funcionalidade de um OSA de um espectrofotômetro tradicional de bancada. O termo OSA é frequentemente empregado para medir a distribuição espectral de potência de uma fonte de luz (Potência vs. $\lambda$) \cite{viavi_osa}, sendo amplamente utilizado em telecomunicações para caracterizar lasers. No contexto da caracterização de sensores de fibra óptica, como \textit{Long-Period Gratings} (LPGs) e \textit{Fiber Bragg Gratings} (FBGs), o OSA atua como um \textbf{interrogador espectral}, medindo a atenuação ou o pico de reflexão \cite{fiber_sensor_characterization}.
+
+Analisadores de Espectro Óptico comerciais que operam na faixa visível apresentam custos elevados, frequentemente superiores a \$30.000, conforme pesquisa realizada em março de 2025 \cite{thorlabs_osa20xc}. Isso restringe significativamente o acesso desses equipamentos para muitas instituições acadêmicas e laboratórios de pequeno porte, limitando o desenvolvimento de pesquisas e o ensino prático de espectroscopia. A necessidade de precisão na faixa visível é crítica, especialmente em medições ratiométricas como a oximetria de pulso, onde um erro mínimo na calibração do comprimento de onda (eixo $\lambda$) pode levar a erros diagnósticos significativos \cite{smartphone_spectroscopy}.
 
 Como alternativa, o desenvolvimento de soluções de baixo custo tem ganhado destaque na literatura científica. O projeto "Osinha" foi desenvolvido com uma abordagem inovadora, utilizando impressão 3D, uma webcam e uma grade de difração, totalizando menos de \$200 USD, tornando-o uma solução acessível para pesquisa e ensino.
 
-Este trabalho propõe uma solução de baixo custo baseada em hardware aberto ("Osinha") e software customizado ("OSA Visível"), desenvolvido pelo Laboratório de Instrumentação e Telemetria (LITel/UFJF). O diferencial reside no uso de técnicas de visão computacional para calibração automática, substituindo métodos manuais ou baseados em hardware dedicado.
+Este trabalho propõe uma solução de baixo custo baseada em hardware aberto ("Osinha") e software customizado ("OSA Visível"), desenvolvido pelo Laboratório de Instrumentação e Telemetria (LITel/UFJF). O princípio fundamental é o mesmo dos OSAs tradicionais: a luz, após interagir com a amostra ou sensor, é dispersa (geralmente por uma grade de transmissão simples) e, em vez de atingir um detector de varredura ou um \textit{array} de fotodiodos especializado, é capturada pelo sensor CMOS \cite{smartphone_spectroscopy}. O sensor CMOS, que é um detector de intensidade, torna-se o principal \textit{array} de detecção espectral do sistema.
 
-A calibração combina duas etapas principais: (i) captura do espectro contínuo de luz branca, com detecção do centróide e ajuste inicial de uma reta via regressão linear; e (ii) correlação direta entre picos de intensidade de lasers (532 nm e 650 nm) e suas posições na imagem, definindo a relação comprimento de onda-posição de pixel.
+O diferencial deste trabalho reside no uso de técnicas de visão computacional para calibração automática, substituindo métodos manuais ou baseados em hardware dedicado. O desafio metrológico primário em sistemas de visão é a conversão precisa dos dados de imagem (coordenada de pixel) em dados espectrais (comprimento de onda, $\lambda$) \cite{smartphone_spectroscopy}. O sensor CMOS, embora otimizado para o VIS ($400$ nm a $700$ nm) devido ao filtro infravermelho \cite{smartphone_spectroscopy}, captura a informação através de uma matriz de filtros Bayer (RGB). Isso significa que a medição não é puramente espectral, mas sim uma resposta de cor que deve ser desmembrada. O processo de dispersão óptica mapeia $\lambda$ para uma posição física no sensor ($p$). A relação entre $p$ e $\lambda$ não é trivialmente linear e é altamente suscetível a desalinhamentos físicos da grade de difração, à temperatura e a não-uniformidades na montagem.
 
-O objetivo geral deste trabalho é desenvolver um Analisador de Espectro Óptico de baixo custo para a faixa visível (380-750 nm), integrando hardware acessível e software customizado com calibração automatizada via visão computacional.
+A visão computacional é o motor que realiza a \textbf{conversão de pixel-para-wavelength} \cite{smartphone_spectroscopy}. Esta etapa é o cerne da calibração, transformando uma imagem de difração (dados de pixel RGB) em um espectro quantitativo (Intensidade vs. $\lambda$). A calibração desenvolvida neste trabalho combina duas etapas principais: (i) captura do espectro contínuo de luz branca, com detecção do centróide e ajuste inicial de uma reta via regressão linear; e (ii) correlação direta entre picos de intensidade de lasers (532 nm e 650 nm) e suas posições na imagem, definindo a relação comprimento de onda-posição de pixel.
+
+Ao contrário dos OSAs tradicionais, que garantem a precisão através de componentes ópticos e eletrônicos caros (monocromadores de alta qualidade, arquiteturas de feixe duplo) \cite{agilent_uvvis}, o método deste trabalho utiliza software (visão computacional) para compensar as deficiências inerentes ao hardware óptico de baixo custo, como desalinhamentos na montagem ou não-linearidades introduzidas por lentes simples. Essa abordagem representa uma \textbf{mudança de paradigma metrológico}, onde a garantia de precisão migra da engenharia óptica de \textit{hardware} para a engenharia algorítmica de \textit{software}. O algoritmo de calibração deve ser robusto o suficiente para realizar a \textbf{compensação de instabilidade da fonte de luz} e a \textbf{correção de ruído} via \textit{software}, replicando as funções que os sistemas ópticos de alto custo executam em hardware \cite{agilent_uvvis}.
+
+O objetivo geral deste trabalho é desenvolver um Analisador de Espectro Óptico de baixo custo para a faixa visível (400-700 nm), integrando hardware acessível e software customizado com calibração automatizada via visão computacional. A calibração do instrumento desenvolvido deve obrigatoriamente garantir a precisão nas duas dimensões metrológicas: a escala de \textbf{Potência (Eixo Y)} e a escala de \textbf{Wavelength (Eixo X)} \cite{viavi_osa}, replicando a complexa funcionalidade de um OSA comercial.
 
 Os objetivos específicos incluem:
 
 \begin{itemize}
     \item Desenvolver um espectrômetro 3D-printed de baixo custo baseado no projeto "Osinha";
     \item Implementar software "OSA Visível" para análise espectral com interface intuitiva;
-    \item Criar sistema de calibração automatizada utilizando técnicas de visão computacional;
-    \item Validar a precisão do sistema através de experimentos com fontes de luz controladas;
+    \item Criar sistema de calibração automatizada utilizando técnicas de visão computacional que realize a conversão precisa de pixel-para-wavelength \cite{smartphone_spectroscopy};
+    \item Validar a precisão do sistema através de experimentos com fontes de luz controladas, atingindo resolução metrológica necessária para aplicações críticas (e.g., $\Delta\lambda < 0.1$ nm para sensores de fibra óptica) \cite{fbg_sensor};
     \item Reduzir custos de mais de \$30.000 (OSA comercial) para menos de \$200;
-    \item Alcançar precisão de calibração de ±2 nm na faixa visível.
+    \item Alcançar precisão de calibração de ±2 nm na faixa visível, garantindo que a resolução de comprimento de onda eficaz seja comparável à de um OSA comercial.
 \end{itemize}
 
-A metodologia adotada compreende o desenvolvimento de hardware baseado em impressão 3D, implementação de algoritmos de visão computacional em Python, calibração híbrida com luz branca e lasers de referência, e validação experimental com fontes de luz controladas.
+A metodologia adotada compreende o desenvolvimento de hardware baseado em impressão 3D, implementação de algoritmos de visão computacional em Python, calibração híbrida com luz branca e lasers de referência, e validação experimental com fontes de luz controladas. Os métodos de calibração por visão geralmente envolvem: (i) localização geométrica, utilizando algoritmos de processamento de imagem para identificar e isolar a linha de difração na imagem \cite{smartphone_spectroscopy}; (ii) mapeamento espectral, utilizando fontes de calibração de referência (lâmpadas de vapor ou LEDs de pico estreito com comprimentos de onda conhecidos) para criar uma função de mapeamento entre a coordenada do pixel e o comprimento de onda conhecido; e (iii) processamento de dados, convertendo digitalmente a imagem e extraindo a curva quantitativa de intensidade vs. comprimento de onda \cite{smartphone_spectroscopy}.
 
-Este trabalho está organizado da seguinte forma: o Capítulo 2 apresenta a fundamentação teórica sobre espectroscopia óptica e analisadores de espectro; o Capítulo 3 detalha a metodologia de desenvolvimento do hardware e software; o Capítulo 4 descreve os resultados experimentais e validação do sistema; e o Capítulo 5 apresenta as conclusões e trabalhos futuros.
+A importância dos OSAs transcende o laboratório de pesquisa, estendendo-se a setores de alta tecnologia, saúde e manufatura. Nas telecomunicações, o OSA monitora a precisão do comprimento de onda para garantir que os canais estejam corretamente separados em redes DWDM \cite{viavi_osa}. Na caracterização de sensores de fibra óptica, como FBGs e LPGs, o OSA permite quantificar a sensibilidade com precisões da ordem de $0.037$ nm/kPa \cite{fbg_sensor}. Em aplicações biomédicas, como a oximetria de pulso, a precisão na faixa visível (especialmente em $660$ nm) é crítica para diagnósticos precisos \cite{smartphone_spectroscopy}. O desenvolvimento de um método de calibração por visão computacional habilita diretamente a transição industrial para dispositivos \textit{Point-of-Care} (POC) em ambientes com recursos limitados.
+
+Este trabalho está organizado da seguinte forma: o Capítulo 2 apresenta a fundamentação teórica sobre espectroscopia óptica e analisadores de espectro; o Capítulo 3 detalha a metodologia de desenvolvimento do hardware e software, incluindo os algoritmos de visão computacional; o Capítulo 4 descreve os resultados experimentais e validação do sistema, comparando com padrões metrológicos estabelecidos; e o Capítulo 5 apresenta as conclusões e trabalhos futuros, destacando as contribuições para a metrologia de baixo custo.
 
 
 \chapter{NOME DA SE\c{C}\~{A}O} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui
@@ -467,6 +479,32 @@ e hepatite em bovino: relato de caso. \textbf{Veterin\'aria e Zootecnia}, S\~ao 
 
 \bibitem{Aguiar2009} AGUIAR, Andr\'e Andrade de. \textbf{Avalia\c{c}\~ao da microbiota bucal em pacientes sob uso cr\^onico de penicilina e benzatina}. 2009. 
 Tese (Doutorado em Cardiologia) - Faculdade de Medicina, Universidade de S\~ao Paulo, S\~ao Paulo, 2009.
+
+%% Referências adicionadas do relatório técnico sobre OSAs
+\bibitem{agilent_uvvis} AGILENT. \textbf{The Basics of UV-Vis Spectroscopy}. Disponível em: 
+https://www.agilent.com/cs/library/primers/public/primer-uv-vis-basics-5980-1397en-agilent.pdf. 
+Acesso em: 3 nov. 2025.
+
+\bibitem{smartphone_spectroscopy} Smartphone-based optical spectroscopic platforms for biomedical applications. 
+\textbf{PMC}. Disponível em: https://pmc.ncbi.nlm.nih.gov/articles/PMC8086480/. 
+Acesso em: 3 nov. 2025.
+
+\bibitem{viavi_osa} VIAVI Solutions Inc. \textbf{Optical Spectrum Analyzers (OSA)}. Disponível em: 
+https://www.viavisolutions.com/en-us/products/optical-spectrum-analyzers-osa. 
+Acesso em: 3 nov. 2025.
+
+\bibitem{fiber_sensor_characterization} EXPERIMENTAL CHARACTERIZATION OF THE OPTICAL FIBER. 
+\textbf{Scientific Bulletin}. Disponível em: 
+https://www.scientificbulletin.upb.ro/rev\_docs\_arhiva/full04f\_672529.pdf. 
+Acesso em: 3 nov. 2025.
+
+\bibitem{fbg_sensor} High-Resolution FBG-Based Fiber-Optic Sensor with Temperature Compensation. 
+\textbf{MDPI}. Disponível em: https://www.mdpi.com/1424-8220/19/23/5285. 
+Acesso em: 3 nov. 2025.
+
+\bibitem{thorlabs_osa20xc} THORLABS. \textbf{OSA20xC Series Optical Spectrum Analyzers}. Disponível em: 
+https://www.thorlabs.com/newgrouppage9.cfm?objectgroup\_id=5276. 
+Acesso em: 3 mar. 2025.
 
 %%%2) Exemplos de refer\^encia no sistema autor-data. Para usar esse sistema (n\~ao o num\'erico), deve-se 
 %retirar % da linha %\usepackage{natbib} e colocar % antes de \usepackage[round, numbers]{natbib}, que est\~ao antes de \begin{document}
