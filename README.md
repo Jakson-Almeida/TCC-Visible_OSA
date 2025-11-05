@@ -71,5 +71,6 @@ Este projeto está sob licença acadêmica para fins educacionais.
 
 ---
 
-*Última atualização: Outubro 2025*
+*Última atualização: Novembro 2025*
+
 
