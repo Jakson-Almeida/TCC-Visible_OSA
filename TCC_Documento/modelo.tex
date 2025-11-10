@@ -332,7 +332,7 @@ O Analisador de Espectro Óptico (OSA) é um instrumento essencial para medir a 
 
 Historicamente, OSAs utilizavam arquiteturas baseadas em monocromadores sintonizáveis (varredura), onde um filtro óptico ajustável resolvia os componentes espectrais individualmente. Em contraste, o OSA Visível utiliza uma arquitetura baseada em \textit{array} de detectores (grade/CMOS), que captura todo o espectro simultaneamente, melhorando a velocidade de aquisição \cite{keysight_osa}.
 
-O hardware do espectrômetro "Osinha" se baseia em uma solução de baixo custo, aproveitando a fabricação aditiva (impressão 3D) para construir a estrutura óptica. O uso da impressão 3D reduz drasticamente os custos e permite a personalização rápida do design, superando a necessidade de polimento de precisão laboriosa, comum em óptica tradicional \cite{stanford_3d_optics}.
+O hardware do espectrômetro "Osinha" foi desenvolvido com base no projeto \textit{Open Fiber Spectrometer} \cite{gaudi_spectrometer}, um espectrômetro de código aberto que fornece modelos 3D e instruções detalhadas para construção. O projeto original foi adaptado para atender às necessidades específicas deste trabalho, com foco na faixa visível do espectro (380-750 nm). O uso da impressão 3D reduz drasticamente os custos e permite a personalização rápida do design, superando a necessidade de polimento de precisão laboriosa, comum em óptica tradicional \cite{stanford_3d_optics}.
 
 Os componentes principais são:
 
@@ -356,9 +356,9 @@ onde $k$ é o nível de intensidade (de 0 a 255) e $P(k|x,y)$ é a probabilidade
 A calibração de OSAs de alta precisão é regida por normas internacionais, como a IEC 62129, que detalham procedimentos para garantir a rastreabilidade da medição de comprimento de onda e potência \cite{iec_62129}. Métodos tradicionais de calibração utilizados em equipamentos de laboratório envolvem:
 
 \begin{enumerate}
-    \item \textbf{Fontes de Referência Estáveis:} Uso de lasers altamente estabilizados, cujos comprimentos de onda são monitorados simultaneamente por um \textit{wavemeter} de altíssima acurácia \cite{terra_calibration}.
+    \item \textbf{Fontes de Referência Estáveis:} Uso de lasers altamente estabilizados, cujos comprimentos de onda são monitorados simultaneamente por um \textit{wavemeter} de altíssima acurácia. \cite{dubard1995} discutiram a necessidade de caracterizar com precisão as fontes ópticas em medições de fibras ópticas e apresentaram técnicas de calibração para OSAs \cite{terra_calibration}.
     \item \textbf{Células de Gás:} Utilização de células de referência (e.g., HCN) que fornecem picos de absorção fixos e bem conhecidos em faixas específicas \cite{terra_calibration}.
-    \item \textbf{Modelagem Polinomial Avançada:} Empregando lâmpadas de arco (neon, argônio) para gerar múltiplos picos espectrais conhecidos, ajustados por polinômios de segunda ou terceira ordem para mapear a relação comprimento de onda-pixel \cite{henriksen_calibration}.
+    \item \textbf{Modelagem Polinomial Avançada:} Empregando lâmpadas de arco (neon, argônio) para gerar múltiplos picos espectrais conhecidos, ajustados por polinômios de segunda ou terceira ordem para mapear a relação comprimento de onda-pixel. \cite{liu2013} empregam métodos de calibração precisos utilizando parâmetros do sistema para espectrômetros de grade \cite{henriksen_calibration}.
 \end{enumerate}
 
 O custo desses métodos e dos equipamentos comerciais é proibitivo, variando de mais de \$30.000 a mais de \$100.000 para modelos de alta performance. Diante dessa realidade, o projeto "OSA Visível" representa uma abordagem estratégica para democratizar a análise espectral. A substituição da instrumentação metrológica de ponta pela \textbf{inteligência algorítmica} (visão computacional) permite alcançar uma acurácia funcional ($\pm 1.8$ nm) a um custo total inferior a \$200, justificando a inovação do processo de calibração automatizada.
@@ -454,7 +454,7 @@ O cálculo da média temporal melhora drasticamente a Relação Sinal-Ruído (SN
 
 \subsection{Segmentação e Limiarização Adaptativa de Imagem (Método de Otsu)}
 
-Para isolar o espectro (o sinal de interesse) do fundo escuro e do ruído residual da imagem, é necessária uma etapa de segmentação. O \textbf{Método de Otsu} é um algoritmo automático de limiarização global que opera maximizando a variância entre classes (\textit{foreground} vs. \textit{background}) no histograma de intensidade da imagem \cite{otsu_wiki}.
+Para isolar o espectro (o sinal de interesse) do fundo escuro e do ruído residual da imagem, é necessária uma etapa de segmentação. O \textbf{Método de Otsu} é um algoritmo automático de limiarização global que opera maximizando a variância entre classes (\textit{foreground} vs. \textit{background}) no histograma de intensidade da imagem \cite{otsu1979}.
 
 O Otsu calcula o limiar ótimo $T$ que melhor divide os pixels da imagem em duas classes, garantindo que o sinal espectral, mesmo que difuso, seja completamente capturado. Isso resulta em uma máscara binária $M(x,y)$:
 
@@ -501,7 +501,7 @@ A Tabela \ref{tab:algoritmos_visao} resume os algoritmos de visão computacional
 Algoritmo (Referência) & Propósito & Impacto Metrológico & Justificativa para Baixo Custo \\
 \hline
 Média Temporal & Aumento do SNR & Reduz erro aleatório na intensidade & Mitiga o ruído inerente a sensores CMOS de baixo custo \\
-Limiarização Otsu \cite{otsu_wiki} & Segmentação ROI espectral & Isolamento do sinal de interesse & Automatiza o processo, tornando-o robusto a variações de iluminação \\
+Limiarização Otsu \cite{otsu1979} & Segmentação ROI espectral & Isolamento do sinal de interesse & Automatiza o processo, tornando-o robusto a variações de iluminação \\
 Cálculo de Centróide \cite{spectral_centroid_wiki} & Localização geométrica & Define a orientação espacial da dispersão & Compensa desalinhamentos mecânicos da estrutura 3D \\
 Regressão Linear & Mapeamento $\lambda(x)$ & Converte pixel para nm com precisão funcional & Eficácia metrológica com baixo custo computacional \\
 \hline
@@ -851,9 +851,18 @@ Acesso em: 10 nov. 2025.
 https://www.researchgate.net/profile/Osama-Terra/publication/282900283\_Calibration\_of\_grating\_based\_optical\_spectrum\_analyzers/links/5a1a44aaa6fdcc50adeaee96/Calibration-of-grating-based-optical-spectrum-analyzers.pdf. 
 Acesso em: 10 nov. 2025.
 
+\bibitem{dubard1995} DUBARD, J.; LE MEN, C. Optical Spectrum Analyzer Calibration. \textit{In}: SOARES, Olivério D. D. (Ed.). \textbf{Trends in Optical Fibre Metrology and Standards}. Dordrecht: Springer, 1995. (NATO ASI Series, v. 285). p. 489-509. DOI: 10.1007/978-94-011-0035-9\_25. Disponível em: https://link.springer.com/chapter/10.1007/978-94-011-0035-9\_25. Acesso em: 13 mar. 2025.
+
+\bibitem{liu2013} LIU, K.; YU, F. Accurate Wavelength Calibration Method Using System Parameters for Grating Spectrometers. \textbf{Optical Engineering}, v. 52, n. 1, p. 013603, 2013. DOI: 10.1117/1.OE.52.1.013603.
+
+\bibitem{gaudi_spectrometer} GAUDILABS. \textbf{Open Fiber Spectrometer}. Disponível em: https://www.gaudi.ch/GaudiLabs/?page\_id=825. 
+Acesso em: 10 mar. 2025.
+
 \bibitem{otsu_wiki} Otsu's method. \textbf{Wikipedia}. Disponível em: 
 https://en.wikipedia.org/wiki/Otsu\%27s\_method. 
 Acesso em: 10 nov. 2025.
+
+\bibitem{otsu1979} OTSU, Nobuyuki. A Threshold Selection Method from Gray-Level Histograms. \textbf{IEEE Transactions on Systems, Man, and Cybernetics}, v. 9, n. 1, p. 62-66, 1979.
 
 \bibitem{spectral_centroid_wiki} Spectral centroid. \textbf{Wikipedia}. Disponível em: 
 https://en.wikipedia.org/wiki/Spectral\_centroid. 
