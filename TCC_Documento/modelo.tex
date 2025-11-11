@@ -276,7 +276,7 @@ Este capítulo apresenta a fundamentação teórica necessária para o desenvolv
 
 A espectroscopia óptica constitui o pilar fundamental para a caracterização da matéria, explorando a interação entre a radiação eletromagnética e as propriedades atômicas e moleculares de uma amostra. O Analisador de Espectro Óptico (OSA) de baixo custo, denominado "Osinha"/"OSA Visível", é projetado para operar na faixa de luz visível (VIS, 380-750 nm). Neste intervalo, a absorção de energia luminosa tipicamente desencadeia transições eletrônicas em moléculas ou íons, permitindo a identificação e quantificação de compostos químicos através de seus espectros característicos.
 
-\subsection{Interação Luz-Matéria: Transmissão e Absorção}
+\subsection{\textbf{Interação Luz-Matéria: Transmissão e Absorção}}
 
 Quando a luz incide sobre uma amostra, ela pode ser transmitida, refletida ou absorvida. Em espectrofotometria, a análise primária foca na absorção. A luz branca, composta por todos os comprimentos de onda do espectro visível, tem sua intensidade reduzida de forma seletiva quando atravessa uma substância, resultando na cor percebida. Por exemplo, uma solução que absorve intensamente a luz verde parecerá vermelha ao observador. O objetivo do OSA é medir essa absorção seletiva em função do comprimento de onda.
 
@@ -294,7 +294,7 @@ A = -\log T
 \label{eq:absorbancia}
 \end{equation}
 
-\subsection{Lei de Beer-Lambert: Base Quantitativa da Espectrometria de Absorção}
+\subsection{\textbf{Lei de Beer-Lambert: Base Quantitativa da Espectrometria de Absorção}}
 
 A Lei de Beer-Lambert (também conhecida como Lei de Beer-Bouguer-Lambert, ou BBL) é a relação empírica que governa a atenuação da intensidade da radiação ao passar por um meio homogêneo \cite{beer_lambert_wiki}. Ela estabelece uma relação direta e linear entre a absorbância de uma solução e a concentração da substância absorvente, bem como o caminho óptico percorrido pela luz \cite{beer_lambert_edinst}.
 
@@ -309,7 +309,7 @@ onde $A$ representa a absorbância (adimensional), $\epsilon$ é a absortividade
 
 Para que a Lei de Beer-Lambert seja válida, várias premissas devem ser satisfeitas \cite{beer_lambert_wiki}. Estas incluem a necessidade de radiação monocromática, a ausência de interações entre as moléculas do soluto (o que geralmente requer baixas concentrações) e um meio macroscopicamente homogêneo. A alta correlação ($R^2 \geq 0.93$) observada durante os experimentos de validação do OSA Visível com a diluição de glicerina confirma que o sistema de baixo custo, quando devidamente calibrado, opera com a precisão necessária para manter a linearidade exigida pelo Beer-Lambert, tornando-o funcionalmente viável para aplicações quantitativas na faixa visível.
 
-\subsection{O Princípio da Difração de Fraunhofer e Grades Ópticas}
+\subsection{\textbf{O Princípio da Difração de Fraunhofer e Grades Ópticas}}
 
 A separação dos diferentes comprimentos de onda que incidem sobre o detector do OSA é realizada por um elemento dispersor, neste caso, uma grade de difração. A difração de Fraunhofer (também chamada de difração de campo distante) descreve o padrão de difração que ocorre quando as ondas planas incidem sobre o objeto dispersor e o padrão é observado a uma distância suficientemente longa ou no plano focal de uma lente de imagem, que é o arranjo típico de um espectrômetro \cite{fraunhofer_wiki}.
 
@@ -328,7 +328,7 @@ A relação entre o comprimento de onda ($\lambda$) e a posição física do pix
 
 O Analisador de Espectro Óptico (OSA) é um instrumento essencial para medir a distribuição de potência óptica em função do comprimento de onda \cite{spectrum_analyzer_wiki}.
 
-\subsection{Definição e Arquitetura do OSA Visível}
+\subsection{\textbf{Definição e Arquitetura do OSA Visível}}
 
 Historicamente, OSAs utilizavam arquiteturas baseadas em monocromadores sintonizáveis (varredura), onde um filtro óptico ajustável resolvia os componentes espectrais individualmente. Em contraste, o OSA Visível utiliza uma arquitetura baseada em \textit{array} de detectores (grade/CMOS), que captura todo o espectro simultaneamente, melhorando a velocidade de aquisição \cite{keysight_osa}.
 
@@ -351,7 +351,7 @@ I(x,y) = \sum_{k=0}^{255} k \cdot P(k|x,y)
 
 onde $k$ é o nível de intensidade (de 0 a 255) e $P(k|x,y)$ é a probabilidade do pixel $(x,y)$ registrar a intensidade $k$.
 
-\subsection{Metrologia de OSAs: Padrões e a Justificativa para a Solução de Baixo Custo}
+\subsection{\textbf{Metrologia de OSAs: Padrões e a Justificativa para a Solução de Baixo Custo}}
 
 A calibração de OSAs de alta precisão é regida por normas internacionais, como a IEC 62129, que detalham procedimentos para garantir a rastreabilidade da medição de comprimento de onda e potência \cite{iec_62129}. Métodos tradicionais de calibração utilizados em equipamentos de laboratório envolvem:
 
@@ -385,11 +385,11 @@ AQ6380 \cite{yokogawa_aq6374} & 350-1750 & \$100.000-200.000 & Sub-pm & Padrões
 
 A calibração de comprimento de onda, ou calibração espectral, é o processo crucial que estabelece a correspondência exata entre o índice de pixel no sensor CMOS (coordenada $x$) e o valor absoluto do comprimento de onda ($\lambda$).
 
-\subsection{O Desafio da Relação $\lambda(x)$: Dispersão Física e Distorções do Sistema}
+\subsection{\textbf{O Desafio da Relação $\lambda(x)$: Dispersão Física e Distorções do Sistema}}
 
 A transformação do ângulo de difração ($\theta$) em posição de pixel ($x$) é influenciada pela geometria do sistema e pelas imperfeições do hardware. Em espectrômetros construídos com peças COTS (\textit{Commercial Off-The-Shelf}) e impressão 3D, existem fontes de erro que desviam a relação $\lambda(x)$ do ideal, como desalinhamentos angulares da grade, curvatura de campo do sensor e tolerâncias mecânicas na montagem.
 
-\subsection{A Modelagem de Primeira Ordem: Regressão Linear ($\lambda(x) = a \cdot x + b$)}
+\subsection{\textbf{A Modelagem de Primeira Ordem: Regressão Linear ($\lambda(x) = a \cdot x + b$)}}
 
 Para simplificar o processamento e, dado que o OSA Visível opera em uma faixa espectral relativamente estreita (380-750 nm), o mapeamento é modelado com um ajuste de primeira ordem \cite{henriksen_calibration}. A relação linear entre o pixel e o comprimento de onda é definida por:
 
@@ -411,7 +411,7 @@ a = \frac{\lambda_{\textrm{verm}} - \lambda_{\textrm{verd}}}{x_{\textrm{verm}} -
 
 Utilizar dois pontos fixos é fundamental. Um único ponto definiria apenas o \textit{offset} $b$, mas deixaria a taxa de dispersão $a$ (nm/pixel) sujeita a erros sistêmicos. A determinação de ambos os parâmetros por dois pontos de referência garante que o escalonamento da dispersão angular seja corretamente aplicado em toda a faixa de operação do espectrômetro, minimizando o erro de inclinação.
 
-\subsection{Metrologia de Acurácia: O Conceito de Erro RMS}
+\subsection{\textbf{Metrologia de Acurácia: O Conceito de Erro RMS}}
 
 A acurácia do mapeamento comprimento de onda-pixel é avaliada utilizando o Erro Quadrático Médio (\textit{Root Mean Square Error} - RMS), uma métrica padrão na metrologia espectral que quantifica a magnitude média do erro entre os valores medidos e os valores de referência \cite{henriksen_calibration}.
 
@@ -441,7 +441,7 @@ Erro RMS & $\pm 2.1$ nm & $\pm 1.8$ nm & Acurácia final da calibração \\
 
 A Visão Computacional é o diferencial tecnológico que permite ao OSA Visível executar calibrações de forma automatizada, robusta e precisa, substituindo métodos manuais demorados ou dependentes de hardware dedicado.
 
-\subsection{Processamento Digital do Sinal Espectral (Imagens CMOS)}
+\subsection{\textbf{Processamento Digital do Sinal Espectral (Imagens CMOS)}}
 
 O \textit{pipeline} de processamento digital é crucial para extrair o dado espectral da imagem bruta capturada pela webcam. Uma etapa inicial essencial é a Média Temporal (\textit{Frame Averaging}). Em sensores CMOS de baixo custo, o ruído aleatório (como ruído de disparo ou ruído térmico) é significativo. Para a calibração com lasers, o software captura $N=20$ quadros em um curto intervalo e calcula a intensidade média $\bar{I}(x,y)$:
 
@@ -452,7 +452,7 @@ O \textit{pipeline} de processamento digital é crucial para extrair o dado espe
 
 O cálculo da média temporal melhora drasticamente a Relação Sinal-Ruído (SNR), permitindo a detecção mais precisa dos picos de intensidade dos lasers. Após a média, a imagem é convertida para escala de cinza, simplificando a análise da intensidade luminosa.
 
-\subsection{Segmentação e Limiarização Adaptativa de Imagem (Método de Otsu)}
+\subsection{\textbf{Segmentação e Limiarização Adaptativa de Imagem (Método de Otsu)}}
 
 Para isolar o espectro (o sinal de interesse) do fundo escuro e do ruído residual da imagem, é necessária uma etapa de segmentação. O \textbf{Método de Otsu} é um algoritmo automático de limiarização global que opera maximizando a variância entre classes (\textit{foreground} vs. \textit{background}) no histograma de intensidade da imagem \cite{otsu1979}.
 
@@ -468,7 +468,7 @@ I_{gray}(x,y), & \textrm{se } I_{gray}(x,y) \geq T \\
 
 A aplicação de um limiar adaptativo torna o processo de calibração robusto a variações na iluminação da fonte de luz branca e às condições ambientais, eliminando a necessidade de ajustes manuais do limiar.
 
-\subsection{Localização de Fontes: Centróide e Detecção de Picos}
+\subsection{\textbf{Localização de Fontes: Centróide e Detecção de Picos}}
 
 A visão computacional é usada para duas tarefas críticas de localização: o centróide para o espectro contínuo e a detecção de pico para os lasers de referência.
 
@@ -513,7 +513,7 @@ Regressão Linear & Mapeamento $\lambda(x)$ & Converte pixel para nm com precis�
 
 O processo de calibração do "OSA Visível" é um método híbrido que combina a inteligência da visão computacional com referências metrológicas de comprimento de onda conhecido, garantindo a acurácia dentro do limite de custo estabelecido.
 
-\subsection{Etapa 1: Calibração Preliminar com Luz Branca (Ajuste da Orientação Espacial)}
+\subsection{\textbf{Etapa 1: Calibração Preliminar com Luz Branca (Ajuste da Orientação Espacial)}}
 
 O primeiro passo utiliza o espectro contínuo de uma fonte de luz branca. O objetivo desta fase é obter um ajuste inicial do espectro na imagem, crucial para compensar a geometria imperfeita da montagem 3D.
 
@@ -526,7 +526,7 @@ O processo envolve as seguintes etapas:
     \item Os parâmetros preliminares $a$ e $b$ da relação $\lambda(x)$ são calculados com base nesta orientação inicial, resultando em um erro RMS de $\pm 2.1$ nm. Esta etapa estabelece uma correlação linear entre a intensidade dos pixels e sua posição na imagem.
 \end{enumerate}
 
-\subsection{Etapa 2: Calibração Absoluta com Lasers de Comprimento de Onda Conhecido}
+\subsection{\textbf{Etapa 2: Calibração Absoluta com Lasers de Comprimento de Onda Conhecido}}
 
 A Etapa 2 é a fase de ancoragem metrológica. Após a calibração inicial que alinha espacialmente o espectro, os lasers de referência são utilizados para mapear essa reta de dispersão preliminar aos comprimentos de onda absolutos conhecidos.
 
@@ -540,7 +540,7 @@ São utilizados dois lasers, Verde (532 nm) e Vermelho (650 nm). O processo comp
 
 Essa correspondência entre as posições dos picos na reta de calibração e os comprimentos de onda reais garante que a dispersão (nm/pixel) seja corretamente escalada em toda a faixa de operação do OSA, culminando na precisão final de $\pm 1.8$ nm. A utilização de dois pontos fixos é essencial para definir inequivocamente tanto o \textit{offset} quanto a dispersão da reta linear.
 
-\subsection{Validação Experimental do Sistema: Ensaio de Beer-Lambert}
+\subsection{\textbf{Validação Experimental do Sistema: Ensaio de Beer-Lambert}}
 
 A validação experimental provou que a calibração automatizada é metrologicamente válida para aplicações quantitativas. O ensaio de diluição de glicerina em água (faixa de 10-30\% v/v) demonstrou que o sistema é capaz de medir a absorbância com alta fidelidade.
 
