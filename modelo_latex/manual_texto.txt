@@ -1,0 +1,1887 @@
+C
+I
+1
+
+Centro de Difusão do Conhecimento - CDC
+
+Manual de normalização para apresentação de trabalhos acadêmicos
+
+Juiz de Fora
+2023
+
+Centro de Difusão do Conhecimento - CDC
+
+Manual de normalização para apresentação de trabalhos acadêmicos
+
+Juiz de Fora
+2023
+
+Universidade Federal de Juiz de Fora. Centro de Difusão
+do Conhecimento
+Manual de normalização para apresentação de trabalhos acadêmicos
+/ Centro de Difusão do Conhecimento. -- Juiz de Fora : UFJF, 2023.
+66 p. : il.
+
+Disponível somente em formato eletrônico.
+
+1. Metodologia científica. 2. Normalização da documentação.
+I. Título.
+CDU 001.8:002
+
+APRESENTAÇÃO
+
+Diante da Resolução 16/2016 do Conselho Setorial de Pós-Graduação e
+Pesquisa da Universidade Federal de Juiz de Fora (UFJF) que define que a
+normalização de trabalhos acadêmicos desta instituição seja definida pelo Centro de
+Difusão do Conhecimento - CDC, este manual busca direcionar e orientar quanto à
+padronização dos trabalhos de conclusão de curso (monografias, dissertações e
+teses).
+Este documento é a diretriz para padronização dos trabalhos na Universidade
+Federal de Juiz de Fora – UFJF.
+As normas estão disponíveis nas Bibliotecas da UFJF e os bibliotecários
+são capacitados para orientar presencialmente e esclarecer dúvidas durante a
+elaboração dos trabalhos.
+
+SUMÁRIO
+
+1
+
+ESTRUTURA ............................................................................................................................. 5
+
+1.1
+
+ELEMENTOS PRÉ-TEXTUAIS ......................................................................................... 5
+
+1.2
+
+ELEMENTOS TEXTUAIS .................................................................................................... 5
+
+1.3
+
+ELEMENTOS PÓS-TEXTUAIS......................................................................................... 6
+
+2
+
+REGRAS GERAIS DE APRESENTAÇÃO ................................................................. 7
+
+2.1
+
+FORMATO PARA APRESENTAÇÃO............................................................................ 7
+
+2.2
+
+ESPAÇAMENTO...................................................................................................................... 7
+
+2.3
+
+MARGENS .................................................................................................................................. 8
+
+2.4
+
+PAGINAÇÃO .............................................................................................................................. 8
+
+2.5
+
+NUMERAÇÃO PROGRESSIVA DAS SEÇÕES ...................................................... 9
+
+3
+
+ELEMENTOS PRÉ-TEXTUAIS ....................................................................................... 11
+
+3.1
+
+CAPA ............................................................................................................................................ 11
+
+3.2
+
+FOLHA DE ROSTO ............................................................................................................... 13
+
+3.3
+
+FICHA CATALOGRÁFICA ................................................................................................. 15
+
+3.4
+
+FOLHA DE APROVAÇÃO .................................................................................................. 17
+
+3.5
+
+DEDICATÓRIA(S) .................................................................................................................. 19
+
+3.6
+
+AGRADECIMENTO(S) ......................................................................................................... 21
+
+3.7
+
+EPÍGRAFE ................................................................................................................................. 23
+
+3.8
+
+RESUMO EM LÍNGUA VERNÁCULA .......................................................................... 25
+
+3.9
+
+RESUMO EM LÍNGUA ESTRANGEIRA ..................................................................... 27
+
+3.10
+
+LISTA DE ILUSTRAÇÕES ................................................................................................. 29
+
+3.11
+
+LISTA DE TABELAS ............................................................................................................. 32
+
+3.12
+
+LISTA DE ABREVIATURAS E SIGLAS ....................................................................... 34
+
+3.13
+
+LISTA DE SÍMBOLOS .......................................................................................................... 36
+
+3.14
+
+SUMÁRIO ................................................................................................................................... 38
+
+4
+
+ELEMENTOS TEXTUAIS ................................................................................................... 40
+
+4.1
+
+INTRODUÇÃO ......................................................................................................................... 41
+
+4.2
+
+DESENVOLVIMENTO.......................................................................................................... 43
+
+4.2.1
+
+Citações ..................................................................................................................................... 43
+
+4.2.2
+
+Notas ............................................................................................................................................ 45
+
+4.3
+
+CONCLUSÃO .......................................................................................................................... 45
+
+5
+
+ELEMENTOS PÓS-TEXTUAIS....................................................................................... 46
+
+5.1
+
+REFERÊNCIAS ....................................................................................................................... 46
+
+5.2
+
+APÊNDICE ................................................................................................................................ 47
+
+5.3
+
+ANEXO ........................................................................................................................................ 47
+REFERÊNCIAS....................................................................................................................... 48
+APÊNDICE A – Modelos de referência.................................................................... 49
+APÊNDICE B – Exemplos de ilustrações .............................................................. 54
+APÊNDICE C – Exemplos de tabelas ....................................................................... 57
+APÊNDICE D – Exemplos de citação ................................................................58
+APÊNDICE E – Paginação em impressão anverso.......................................... 63
+ANEXO A – Resolução nº 16/2016 – CSPP .....................................................64
+
+5
+
+1 ESTRUTURA
+
+Os trabalhos acadêmicos são divididos em elementos pré-textuais, textuais e
+pós- textuais que devem ser apresentados nesta ordem:
+
+1.1 ELEMENTOS PRÉ-TEXTUAIS
+a) capa (obrigatório – elemento externo);
+b) lombada (opcional);
+c) folha de rosto (obrigatório);
+d) ficha catalográfica (obrigatório);
+e) errata (opcional);
+f) folha de aprovação (obrigatório);
+g) dedicatória (opcional);
+h) agradecimento (opcional);
+i) epígrafe (opcional);
+j) resumo em língua vernácula (obrigatório);
+k) resumo em língua estrangeira (obrigatório);
+l) lista de ilustrações (opcional);
+m) lista de tabelas (opcional);
+n) lista de abreviaturas e siglas (opcional);
+o) lista de símbolos (opcional);
+p) sumário (obrigatório).
+
+1.2 ELEMENTOS TEXTUAIS
+
+São aqueles em que é exposto o conteúdo da pesquisa:
+
+a) introdução;
+b) desenvolvimento;
+c) conclusão.
+
+6
+
+1. 3 ELEMENTOS PÓS-TEXTUAIS
+
+Estes elementos complementam o trabalho:
+
+a) referência (obrigatório);
+b) glossário (opcional);
+c) apêndice(s) (opcional);
+d) anexo(s) (opcional);
+e)índice(s)(opcional).
+
+7
+
+2 REGRAS GERAIS DE APRESENTAÇÃO
+
+A elaboração de trabalhos acadêmicos deve ser desenvolvida de acordo com
+as regras que seguem abaixo.
+
+2.1 FORMATO PARA APRESENTAÇÃO
+
+O texto deverá ser digitado sempre na cor preta, utilizando outras cores
+apenas nas ilustrações. Utilizar papel branco na medida A4 (21 cm x 29,7 cm). Para
+todo o trabalho as opções de fonte são: a Times New Roman ou Arial, tamanho 12,
+exceto para os citados abaixo que devem ser 1 ponto menor:
+a) citações com mais de três linhas (que devem ser um ponto menor)
+b) notas de rodapé (que devem ser um ponto menor);
+c) paginação (que devem ser um ponto menor);
+d) fontes das ilustrações e tabelas (que devem ser um ponto menor);
+e) legendas das ilustrações e tabelas (que devem ser um ponto menor).
+
+2.2 ESPAÇAMENTO
+
+Todo o trabalho deve ser digitado com espaçamento 1,5 entre as linhas,
+exceto para os citados abaixo que o espacejamento deve ser simples:
+
+a) citações com mais de três linhas (espaço simples);
+b) notas de rodapé (espaço simples);
+c) natureza do trabalho (espaço simples);
+d) referências (espaço simples);
+e) legendas das ilustrações e tabelas (espaço simples).
+
+As referências são separadas entre si por um espaço simples. Os títulos das
+seções primárias devem ser apresentados na parte superior da folha, alinhado à
+esquerda e ser separados do texto por 1 espaço de 1,5. Já os títulos das subseções
+devem vir logo após o texto com 1 espaço de 1,5 antes e outro após.
+
+8
+
+Observe o exemplo:
+2 OBJETIVOS
+ESPAÇO DE 1,5
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto. ESPAÇO 1,5
+1.2 OBJETIVO ESPECÍFICO
+ESPAÇO 1,5
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto.
+
+2.3 MARGENS
+
+Diante da entrega apenas de arquivo digital, as folhas devem apresentar
+informações somente na frente (anverso): margem esquerda e superior 3 cm e
+direita e inferior 2 cm.
+2.4 PAGINAÇÃO
+
+A partir da folha de rosto todas as folhas fazem parte da contagem da
+numeração do documento, entretanto a numeração só aparece a partir da introdução
+e prossegue até o final do documento inclusive nos elementos pós-textuais
+(apêndice, anexo e referências). A numeração deve estar no canto superior direito.
+
+A capa e a ficha catalográfica não entram na contagem!
+Observe a indicação de página do Word e desconte 2 páginas.
+
+O verso das folhas não possui informação, por esta razão não é contado e
+numerado. A ficha catalográfica é o único elemento no verso. Deve ser colocada no
+verso da folha de rosto, porém não é contada e numerada.
+
+9
+
+2.5 NUMERAÇÃO PROGRESSIVA DAS SEÇÕES
+
+O indicativo numérico de uma seção precede seu título, deve ser em
+algarismo arábico, alinhado à esquerda e separado por espaço de um caractere.
+Deve-se limitar a numeração progressiva até a seção quinária. Observe:
+1
+1.1
+1.1.1
+1.1.1.1
+1.1.1.1.1
+
+SEÇÃO PRIMÁRIA
+SEÇÃO SECUNDÁRIA
+Seção Terciária
+Seção Quaternária
+Seção Quinária
+
+O texto deve iniciar na linha seguinte a linha do título com um espaço entre
+linhas de 1,5. As subseções seguem a mesma orientação para espaço. Não se deve
+usar nenhum sinal gráfico (por exemplo: ponto ou travessão) entre o indicativo
+numérico e o título. Todas as seções devem conter texto. Observe o exemplo:
+2 OBJETIVOS
+ESPAÇO DE 1,5
+Texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto.
+ESPAÇO 1,5
+1.2 OBJETIVO ESPECÍFICO
+ESPAÇO 1,5
+Texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto.
+
+Todas as seções devem conter texto, dessa forma, o texto NÃO deve ser apresentado
+assim:
+2 OBJETIVOS
+ESPAÇO DE 1,5
+1.2 OBJETIVO ESPECÍFICO
+ESPAÇO 1,5
+
+10
+
+Todas as seções primárias devem iniciar em nova folha. Caso o título ocupe
+mais de uma linha, na segunda linha a primeira palavra deve estar alinhada à
+primeira letra da primeira palavra do título. Observe o exemplo:
+3 DESCREVENDO O MANUAL DE NORMALIZAÇÃO DA UNIVERSIDADE
+FEDERAL DE JUIZ DE FORA E OBJETIVOS
+ESPAÇO DE 1,5
+Texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto.
+
+Títulos sem indicativo numérico devem ser centralizados, são eles: errata,
+agradecimento, lista de ilustrações, lista de abreviaturas e siglas, lista de símbolos,
+resumos, sumário, referências, glossário, apêndice, anexo e índice.
+Folha de aprovação, dedicatória e epígrafe, obrigatoriamente, são elementos
+sem numeração de seção e sem título.
+Após a conclusão da parte textual, os títulos das seções seguintes não têm
+indicativo numérico de seção, porém a numeração de página segue até o final do
+documento.
+
+11
+
+3 ELEMENTOS PRÉ-TEXTUAIS
+
+A elaboração dos elementos pré-textuais deve ser desenvolvida de acordo
+com as regras que seguem:
+
+3.1 CAPA
+
+A capa é a proteção externa do documento é o local onde são registradas as
+informações indispensáveis à sua identificação. É um elemento obrigatório e deve
+apresentar os elementos necessariamente nesta ordem:
+
+a) nome da instituição (formatação em caixa alta e negrito opcional);
+b) nome da faculdade (formatação em caixa alta e negrito opcional);
+c) curso (formatação em caixa alta e negrito opcional);
+d) nome do autor (formatação (caixa alta e caixa baixa) seguindo a regra de
+português. negrito opcional);
+e) título (formatação (caixa alta e caixa baixa) seguindo a regra de português,
+negrito opcional);
+f) subtítulo (se houver), precedido de dois pontos (seguindo a regra de
+português (caixa alta e caixa baixa));
+g) cidade e ano (de entrega do documento, formatação negrito opcional).
+
+A fonte utilizada deve ser Times New Roman ou Arial, tamanho 12 e
+centralizado. O uso de caixa alta, caixa baixa, negrito ou não fica a critério do autor
+desde que respeitada a língua Portuguesa. A capa não deve conter nenhum outro
+elemento exceto os citados acima. Ela não possui numeração, pois não entra na
+contagem de páginas/folhas do documento. Não é permitido o uso de imagens na
+capa.
+
+12
+
+UNIVERSIDADE FEDERAL DE JUIZ DE FORA
+FACULDADE DE EDUCAÇÃO
+GRADUAÇÃO EM PEDAGOGIA
+
+Maria dos Santos
+
+Educação inclusiva: a visão do aluno baseada na rotina institucional
+da Universidade Federal de Juiz de Fora em 2023
+
+Juiz de Fora
+2023
+
+13
+
+3.2 FOLHA DE ROSTO
+
+Elemento pré-textual, é a primeira folha do documento, nela inicia a contagem
+da paginação já que a capa não conta.
+A fonte utilizada deve ser Times New Roman ou Arial, tamanho 12 e
+espaçamento 1,5 entre linhas e centralizado. O alinhamento do orientador é livre,
+sugestão é o alinhamento à esquerda. Jà para a natureza do trabalho, deve ser
+espaçamento simples entre linhas, justificado a partir do centro do interior das
+margens (mancha gráfica) e sem negrito, obrigatório.
+Deve apresentar os elementos necessariamente nesta ordem:
+
+a) nome do autor (formatação negrito opcional respeitando a língua
+Portuguesa);
+b) título (formatação negrito opcional respeitando Portuguesa);
+c) subtítulo (se houver), precedido de dois pontos;
+d) natureza do documento (tipo do trabalho, objetivo, nome da instituição a
+que é submetida e área de concentração). Exemplos:
+Dissertação apresentada ao Programa de Pósgraduação em Modelagem Computacional, da
+Universidade Federal de Juiz de Fora como
+requisito parcial à obtenção do título de Mestre
+em Modelagem Computacional. Área de
+concentração:
+Trabalho de conclusão de curso apresentado à
+Faculdade de Educação da Universidade
+Federal de Juiz de Fora, como requisito parcial
+à obtenção do grau de bacharel em Pedagogia.
+e) orientador e coorientador, se houver;
+f)
+
+local e ano (de entrega do documento).
+
+14
+
+Maria dos Santos
+
+Educação inclusiva: a visão do aluno baseada na rotina institucional da
+Universidade Federal de Juiz de Fora em 2023
+
+Trabalho de conclusão de curso
+apresentado a Faculdade de Educação
+da Universidade Federal de Juiz de
+Fora, como requisito parcial a obtenção
+da licenciatura em Pedagogia.
+
+Orientador: Prof. Dr. João de Sousa
+Coorientador: Prof. Antônio Miranda
+Prof. Ana Maria Fernandes
+
+Juiz de Fora
+2023
+
+15
+
+3.3 FICHA CATALOGRÁFICA
+
+A ficha catalográfica deve ser gerada pelo site http://www.ufjf.br/biblioteca. Os
+dados fornecidos para geração da ficha são de responsabilidade do usuário. São de
+preenchimento obrigatório: nome do autor, sobrenome do autor, título do trabalho,
+trabalho, unidade acadêmica, instituição, nome do orientador, sobrenome do
+orientador, ano, descrição física, assunto.
+Quadro 1 – Descrição dos campos da ficha catalográfica
+CAMPOS
+Nome do Autor
+
+DESCRIÇÃO / EXEMPLOS
+É responsável direto pela redação da obra. Informe o nome juntamente com os
+primeiros sobrenomes, incluindo as preposições se for o caso e apenas as letras
+iniciais em maiúsculo. Ex.: Maria José Pereira Dias dos Santos
+
+Sobrenome do
+autor
+Título do
+trabalho
+Subtítulo do
+trabalho
+Trabalho
+Unidade
+Acadêmica
+Instituição
+Nome do
+
+Digite o último sobrenome. Apenas a letra inicial em maiúsculo. Ex.: Santos
+Informe o título do trabalho conforme consta no documento, somente a primeira
+letra e os nomes próprios em letras maiúsculas.
+Informe o subtítulo do trabalho conforme consta no documento, somente os
+nomes próprios em letras maiúsculas.
+Informe o tipo de trabalho produzido e em seguida, selecione o curso ou
+Programa de Pós-Graduação ao qual foi apresentado.
+Selecione a unidade acadêmica à qual está vinculado o curso ou programa de
+pós-graduação.
+Selecione UFJF ou em caso de programa interinstitucional, selecione UFJF /
+UFV.
+Digite o nome do orientador e nomes/sobrenomes intermediários, se for o caso.
+
+Orientador
+
+Apenas as primeiras letras iniciais em maiúsculo. Não incluir títulos como Dr. ou
+Msc.
+
+Sobrenome do
+orientador
+
+Digite o último sobrenome do orientador. Atenção: caso seja uma orientadora,
+marque a caixa.
+
+Nome do
+coorientador
+
+Digite o nome do seu coorientador e nomes/sobrenomes intermediários, se for o
+caso. Não incluir títulos como Dr. ou Msc.
+
+Sobrenome do
+coorientador
+Ano
+
+Digite o último sobrenome do coorientador. Atenção: caso seja uma
+Coorientadora, marque a caixa.
+Registre o ano em que o trabalho foi entregue. Registre na forma yyyy.
+
+Descrição física
+
+Registre o total de folhas (impressão somente no anverso)
+
+Ilustrações
+Assunto(s)
+
+Marque esta opção, caso seu trabalho possua ilustrações (fotografias, mapas,
+desenho, fluxograma etc.). Atenção: tabelas não são consideradas ilustrações.
+Informe no mínimo uma e no máximo cinco palavras-chave sobre o conteúdo do
+documento. Devem aparecer em ordem decrescente de importância. Evite
+termos redundantes ou repetitivos.
+
+Fonte: Elaborado pelo autor (2019).
+
+16
+
+17
+
+3.4 FOLHA DE APROVAÇÃO
+
+Elemento obrigatório em que são descritos os elementos essenciais à
+aprovação do trabalho. Devem constar na folha de aprovação necessariamente
+nesta ordem:
+a) autoria do trabalho;
+b) título e subtítulo (quando houver);
+c) natureza do trabalho;
+d) nome da instituição a que é submetido;
+e) data de aprovação;
+f) nome, titulação e assinatura dos componentes da banca examinadora e
+instituição a que pertencem.
+
+18
+
+Autor
+
+Título: subtítulo
+
+Dissertação apresentada ao Programa de
+Pósgraduação
+em
+Modelagem
+Computacional, da Universidade Federal de
+Juiz de Fora como requisito parcial a obtenção
+do grau de Mestre em Modelagem
+Computacional.
+
+Aprovada em (dia) de (mês) de (ano)
+
+BANCA EXAMINADORA
+
+Titulação. Nome e sobrenome – Orientador
+Universidade Federal de Juiz de Fora
+
+Titulação. Nome e sobrenome
+Instituição
+
+Titulação. Nome e sobrenome
+Instituição
+
+19
+
+3.5 DEDICATÓRIA
+
+É um elemento opcional que deve ser inserido, se for o caso, após a folha de
+aprovação. É um texto elaborado pelo autor em que é prestada homenagem a quem
+se dedica a produção. A palavra dedicatória não deve ser inserida como título na
+página assim como ocorre com a folha de aprovação e a epígrafe. Como todo o
+trabalho, salvo exceções, deve ser apresentada em fonte Times New Roman ou Arial,
+tamanho 12 e espaçamento 1,5.
+Neste manual há uma sugestão de apresentação, contudo pode ser
+apresentada no centro da mancha gráfica ou no topo da mesma. Não devendo
+conter título (obrigatório). No caso de trabalhos em outro idioma, o autor pode incluir
+a tradução, opcional.
+
+20
+
+Dedico este trabalho aos meus pais e
+avós
+
+que
+
+auxiliaram.
+
+me
+
+inspiram
+
+e
+
+me
+
+21
+
+3.6 AGRADECIMENTO
+
+Este elemento é opcional e deve ser inserido, se for o caso, após a
+dedicatória. O texto elaborado pelo autor em que este agradece aos que
+colaboraram de maneira relevante no processo de elaboração da pesquisa. Neste
+caso, a palavra agradecimento deve obrigatoriamente estar presente na página
+seguindo o mesmo destaque tipográfico das seções primárias assim como na lista
+de ilustrações, lista de abreviaturas e siglas, lista de símbolos, resumo, sumário,
+referências, glossários, apêndice(s), anexo(s) e índice(s).
+O texto seguirá formatação igual ao do corpo do texto (Arial ou Times New
+Roman, tamanho 12, com espaçamento 1,5, justificado). É recomendado que haja
+recuo de parágrafo.
+
+22
+
+AGRADECIMENTOS
+
+Agradeço a oportunidade de conclusão desta etapa....
+Agradeço também ao ...
+
+23
+
+3.7 EPÍGRAFE
+
+Este elemento é opcional e deve ser inserido após os agradecimentos,
+quando for o caso. A epígrafe trata-se de uma citação e deverá ser elaborada de
+acordo com as orientações de citação. A epígrafe deverá estar relacionada ao
+conteúdo do trabalho apresentado e a palavra epígrafe não aparece como título na
+folha.
+Citação é toda informação extraída de outra fonte.
+
+É permitido colocar epígrafes nas páginas das seções primárias ao longo do
+documento.
+
+IMPORTANTE
+A obra citada na epígrafe deverá obrigatoriamente, constar nas
+referências do trabalho.
+
+Para citações de até 3 linhas:
+“texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto.” (Autor, ano, p. 00)
+Para citações com mais de 3 linhas:
+texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto.
+(Autor, ano, p. 00)
+
+24
+
+Até 3 linhas
+“Mas para que o produto de uma pesquisa científica possa ser publicado não
+basta que ele apresente um conteúdo de qualidade, também é exigida qualidade de
+forma.” (Marçal Junior, 2013, p. 19-20).
+
+Mais de 3 linhas
+
+Mas para que o produto de uma pesquisa científica possa ser
+publicado não basta que ele apresente um conteúdo de qualidade,
+também é exigida qualidade de forma (Marçal Junior, 2013, p. 19-20).
+
+25
+
+3.8 RESUMO EM LÍNGUA VERNÁCULA
+
+Este elemento é obrigatório, o texto deve apresentar o objetivo, método e as
+conclusões do documento em parágrafo único. Sua composição é caracterizada por
+uma sequência de frases concisas, afirmativas e em terceira pessoa.
+O resumo deve ter de 150 a 500 palavras. Logo após o texto, devem ser
+apresentadas as palavras-chave ou descritores que são palavras representativas do
+conteúdo do documento. Estas devem estar alinhadas à esquerda, separadas entre
+si por ponto e vírgula (;), redigidas em letras minúsculas e finalizadas com um ponto
+(.).
+A apresentação é caracterizada da seguinte forma: deve estar presente
+obrigatoriamente o título no alto da página, centralizado e seguindo o mesmo
+recurso tipográfico das seções primárias. Assim como toda parte textual, deve ser
+apresentada em Times New Roman ou Arial tamanho 12, justificado e com
+espaçamento 1,5. É sugerido o uso de recuo de parágrafo.
+
+26
+
+RESUMO
+
+Este estudo foi realizado buscando atender à necessidade de maior
+compreensão e entendimento acerca dos anseios reais dos usuários das bibliotecas
+da Universidade Federal de Juiz de Fora...
+
+Palavras-chave: biblioteca universitária; estudo de usuário; Universidade Federal de
+Juiz de Fora.
+ou
+
+Palavras-chave: biblioteca universitária; estudo de usuário; Universidade Federal
+de Juiz de Fora.
+
+27
+
+3.9
+
+RESUMO EM LÍNGUA ESTRANGEIRA
+
+Trata-se da versão do resumo em língua estrangeira para divulgação
+internacional. Segue as mesmas características do resumo em língua vernácula. O
+título é atribuído de acordo com o idioma escolhido, bem como as palavras-chave; a
+saber:
+Em inglês
+
+Em espanhol
+
+Francês
+
+ABSTRACT
+
+RESUMEN
+
+RÉSUMÉ
+
+Keywords
+
+Palabras-clave
+
+Mots clefs
+
+28
+
+ABSTRACT
+
+This study was conducted in order to attend the need for greater
+comprehension and understanding about the real demands of the libraries users of
+the Federal University of Juiz de Fora.
+
+Keywords: university library; user study; Federal University of Juiz de Fora.
+
+ou
+Keywords: university library; user study. Federal University of Juiz de Fora.
+
+29
+
+3.10 LISTA DE ILUSTRAÇÕES
+
+Elemento opcional em que cada ilustração é indicada com seu número de
+página correspondente de acordo com a ordem em que é apresentada no texto. São
+consideradas ilustrações:
+a) desenhos;
+b) esquemas;
+c) fluxogramas;
+d) figuras;
+e) fotografias;
+f) gráficos;
+g) mapas;
+h) organogramas;
+i) plantas;
+j) quadros;
+k) retratos;
+l) entre outros.
+
+As tabelas não são consideradas ilustrações, devem ter sua lista própria. Para
+a apresentação, o título deve estar obrigatoriamente presente no alto da página,
+centralizado e seguindo o mesmo recurso tipográfico das seções primárias. Demais
+informações devem ser apresentadas em Times New Roman ou Arial tamanho 12,
+justificada e com espaçamento 1,5. É sugerido que os travessões estejam um
+embaixo do outro (modelo da próxima página).
+A ordem da lista deve seguir a mesma em que as ilustrações aparecem no
+trabalho, incluindo apêndices. Caso a quantidade justifique e o autor desejar pode
+ser elaborada uma lista para cada tipo de ilustração. Neste caso, o título utilizado
+deverá seguir a nomenclatura da ilustração, por exemplo, LISTA DE GRÁFICOS. O
+Apêndice B apresenta alguns modelos de ilustração.
+O título pode ir até o final da página (linha da lista) ou não, fica critério do
+autor, bem como utilizar caixa alta ou não (observe no exemplo Quadro 2 e Gráfico
+2). Porém, a escolha deve ser uniforme em toda a lista. Contudo, é obrigatório o uso
+de travessão para separar indicação da ilustração e o título.
+
+30
+
+IMPORTANTE
+
+A apresentação das ilustrações ao longo do trabalho deve ser da seguinte
+forma: indicação do tipo de ilustração seguido do seu número de ordem de
+ocorrência no texto, traço e o título. Deve-se usar a mesma tipografia do corpo do
+texto (Times New Roman ou Arial, tamanho 12 com espaçamento 1,5). Abaixo da
+ilustração a fonte deve ser indicada precedida do termo "Fonte" seguido de dois
+pontos e da indicação do documento consultado alinhado à esquerda da
+ilustração. Para fonte, utilizar a mesma opção de letra do corpo do texto, porém
+em tamanho menor (um ponto). Caso tenha sido elaborada pelo autor usar:
+
+Fonte: Elaborado pelo autor (ano).
+
+A ilustração deve ser citada no texto e inserida o mais próximo possível do
+trecho a que se refere.
+
+Organograma 1 - Serviço de atendimento da Biblioteca Central da
+
+Universidade Federal de Juiz de Fora
+
+ILUSTRAÇÃO
+
+Fonte: Universidade Federal de Juiz de Fora (2018).
+Fonte alinhada à esquerda
+da ilustração.
+
+Título
+centralizado
+em
+relação à
+ilustração.
+
+31
+
+LISTA DE ILUSTRAÇÕES
+
+Figura 1
+
+- Título ....................................................................................
+
+15
+
+Gráfico 1
+
+- Título ....................................................................................
+
+17
+
+Quadro 1
+
+- Título ....................................................................................
+
+19
+
+Quadro 2
+
+- Título Título Título Título Título Título Título Título Título
+Título Título Título Título Título Título ....................................
+
+30
+
+Gráfico 2
+
+- Título ....................................................................................
+
+38
+
+Gráfico 3
+
+- Título Título Título Título Título Título
+
+Título Título Título Título
+
+Título Título Título Título Título Título ....................................
+
+45
+
+IMPORTANTE
+O título pode ir até o final da margem da
+página (linha) ou encerrar antes da indicação do
+número da página, porém é obrigatório que esteja
+uniforme.
+
+32
+
+3.11 LISTA DE TABELAS
+
+Elemento opcional em que cada tabela é indicada com seu número de página
+correspondente de acordo com a ordem em que é apresentada no texto. As tabelas
+devem obrigatoriamente apresentar dados numéricos e estarem citadas no texto
+sendo inseridas o mais próximo possível do trecho a que se referem.
+Para a apresentação da lista, o título (Lista de Tabelas) deve estar presente
+no alto da página, centralizado e seguindo o mesmo recurso tipográfico das seções
+primárias. Demais informações devem ser apresentadas em Times New Roman ou
+Arial tamanho 12, justificada e com espaçamento 1,5. É sugerido que os travessões
+estejam um embaixo do outro (modelo da próxima página) O Apêndice C apresenta
+alguns modelos de tabelas. Pare este manual é necessário que as tabelas
+apresentem obrigatoriamente:
+
+a) título: tabela seguido do seu número de ordem de ocorrência no texto,
+traço e o título. Usando a mesma tipografia do corpo do texto (times new
+roman ou arial, tamanho 12 com espaçamento 1,5) e centralizado à tabela;
+b) fonte: abaixo da tabela a fonte deve ser indicada precedida do termo
+"Fonte" seguido de dois pontos e da indicação do documento consultado
+alinhado à esqueda da tabela. Para fonte, utilizar a mesma opção de letra
+do corpo do texto, porém em tamanho menor (um ponto). Caso tenha sido
+elaborada pelo autor usar: Fonte: Elaborado pelo autor (ano);
+c) margens: tabelas não apresentam margens laterais (esquerda e direita).
+
+Tabela 3 – Composição dos recursos humanos das bibliotecas CDC
+da Universidade Federal de Juiz de Fora
+2008
+8
+
+2009
+9
+
+Fonte: Elaborado pelo autor (2019).
+Fonte alinhada à
+esquerda da tabela.
+
+2010
+16
+
+2011
+13
+
+2012
+15
+
+Título
+centralizado
+em relação
+à tabela.
+
+33
+
+LISTA DE TABELAS
+
+Tabela 1
+
+-
+
+Título .....................................................................................
+
+15
+
+Tabela 2
+
+-
+
+Título ....................................................................................
+
+17
+
+Tabela 3
+
+-
+
+Título ....................................................................................
+
+19
+
+Tabela 4
+
+-
+
+Título Título Título Título Título Título Título Título Título
+Título Título Título Título Título Título ....................................
+
+30
+
+Tabela 5
+
+-
+
+Título ....................................................................................
+
+38
+
+Tabela 6
+
+-
+
+Título Título Título Título Título Título
+
+Título Título Título Título
+
+Título Título Título Título Título Título ....................................
+
+45
+
+IMPORTANTE
+O título pode ir até o final da margem da
+página (linha) ou encerrar antes da indicação do
+número da página, porém é obrigatório que esteja
+uniforme.
+
+34
+
+3.12 LISTA DE ABREVIATURAS E SIGLAS
+
+Elemento opcional em que as siglas e abreviaturas utilizadas no texto são
+apresentadas em ordem alfabética seguidas da sua correspondência por extenso.
+Para a apresentação, o título deve estar presente no alto da página,
+centralizado e seguindo o mesmo recurso tipográfico das seções primárias. Demais
+informações devem ser apresentadas em Times New Roman ou Arial tamanho 12,
+alinhadas à esquerda e com espaçamento 1,5. Fica livre ao autor criar uma lista de
+abreviaturas, uma lista de siglas ou lista única de abreviaturas e siglas.
+
+35
+
+LISTA DE ABREVIATURA E SIGLAS
+
+ABNT
+
+Associação Brasileira de Normas Técnicas
+
+Fil.
+
+Filosofia
+
+IBGE
+
+Instituto Brasileiro de Geografia e Estatística
+
+INMETRO
+
+Instituto Nacional de Metrologia, Normalização e Qualidade Industrial
+
+36
+
+3.13 LISTA DE SÍMBOLOS
+
+Elemento opcional em que os símbolos utilizados no texto são apresentados
+seguindo a ordem em que foram citados seguidos do seu significado.
+Para a apresentação, o título deve estar presente no alto da página,
+centralizado e seguindo o mesmo recurso tipográfico das seções primárias. Demais
+informações devem ser apresentadas em Times New Roman ou Arial tamanho 12,
+alinhadas à esquerda e com espaçamento 1,5.
+
+37
+
+LISTA DE SÍMBOLOS
+
+dab
+
+Distância Euclidiana
+
+O(n) Ordem de um algoritmo
+
+38
+
+3.14 SUMÁRIO
+
+Elemento obrigatório e deve apresentar as seções e outras partes do trabalho
+na ordem em que se apresentam. O sumário deve apresentar em sua lista o mesmo
+destaque tipográfico das seções que foi usado ao longo do texto.
+Para a apresentação, o título deve estar presente no alto da página,
+centralizado e seguindo o mesmo recurso tipográfico das seções primárias. As
+seções devem estar alinhadas à esquerda com a mesma ordem e grafia em que se
+apresentam no trabalho. A subordinação das seções deve ser destacada por
+diferenças tipográficas gradativas (negrito, maiúscula e outros) que ficam a critério
+do autor.
+Os títulos e subtítulos devem estar alinhados à margem do indicativo mais
+extenso, inclusive os elementos pós-textuais.
+Os elementos pré-textuais não devem ser incluídos no sumário.
+Se o documento for composto por mais de um volume, o sumário completo
+deve ser incluído em todos os volumes, dessa forma é possível ter conhecimento de
+todo o conteúdo.
+Para a numeração progressiva de seções de um documento deve -se:
+a) usar algarismos arábicos na numeração;
+b) limitar a numeração progressiva até a seção quinaria;
+c) não usar nenhum sinal gráfico entre o indicativo numérico e o título;
+d) apresentar texto em todas as seções;
+e) indicar os indicativos das seções primárias com números inteiros iniciando
+em 1;
+f) alinhar os títulos que ocupem mais de uma linha abaixo da primeira letra
+da primeira palavra do título;
+IMPORTANTE
+O recurso tipográfico utilizado nas seções primárias deve, obrigatoriamente, ser
+utilizado em todos os elementos pré e pós-textuais que possuam título (agradecimentos,
+resumos, listas, sumário, referências, glossário, apêndice, anexo e índice). Independente
+do destaque tipográfico o título deve ser centralizado.
+
+39
+
+SUMÁRIO
+
+1
+
+INTRODUÇÃO ............................................................................................................. 08
+
+2
+
+BIBLIOTECA UNIVERSITÁRIA E
+
+SUA RELAÇÃO COM O
+
+USUÁRIOS REAIS E POTENCIAIS ................................................................. 11
+3
+
+ESTUDO DE USUÁRIO .......................................................................................... 23
+
+3.1
+
+USUÁRIOS POTENCIAIS ...................................................................................... 45
+
+3.2
+
+USUÁRIOS REAIS..................................................................................................... 50
+
+3.2.1 Usuários reais na Universidade Federal de Juiz de Fora: campus
+Juiz de Fora e Campus Governador Valadares ..................................... 57
+4
+
+CONCLUSÃO .............................................................................................................. 60
+
+4.1
+
+PERSPECTIVAS FUTURAS ................................................................................. 63
+REFERÊNCIAS........................................................................................................... 65
+APÊNDICE A – Formulário de coleta de dados ..................................... 70
+ANEXO A – Regimento das bibliotecas do CDC atualizado .......... 72
+
+IMPORTANTE
+O título pode ir até o final da margem da
+página (linha) ou encerrar antes da indicação do
+número da página, porém é obrigatório que esteja
+uniforme.
+
+40
+
+4 ELEMENTOS TEXTUAIS
+
+O texto é a parte em que é exposta a matéria do trabalho: a introdução, o
+desenvolvimento e a conclusão. A introdução apresenta os objetivos e as razões de
+sua elaboração, o desenvolvimento é o detalhamento do trabalho realizado, e por
+fim, a parte conclusiva.
+O título das seções deve ser colocado após o indicativo numérico, alinhado
+à esquerda, separado por um espaço e o texto deve iniciar em outra linha.
+
+2 OBJETIVOS
+ESPAÇO DE 1,5
+Texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto.
+ESPAÇO 1,5
+1.2 OBJETIVO ESPECÍFICO
+ESPAÇO 1,5
+Texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto.
+
+Todas as seções devem conter texto, dessa forma, o texto NÃO deve ser apresentado
+assim:
+2 OBJETIVOS
+ESPAÇO DE 1,5
+1.2 OBJETIVO ESPECÍFICO
+ESPAÇO 1,5
+Texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+
+41
+
+4.1 INTRODUÇÃO
+
+Este elemento é obrigatório. Na introdução são descritos os objetivos da
+pesquisa, a razão de sua elaboração e limitação acerca da temática. Neste momento
+o pesquisador situa o leitor acerca do tema. Este é o primeiro elemento textual e a
+partir dele a numeração de página estará visível na parte superior da página, porém
+a contagem iniciou na folha de rosto.
+Para apresentação, o título das seções primárias deve estar no alto da
+página, alinhado à esquerda, utilizando o mesmo recurso tipográfico de todas as
+outras seções primárias e enumerado seguindo as orientações de numeração
+progressiva das seções.
+
+42
+Primeira folha que a
+paginação aparece.
+
+15
+
+1 INTRODUÇÃO
+
+A presente pesquisa busca identificar quem são os usuários reais e
+potenciais das bibliotecas da Universidade Federal de Juiz de Fora - UFJF,
+campus Juiz de Fora, bem como compreender quais são suas
+necessidades específicas. Dessa forma, será possível desenvolver
+processos que atuem proporcionando um atendimento mais eficaz ao
+público a que se destinam, efetivamente, os serviços.
+As bibliotecas universitárias...
+
+43
+
+4.2 DESENVOLVIMENTO
+
+Este elemento obrigatório é que irá desenvolver a ideia principal do trabalho.
+É o elemento mais longo podendo ser dividido em várias seções e subseções. Os
+títulos das subseções devem ser separados do texto que os precede e os sucede por
+um espaço entre as linhas de 1,5.
+
+2 OBJETIVOS
+ESPAÇO DE 1,5
+
+Texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto.
+ESPAÇO 1,5
+1.2 OBJETIVO ESPECÍFICO
+ESPAÇO 1,5
+Texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto.
+Todas as seções devem conter texto, dessa forma, o texto NÃO deve ser apresentado
+assim:
+2 OBJETIVOS
+ESPAÇO DE 1,5
+1.2 OBJETIVO ESPECÍFICO
+ESPAÇO 1,5
+Texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto texto
+
+4.2.1 Citações
+
+As citações são informações extraídas de fonte consultada pelo autor da obra
+em desenvolvimento. Podem ser diretas, indiretas ou citação de citação. Para
+exemplos, consultar o Apêndice D.
+
+44
+
+Para o sistema autor data:
+a) citação direta é caracterizada pela transcrição textual da parte
+consultada. Se com até três linhas, deve estar entre aspas duplas,
+exatamente como na obra consultada. Se com mais de três linhas,
+recomenda-se recuo de 4 cm da margem esquerda, com letra menor (um
+ponto), espaçamento simples, sem aspas. Sendo a chamada: (Autor, data
+e página) ou na sentença Autor (data, página).
+b) citação indireta é aquela em que o texto foi baseado na(s) obra(s)
+consultada(s). Devem ser separadas por ponto-e-vírgula e em ordem
+alfabética.
+c) A citação de citação é baseada em um texto em que não houve acesso
+ao original.
+ATENÇÃO
+a) O uso do ponto final deve ser usado para encerrar a frase e não a citação.
+
+b) As citações de acordo com o sistema autor/data se houver coincidência de
+sobrenome de autores, devem ser acrescentadas as iniciais de seu prenome, se
+ainda assim permanecer a coincidência, os prenomes devem ser apresentados por
+extenso.
+(Almeida, C., 2009)
+
+(Almeida, Carlos, 2009)
+
+(Almeida, M., 2009)
+
+(Almeida, Celso, 2009)
+
+d) No caso de vários trabalhos de um autor com a mesma data, devem ser
+inseridas letras minúsculas para identificar e a separação dos anos é por vírgula (,).
+
+Silva (2017a, 2017b, 017c)
+(Silva, 2017a, 2017b, 2017c)
+e) No caso de vários autores, eles são separados por ponto e vírgula
+(Jossua; Metz, 1976, p. 3)
+Para toda citação deve ser apresentada uma referência no final do trabalho.
+
+45
+
+Para o sistema numérico:
+A indicação da fonte é feita por uma numeração única e consecutiva
+respeitando a ordem que aparece no texto. Devem-se usar algarismos arábicos
+remetendo à lista de referências. A indicação da numeração é apresentada entre
+parênteses no corpo do texto ou como expoente. Não usar colchetes.
+O autor pode aparecer ou não no texto. Para separar diversos autores, utiliza se
+vírgula. Observe os exemplos:
+Diz Rui Barbosa: “tudo é viver, previvendo.” (15)
+Diz Rui Barbosa: “Tudo é viver, previvendo.”
+É necessário que estejamos atentos. (12)
+(12, 14, 18).
+
+15
+
+ quando com vários autores, usar:
+
+4.2.2 Notas
+
+Notas de rodapé são: observações e/ou aditamentos que o autor precisa
+1
+
+incluir ao texto . Para a numeração das notas deve-se utilizar algarismos arábicos.
+As notas devem ser digitadas ou datilografadas dentro das margens, ficando
+separadas do texto por um espaço simples de entre as linhas e por filete de 5 cm a
+partir da margem esquerda e em fonte menor (um ponto) do corpo do texto. Observe
+abaixo o exemplo ao final da folha.
+
+4.3 CONCLUSÃO
+
+Este elemento é obrigatório e é a parte final do texto, nele são apresentadas
+as conclusões identificadas a partir do desenvolvimento. Atualmente tem-se tornado
+comum a inclusão de seções com perspectivas futuras após a conclusão nesta
+instituição, porém, será autorizada a inclusão de uma subseção nas conclusões.
+Para apresentação, o título deve estar no alto da página, alinhado à esquerda e
+utilizando o mesmo recurso tipográfico das demais seções primárias.
+1
+
+As notas devem ser alinhadas sendo que na segunda linha da mesma nota,a primeira letra
+deve estar abaixo da primeira letra da primeira palavra da linha superior, destacando assim
+o expoente.
+
+46
+
+5 ELEMENTOS PÓS-TEXTUAIS
+
+Os elementos pós-textuais são a parte que sucede ao texto e complementa o
+trabalho. Após a conclusão são incluídos elementos que não fazem parte da
+numeração progressiva de seção do trabalho, porém a contagem das páginas segue
+aparecendo até a última folha.
+São os elementos pós-textuais:
+a) referências;
+b) glossário;
+c) apêndice(s);
+d) anexo(s);
+e) índice(s).
+
+5.1
+
+REFERÊNCIAS
+
+Este elemento é obrigatório e no Brasil a norma padrão utilizada é a NBR
+6023. Contudo para esta instituição também serão aceitos, apenas para as
+referências APA e Vancouver.
+Para apresentação, o título deve estar no alto da página, centralizado
+utilizando o mesmo recurso tipográfico das seções primárias e sem numeração de
+seção. Cada referência deverá ser elaborada com a mesma fonte e tamanho do
+corpo do texto, alinhada à esquerda e com espaçamento simples. Entre cada
+referência deverá haver espaço simples entre as linhas. As referências devem ser
+apresentadas em ordem alfabética. Alguns modelos de referências segundo a ABNT
+estão no Apêndice A.
+
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. ABNT NBR 6023:
+informação e documentação: referências: elaboração. Rio de Janeiro. ABNT,
+2018. ESPAÇO SIMPLES
+
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. ABNT NBR 6024:
+informação e documentação: numeração progressiva das seções de um documento:
+apresentação. Rio de Janeiro. ABNT, 2012.
+ESPAÇO SIMPLES
+
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. ABNT NBR 6027:
+informação e documentação: sumário: apresentação. Rio de Janeiro. ABNT, 2012.
+
+Alinhamento à esquerda e espaçamento simples.
+
+47
+
+5.2 APÊNDICE
+
+Este elemento é opcional. Apresenta um texto ou documento elaborado pelo
+autor com o objetivo de complementar sua argumentação. Para a apresentação o
+título deve estar presente no alto da página, centralizado, seguindo o mesmo recurso
+tipográfico das seções primárias, precedido da palavra apêndice em caixa alta e
+seguida de identificação usando as letras do alfabeto e travessão conforme exemplo.
+Os apêndices não poderão ser subdivididos. É necessário um apêndice para
+cada tópico.
+
+APÊNDICE B – Modelo de ilustrações
+
+5.3 ANEXO
+
+Este elemento é opcional. Apresenta um texto ou documento não elaborado
+pelo autor com o objetivo de complementar ou comprovar sua argumentação. Para a
+apresentação o título deve estar presente no alto da página, centralizado, seguindo o
+mesmo recurso tipográfico das seções primárias, precedido da palavra anexo em
+caixa alta e seguida de identificação usando as letras do alfabeto e travessão
+conforme exemplo abaixo.
+É necessário um anexo para cada tópico não sendo autorizado usar
+subdivisões.
+
+ANEXO A – Organograma institucional
+
+48
+
+REFERÊNCIAS
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. ABNT NBR 6023:
+informação e documentação: referências: elaboração. Rio de Janeiro. ABNT, 2018.
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. ABNT NBR 6024:
+informação e documentação: numeração progressiva das seções de um
+documento: apresentação. Rio de Janeiro. ABNT, 2012.
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. ABNT NBR 6027:
+informação e documentação: sumário: apresentação. Rio de Janeiro. ABNT, 2012.
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. ABNT NBR 6028:
+informação e documentação: resumo: apresentação. Rio de Janeiro. ABNT, 2021.
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. ABNT NBR 10520:
+informação e documentação: citações em documentos: apresentação. Rio
+de Janeiro. ABNT, 2023.
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. ABNT NBR 12225:
+informação e documentação: lombada: apresentação. Rio de Janeiro. ABNT, 2004.
+ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS. ABNT NBR 14724:
+informação e documentação: trabalhos acadêmicos: apresentação. Rio de
+Janeiro. ABNT, 2011.
+MARÇAL JUNIOR, Oswaldo. Prefácio In: FUCHS, Angela Maria Silva;
+FRANÇA, Maira Nani; PINHEIRO, Maria Salete de Freitas. Guia para
+normalização de publicações técnico-científicas. Uberlândia: EDUFU, 2013.
+p. 19-20.
+
+49
+
+APÊNDICE A – Modelos de referências segundo ABNT
+
+2
+
+Os modelos descritos abaixo apresentam os elementos obrigatórios indicados
+na NBR 6023 (ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS, 2018). Para
+outras
+
+opções
+
+de
+
+documentos
+
+consulte
+
+a
+
+norma
+
+ou
+
+o
+
+link:
+
+https://www2.ufjf.br/biblioteca/modelos-de-referencias/.
+a) Livro
+AUTOR DO LIVRO. Título: subtítulo. Edição. Local (cidade de publicação):
+editora, data.
+BAUMAN, Zygmunt. Globalização: as consequências humanas. Rio de Janeiro:
+Jorge Zahar, 1999.
+GODINHO, Thaís. Vida organizada: como definir prioridades e transformar seus
+sonhos em objetivos. São Paulo: Gente, 2014. E-book.
+b) Capítulo de livro
+
+AUTOR DO CAPÍTULO. Título do capítulo. In: AUTOR DO LIVRO. Título:
+subtítulo. Edição. Local (cidade de publicação): editora, data, volume, páginas
+inicial - final da parte.
+SANTOS, F. R. A colonização da terra dos Tucujús. In: SANTOS, F. R. História do
+Amapá, 1º grau. 2. ed. Macapá: Valcan, 1994. p. 15-24.
+SÃO PAULO (Estado). Secretaria do Meio Ambiente. Tratados e organizações
+ambientais em matéria de meio ambiente. In: SÃO PAULO (Estado). Secretaria do
+Meio Ambiente. Entendendo o meio ambiente. São Paulo: Secretaria do Meio
+Ambiente, 1999. v. 1. Disponível em:
+http://www.bdt.org.br/sma/entendendo/atual.htm. Acesso em: 8 mar. 1999.
+
+2
+
+Os exemplos usados foram retirados da NBR6023 (ASSOCIAÇÃO
+BRASILEIRA DE NORMAS TÉCNICAS, 2018). Exemplos de outros formatos podem
+ser consultados na mesma norma.
+
+50
+
+c) Artigo de periódico
+AUTOR. Título do artigo: subtítulo (se houver). Título do periódico: subtítulo (se
+houver), local (cidade de publicação), número do volume, número do fascículo,
+páginas inicial - final, mês e ano.
+DOREA, R. D.; COSTA, J. N.; BATITA, J. M.; FERREIRA, M. M.; MENEZES, R. V.;
+SOUZA, T. S. Reticuloperitonite traumática associada à esplenite e hepatite em
+bovino: relato de caso. Veterinária e Zootecnia, São Paulo, v. 18, n. 4, p. 199202, 2011. Supl. 3.
+SILVA, M. M. L. Crimes da era digital. Net, Rio de Janeiro, nov. 1998. Seção
+Ponto de Vista. Disponível em:
+http://www.brazilnet.com.br/contexts/brasilrevistas.htm. Acesso em: 28 nov. 1998.
+d) Trabalho apresentado em evento em monografia
+AUTOR DO TRABALHO. Título: subtítulo (se houver). In: NOME DE EVENTO,
+número, ano, local de realização. Título da publicação [...]. Local de
+publicação (cidade): editora, data, páginas inicial - final do trabalho.
+ZUBEN, A. V.; CASANOVA, C.; BALDINI, M. B. D.; RANGEL, O.; ANGERAMI, R.
+N.; RODRIGUES, R. C. A.; PRESOTTO, D. Vigilância epidemiológica da
+leishmaniose visceral americana (LVA) em cães no município de Campinas, São
+Paulo. In: REUNIÃO DE PESQUISA APLICADA EM DOENÇAS DE CHAGAS, 26.;
+REUNIÃO DE PESQUISA APLICADA EM LEISHMANIOSES, 14., 2010, Uberaba.
+Anais [...]. Uberaba: Universidade Federal do Triangulo Mineiro, 2010. p. 135-175.
+PALETTA, F. A. C. et al. Biblioteca Digital de Teses e Dissertações da Biblioteca do
+Conjunto das Químicas/USP: digitalização retrospectiva: estudo de caso. In:
+SEMINÁRIO NACIONAL DE BIBLIOTECAS UNIVERSITÁRIAS, 16.; SEMINÁRIO
+INTERNACIONAL DE BIBLIOTECAS DIGITAIS, 2., 2010, Rio de Janeiro. Anais
+[...]. Rio de Janeiro: UFRJ; São Paulo: CRUESP, 2010. 1 pen drive.
+e) Trabalho de conclusão de curso
+AUTOR. Título: subtítulo (se houver). Ano do depósito. Tipo do trabalho (grau
+e curso) - Nome da Faculdade, Nome da Universidade, Local (cidade), ano da
+defesa.
+AGUIAR, André Andrade de. Avaliação da microbiota bucal em pacientes sob
+uso crônico de penicilina e benzatina. 2009. Tese (Doutorado em Cardiologia) –
+Faculdade de Medicina, Univers idade de São Paulo, São Paulo, 2009.
+
+51
+
+f) Legislação
+
+JURISDIÇÃO (nome do país, Estado ou município) ou NOME DA ENTIDADE.
+Título, numeração e data (dia, mês e ano). Elementos complementares para
+melhor identificação do documento (se necessário). Dados da publicação que
+transcreveu o documento.
+
+RIO GRANDE DO SUL. [Constituição (1989)]. Constituição do Estado do Rio
+Grande do Sul. 4. ed. atual. Porto Alegre: Assembleia Legislativa do Estado do
+Rio Grande do Sul, 1995.
+BRASIL. Lei nº 10.406, de 10 de janeiro de 2002. Institui o Código Civil. Diário
+Oficial da União: seção 1, Brasília, DF, ano 139, n. 8, p. 1-74, 11 jan. 2002.
+CURITIBA. Lei nº 12.092, de 21 de dezembro de 2006. Estima a receita e fixa a
+despesa do município de Curitiba para o exercício financeiro de 2007. Curitiba:
+Câmara Municipal, [2007]. Disponível em:
+http://domino.cmc.pr.gov.br/contlei.nsf/98454e416897038b052568f
+c004fc180/e5df879ac6353e7f032572800061df72. Acesso em: 22 mar. 2007.
+
+g) Documento de acesso exclusivo em meio eletrônico
+AUTORIA. Título da informação, serviço ou produto. Versão ou edição
+(se houver). Local de publicação (cidade), data, descrição física do meio
+eletrônico.
+
+CID, Rodrigo. Deus: argumentos da impossibilidade e da incompat ibilidade. In:
+CARVALHO, Mário Augusto Queiroz et al. Blog investigação filosófica. Rio de
+Janeiro, 23 abr. 2011. Disponível em: http://investigacaofilosofica.blogspot.com/search/label/Postagens. Acesso em: 23 ago. 2011.
+ALMEIDA, M. P. S. Fichas para MARC. Destinatário: Maria Teresa Reis Mendes.
+[S. l.], 12 jan. 2002. 1mensagem eletrônica.
+A GAME of Thrones: the board game. 2nd. ed. Roseville: FFG, 2017. 1
+jogo eletrônico.
+LAPAROTOMIA. In: WIKIPEDIA: the free encyclopedia. [San Francisco,
+CA: Wikimed ia Foundation, 2010]. Disponível em:
+http://en.wikipedia.org/wiki/Laparotomia. Acesso em: 18 mar. 2010.
+
+52
+
+h) Audiovisual
+TÍTULO. Direção e/ou produção. Local de publicação (cidade):
+Empresa produtora ou distribuidora, ano. Especificação do suporte em
+unidades físicas.
+CENTRAL do Brasil. Direção: Walter Salles Júnior. Produção: Martire de ClermontTonnerre e Arthur Cohn. [S. l.]: Le Studio Canal; Riofilme; MACT Productions, 1998.
+5 rolos de filme (106 min), son., color., 35 mm.
+JOHN Mayall & The Bluesbreakers and friends: Eric Clapton, Chris Barber, Mick
+Taylor: 70th birthday concert. [London]: Eagle Rock Entertainment, 2003. 1 disco bluray (ca. 159 min).
+BOOK. [S. l.: s. n.], 2010. 1 vídeo (3 min). Publicado pelo canal Leerestademoda. D
+isponível em: http://www.youtube.com/watch?v=iwPj0qgvfIs. Acesso em: 25 ago.
+2011.
+i) Partitura
+TÍTULO. Direção e/ou produção. Local de publicação (cidade):
+Empresa produtora ou distribuidora, ano. Especificação do suporte em
+unidades físicas.
+BRAHMS, Johannes. Sonate für Klavier und Violoncello: e-mol opus 38.
+München: G. Henle, 1977. 1 partitura.
+BEETHOVEN, Ludwig van. Neunte symphonie: op. 125. Orquestra. Leipzig:
+Breitkopf & Härtel, 1863. 1 partitura. Disponível em: http://imslp.org/wiki/File:TNBeethoven_Breitkopf_Serie_1_Band_3_B_9.jpg. Acesso em: 20 jun. 2012.
+j) Documento sonoro
+
+TÍTULO. Responsável pela autoria (compositor, intérprete, ledor entre outros).
+Local: Gravadora, data. Especificação do suporte.
+MOSAICO. [Compositor e intérprete]: Toquinho. Rio de Janeiro: Biscoito Fino, 2005.
+1 CD (37 min).
+GOMES, Laurentino. 1822. Na voz de Pedro Bial. [S. l.]: Plugme, 2011. 1
+audiolivro (CD-ROM).
+PODCAST LXX: Brasil: parte 3: a república. [Locução de]: Christian Gut ner. [S.
+l.]: Escriba Café, 19 mar. 2010. Podcast. Disponível em:
+http://www.escribacafe.com/podcast-lxx-brasil-parte-3-a-republica/. Acesso em: 4
+out. 2010.
+
+53
+
+a) Obra com mais de 3 autores: pode-se citar todos os autores ou somente o primeiro
+seguido de et al.
+TAYLOR, Robert; LEVINE, Denis; MARCELLIN-LITTLE, Denis; MILLIS, Darryl. Reabilitação
+e fisioterapia na prática de pequenos animais. São Paulo: Roca, 2008.
+URANI, A. et al. Constituição de uma matriz de contabilidade social para o Brasil. Brasília,
+DF: IPEA, 1994.
+b) Autor com nome familiar (Filho, Neto, Sobrinho)
+ASSAF NETO, Alexandre. Estrutura e análise de balanços: um enfoque econômico-financeiro.
+8. ed. São Paulo: Atlas, 2007.
+GRISARD FILHO, Waldyr. Guarda compartilhada: um novo modelo de responsabilidade
+parental. 5. ed. rev. atual. São Paulo: Revista dos Tribunais, c2011. 288 p.
+c) Obras com responsabilidade de organizador ou coordenador
+MARCONDES, E.; LIMA, I. N. de (coord.). Dietas em pediatria clínica. 4. ed. São Paulo:
+Sarvier, 1993
+d) Autoria desconhecida
+ONDA de frio: reviravolta traz vento e forte chance de neve. Zero Hora, Porto Alegre, ano 47,
+n. 16.414, 12 ago. 2010. Disponível em: http://www.clicbs.com.br/zerohora/jsp/deft.jspx?uf=1&
+action=flip. Acesso em: 12 ago. 2010.
+e) Documento sem local [s. l.]
+ALEXANDRESCU, D. T. Melanoma costs: a dynamic model comparing estimated overall c
+osts of various clinical stages. Dermatology Online Journal, [s. l.], v. 15, n. 11, p. 1, Nov.
+2009. Disponível em:
+http://dermatology.cdlib.org/1511/originals/melanoma_costs/alexandrescu.html. Acesso em:
+3 nov. 2009.
+
+f) Documento sem editora [s.n.]
+GONÇALVES, F. B. A história de Mirador. [S. l.: s. n.], 1993.
+g) Documento sem data: deve-se determinar uma data aproximada e colocar entre
+colchetes.
+[2010?] para ano provável - [197?] para década provável
+[19--?] para século provável - [2004] ano correto não indicado na obra
+MARCONDES, E.; LIMA, I. N. de (coord.). Dietas em pediatria clínica. 4. ed. São Paulo:
+Sarvier, [1993?]
+
+54
+
+APÊNDICE B – Modelo de ilustrações
+Figura 1 – Logotipo da UFJF
+
+Fonte: Universidade Federal de Juiz de Fora (2012).
+
+Título centralizado em
+relação à ilustração.
+
+Gráfico 1 – Índice de qualificação do corpo docente da UFJF
+
+Fonte: Universidade Federal de Juiz de Fora (2012).
+Fonte alinhada à esquerda em
+relação à ilustração.
+
+55
+
+Quadro 1 - Ofertas de vagas para cursos presenciais na Universidade Federal de
+
+Juiz de Fora
+Fonte: Universidade Federal de Juiz de Fora (2012).
+
+Gráfico 2 – UFJF: Evolução dos cursos de mestrado e doutorado no período: 2005 2011
+
+Fonte: Universidade Federal de Juiz de Fora (2012).
+
+56
+
+IMPORTANTE
+
+A apresentação das ilustrações ao longo do trabalho deve ser da seguinte forma:
+indicação do tipo de ilustração seguido do seu número de ordem de ocorrência no texto,
+traço e o título. Deve-se usar a mesma tipografia do corpo do texto (Times New Roman
+ou Arial, tamanho 12 com espaçamento 1,5). Abaixo da ilustração a fonte deve ser
+indicada precedida do termo "Fonte" seguido de dois pontos e da indicação do documento
+consultado alinhado à esquerda da ilustração. Para fonte, utilizar a mesma opção de letra
+do corpo do texto, porém em tamanho menor (um ponto). Caso tenha sido elaborada pelo
+autor usar:
+Fonte: Elaborado pelo autor (ano).
+
+A ilustração deve ser citada no texto e inserida o mais próximo possível do trecho
+a que se refere, antes ou depois. Observe:
+Título centralizado em
+relação à ilustração.
+
+Organograma 1 - Serviço de atendimento da Biblioteca Central da
+Universidade Federal de Juiz de Fora
+
+ILUSTRAÇÃO
+
+Fonte: Universidade Federal de Juiz de Fora (2018).
+Fonte
+alinhada
+à
+esquerda da ilustração.
+
+57
+
+APÊNDICE C – Modelo de tabela
+Tabela 1 – Composição dos recursos humanos do HU/UFJF
+
+Fonte: Universidade Federal de Juiz de Fora (2012).
+
+Tabela 2 – Quantidade de bibliotecários na UFJF
+2008
+8
+
+2009
+9
+
+2010
+16
+
+2011
+13
+
+2012
+15
+
+Fonte: Elaborado pelo autor (2019).
+
+FIQUE ATENTO
+Pare este manual é necessário que as tabelas apresentem obrigatoriamente:
+a. título: tabela seguido do seu número de ordem de ocorrência no texto, traço e o
+título. Usando a mesma tipografia do corpo do texto (Times New Roman ou Arial,
+tamanho 12 com espaçamento 1,5) e centralizado à tabela.
+b. fonte: abaixo da tabela a fonte deve ser indicada precedida do termo "Fonte"
+seguido de dois pontos e da indicação do documento consultado alinhado à
+esquerda da tabela. Para fonte, utilizar a mesma opção de letra do corpo do
+texto, porém em tamanho menor (um ponto). Caso tenha sido elaborada pelo
+autor usar: Fonte: Elaborado pelo autor (ano).
+c. margens: tabelas não apresentam margens laterais (esquerda e direita).
+
+58
+
+APÊNDICE D – Exemplos de citação
+
+3
+
+Citações diretas com até 3 linhas: é caracterizada pela transcrição textual
+da parte consultada. Se com até três linhas, deve estar entre aspas duplas,
+exatamente como na obra consultada e seguida da chamada: (Autor, data, página).
+a) “A chamada “pandectística havia sido a forma particular pela qual o direito
+romano fora integrado no século XIX na Alemanha em particular” (Lopes,
+2000, p. 225).
+
+b) "Não se mova, faça de conta que está morta" (Clarac; Bonnin, 1985, p. 72).
+c) “Primeiro, o apoio a independência dos povos coloniais já era algo manifesto
+na sociedade brasileira” (Santos, 2005)
+d) “[...] a transmissão total compreende todos os direitos de autor, salvo os de
+natureza moral e os expressamente excluídos por lei [...]” (Brasil, 1988, cap. V
+art. 49, Inc. I).
+e) “Mas eu não quero ser nem bandido nem policial […] eu tenho medo de tomar
+tiro” (Cidade […], 2002, 9 min 41 s)
+
+Citações diretas com mais de 3 linhas: é caracterizada pela transcrição
+textual da parte consultada. Se com mais de três linhas, devem estar com recuo de 4
+cm da margem esquerda, com letra menor (um ponto), espaçamento simples, sem
+aspas e seguida da chamada (Autor, data e página).
+a) De acordo com Associação Brasileira de Normas Técnicas – NBR14724
+(2011, p. 11)
+
+[...] qualquer que seja o tipo de ilustração, sua identificação aparece
+na parte superior, precedida da palavra designativa (desenho,
+esquema, fluxograma, fotografia, gráfico, mapa, quadro, retrato,
+figura, imagem, entre outros), seguida de seu número de ordem na
+ocorrência no texto, em algarismos arábicos, travessão e do
+respectivo título. Após a ilustração, na parte inferior, indicar a fonte
+consultada (elemento obrigatório, mesmo que seja produção do
+
+próprio autor), legenda, notas e outras informações necessárias à
+sua compreensão (se houver). A ilustração deve ser citada no texto e
+inserida o mais próximo possível do trecho a que se refere.
+
+3
+
+Os exemplos utilizados foram retirados da Associação Brasileira de Normas Técnicas
+- 10520 (2023, p. 7).
+
+59
+
+b)
+A teleconferência permite ao indivíduo participar de um encontro
+nacional ou regional sem a necessidade de deixar seu local de
+origem. Tipos comuns de teleconferência incluem o uso da televisão,
+telefone, e computador. Através de áudio-conferência, utilizando a
+companhia local de telefone, um sinal de áudio pode ser emitido em
+um salão de qualquer dimensão (Nichols, 1993, p. 181).
+
+Documentos sem data
+
+Deve-se determinar uma data aproximada e colocar entre colchetes.
+[2010?] para ano provável;
+[197?] para década provável;
+[19--?] para século provável;
+[2004] ano correto não indicado na obra.
+
+MARCONDES, E.; LIMA, I. N. de (coord.). Dietas em pediatria clínica. 4. ed.
+São Paulo: Sarvier, [1993?]
+
+60
+
+Citações indiretas: é aquela em que o texto foi baseado na(s) obra(s)
+consultada(s). Em caso de mais de três fontes consultadas, a citação deve seguir a
+ordem alfabética. Neste caso a indicação de página é facultativa, porém se optar por
+usar deve-se colocar em todas as citações.
+
+a) O mecanismo proposto para viabilizar esta concepção é o chamado Contrato
+de Gestão, que conduziria à captação de recursos privados como forma de
+reduzir os investimentos públicos no ensino superior (Brasil, 1995).
+
+b) Bobbio (1995) com muita propriedade nos lembra, ao comentar esta situação,
+que os juristas medievais justificaram formalmente a validade do direito
+romano ponderando que este era o direito do Império Romano que tinha sido
+reconstituído por Carlos Magno com o nome de Sacro Império Romano.
+
+c) De fato, semelhante equacionamento do problema conteria o risco de se
+considerar a literatura meramente como uma fonte a mais de conteúdos já
+previamente disponíveis, em outros lugares, para a teologia (Jossua; Metz,
+1976, p. 3).
+
+d) Merriam e Caffarella (1991) observam que a localização de recursos tem um
+papel crucial no processo de aprendizagem autodirigida.
+
+Citação de citação é baseada em um texto em que não houve acesso ao
+original. Utiliza- se o apud (citado por).
+
+a) No modelo serial de Gough (1972 apud Nardi, 1993), o ato de ler envolve um
+processamento serial que começa com uma fixação ocular sobre o texto,
+prosseguindo da esquerda para direita de forma linear.
+
+Na referência só será incluída a obra consultada. No caso do exemplo
+Gough foi citado por Nardi, 1993. Dessa forma Nardi estará nas referências.
+
+61
+
+Dados de informação verbal: são consideradas informações verbais
+palestras, debates, comunicações. Pode-se mencionar diretamente no texto ou em
+notas.
+a) Em discurso proferido por Jadir dos Santos, em 21 de março de 2019, no
+auditório da ABNT, foram descritos os principais aspectos da cultura
+organizacional.
+
+b) O Entrevistado 5 considera as bibliotecas comunitárias como iniciativas
+populares de mediação de informação1
+_____________________________
+1
+
+Entrevista de pesquisa concedida em 10 de março de 2020, na cidade do Rio de Janeiro.
+
+Em entrevista e/ou depoimentos, quando houver necessidade, omitir o nome do
+entrevistado.
+“A família é um núcleo de convivência, unido por laços afetivos, que normalmente
+compartilha o mesmo teto” (Entrevistado A).
+
+Dados em trabalho em fase de elaboração: o fato deve ser mencionado e
+os dados disponíveis em nota de rodapé.
+
+a) Os poetas selecionados contribuíram para a consolidação da poesia no
+Rio Grande do Sul, séculos XIX e XX (em fase de elaboração)¹.
+
+¹ Poetas rio-grandenses, de autoria de Elvo Clemente, a ser editado pela EDIPRCRS, 2002.
+
+62
+
+FIQUE ATENTO
+
+a) O uso do ponto final após as citações deve obedecer às regras gramaticais.
+b) As citações aparecem no texto de acordo com o sistema autor/data, assim, se
+houver coincidência de sobrenome de autores, devem ser acrescentadas as
+iniciais de seu prenome, se ainda assim permanecer a coincidência, os
+prenomes devem ser apresentados por extenso.
+
+(Almeida, C., 2009) (Almeida, Carlos, 2009)
+(Almeida, M., 2009) (Almeida, Celso, 2009)
+
+c) No caso de vários trabalhos de um autor com a mesma data, devem ser
+inseridas letras minúsculas para identificar.
+
+Silva (2017a, 2017b, 2017c) (Silva, 2017a, 2017b, 2017c)
+d) Para enfatizar trechos, deve-se destacá-los e usar a expressão grifo nosso.
+(Souto, 1916, p. 46, grifo nosso)
+e) ao traduzir trechos de uma obra, usar a expressão tradução nossa ou tradução
+própria.
+[...] Essa é a fonte do nosso fascínio; é por isso que há um problema (Olin,
+2003, p. 21, tradução nossa)
+f) Citações indiretas de vários autores simultaneamente (obras diferentes), estes
+devem ser apresentados em ordem alfabética e separados por ponto-e-vírgula.
+(Cross, 1984; Knox, 1986; Mezirow, 1991)
+
+Para toda citação deve ser apresentada uma referência no final do trabalho.
+
+63
+
+APÊNDICE E – Paginação em impressão anverso
+A partir da folha de rosto todas as páginas/folhas fazem parte da contagem da
+numeração do documento, entretanto esta só aparece a partir da introdução e
+prossegue até o final do documento inclusive nos elementos pós-textuais (apêndice,
+anexo e referências).
+Para impressão somente na frente: o verso das folhas não possui impressão e
+por esta razão não é contado e numerado. A ficha catalográfica é o único elemento
+impresso no verso da folha de rosto, porém não é contada e numerada. Nesta opção
+de impressão a numeração deve ser colocada no canto superior direito.
+
+Para configurar a paginação em Word para impressão apenas no anverso,
+siga as orientações abaixo:
+a) coloque o cursor antes do texto no início da página em que a numeração
+irá ficar visível: 1 Introdução.
+b) em Layout da Página, insira uma Quebra de Seção (Layout da Página Quebras - Quebra de Seção - Próxima Página);
+c) clique em Inserir, na opção Número de Página selecione a opção Início de
+Página (numerais aparecem no canto superior direito - formatação 3);
+d) clique na opção Design na barra de ferramentas e desative a opção
+Vincular ao anterior;
+e) ainda em Design na opção Número de Página clique em Formatar
+Números de Página e posteriormente na opção Numeração da Página
+marque Iniciar em e preencha com o número adequado. Para encontrar o
+número a ser preenchido conte quantas páginas o trabalho possui até a
+página da Introdução. Despreze a capa que não é contada;
+f) volte à página anterior a que foi feita a quebra de página e apague a
+paginação.
+
+64
+
+ANEXO A – Resolução nº 16/2016 – CSPP
+
+65
+
+66
+
+
