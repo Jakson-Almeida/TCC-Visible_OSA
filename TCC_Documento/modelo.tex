@@ -59,6 +59,55 @@ Engenharia Elétrica. %%Trocar Matem\'atica por outro, se precisar.
 
 %\usepackage{natbib} %para o sistema autor-data
 
+% Remove negrito do título na capa e folha de rosto
+\makeatletter
+\renewcommand{\inserecapa}{
+  \begin{capa}
+   \begin{center}
+    {
+    \bfseries \MakeUppercase{\insereinstituicao} \par \MakeUppercase{\inserefaculdade} \par \MakeUppercase{\insereprograma}}
+    \vfill
+    {
+    \bfseries \insereautor}
+    \vfill
+    {\normalfont \inseretitulo \IfNonempty{\inseresubtitulo}{: \inseresubtitulo}}
+    \vfill
+    \inserelocal \par \inseredata 
+   \end{center}
+   \end{capa}
+}
+
+\renewcommand{\folhaderostocont}{
+  \begin{center}
+    {
+    \bfseries \insereautor} 
+    \vspace*{\fill}
+    \begin{center}
+      {
+      \normalfont \inseretitulo 
+        \IfNonempty{\inseresubtitulo}{: \inseresubtitulo}}
+    \end{center}
+    \vspace*{\fill}
+      \IfNonempty{\inserenatureza}{
+      \hspace{.45\textwidth}
+      \begin{minipage}{.5\textwidth}
+      	\SingleSpacing
+         \inserenatureza
+      \end{minipage}
+       \vspace*{\fill}
+    }
+  \end{center} 
+   {\insereorientadorOU ~\insereorientadorTitulo ~\insereorientador \par }
+    \IfNonempty{\inserecoorientador}{
+       {\inserecoorientadorOU ~\inserecoorientadorTitulo ~\inserecoorientador}
+    }
+    \vfill
+  \begin{center}  
+    \inserelocal \par \inseredata   
+  \end{center}
+}
+\makeatother
+
 \begin{document}
 
 %% ELEMENTOS PR\'E-TEXTUAIS
