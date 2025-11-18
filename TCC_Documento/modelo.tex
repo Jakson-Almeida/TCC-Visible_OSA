@@ -550,6 +550,417 @@ A principal limitação desse modelo reside na escolha da regressão linear de p
 
 \chapter{METODOLOGIA DE DESENVOLVIMENTO DO HARDWARE E SOFTWARE}
 
+Este capítulo detalha os procedimentos metodológicos adotados para o desenvolvimento do Analisador de Espectro Óptico (OSA) de baixo custo "Osinha" e do software "OSA Visível". A metodologia abrange desde a seleção e montagem dos componentes ópticos até os processos de calibração espectral automatizada via visão computacional, assegurando a precisão e confiabilidade das medições espectrais na faixa visível (380-750 nm).
+
+\section{FUNDAMENTAÇÃO METODOLÓGICA E TRABALHOS CORRELATOS}
+
+A calibração de analisadores de espectro óptico (OSA) para a faixa visível tem sido amplamente explorada na literatura científica. \cite{dubard1995} discutiram a necessidade de caracterizar com precisão as fontes ópticas em medições de fibras ópticas e apresentaram técnicas de calibração para OSAs comerciais. Abordagens modernas, como as propostas por \cite{liu2013}, empregam métodos de calibração precisos utilizando parâmetros do sistema para espectrômetros de grade. Alternativamente, \cite{terra_calibration} propuseram três métodos para calibrar um OSA baseado em grade, utilizando fontes laser bem caracterizadas, duplicação de frequência em cristais não lineares e uma célula de gás de cianeto de hidrogênio (HCN) como referência de comprimento de onda.
+
+No contexto de espectrômetros de baixo custo, trabalhos recentes têm demonstrado a viabilidade de utilizar componentes comerciais prontos para uso (COTS) e técnicas de fabricação aditiva. \cite{gaudi_spectrometer} desenvolveram o projeto \textit{Open Fiber Spectrometer}, um espectrômetro de código aberto que fornece modelos 3D e instruções detalhadas para construção, servindo como base para diversos projetos educacionais e de pesquisa.
+
+A metodologia adotada neste trabalho diferencia-se das abordagens existentes por combinar uma estratégia híbrida de calibração: a calibração inicial com luz branca fornece uma relação linear preliminar, enquanto lasers de referência (532 nm e 650 nm) definem a escala absoluta, combinando assim simplicidade e baixo custo — uma lacuna não abordada pelos métodos existentes. Esta abordagem permite alcançar precisão metrológica adequada ($\pm 1.8$ nm) a um custo total inferior a \$200, democratizando o acesso à análise espectral.
+
+\section{CONSTRUÇÃO DO HARDWARE: ESPECTRÔMETRO "OSINHA"}
+
+\subsection{Seleção e Especificação dos Componentes}
+
+O hardware do espectrômetro "Osinha" foi desenvolvido com base no projeto \textit{Open Fiber Spectrometer} \cite{gaudi_spectrometer}, um espectrômetro de código aberto que fornece modelos 3D e instruções detalhadas para construção. O projeto original foi adaptado para atender às necessidades específicas deste trabalho, com foco na faixa visível do espectro (380-750 nm).
+
+A seleção dos componentes foi orientada por critérios de baixo custo, disponibilidade comercial e adequação às especificações técnicas necessárias para operação na faixa visível. A Tabela \ref{tab:componentes} apresenta os componentes principais e suas especificações.
+
+\begin{table}[ht]
+\centering
+\caption{Componentes principais do espectrômetro "Osinha" e especificações técnicas}
+\label{tab:componentes}
+\begin{tabular}{>{\raggedright\arraybackslash}p{4cm}>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{2.5cm}}
+\hline
+Componente & Especificação & Função & Custo Aprox. (USD) \\
+\hline
+Estrutura 3D & PLA, impressão FDM & Suporte mecânico e alinhamento óptico & 5-10 \\
+Grade de Difração & 1000 linhas/mm, transmissão & Dispersão espectral & 50-80 \\
+Webcam USB & 640$\times$480 pixels, CMOS & Detecção espectral & 20-40 \\
+Fonte de Luz Branca & LED RGB, CRI 82 & Calibração preliminar & 10-15 \\
+Lasers de Referência & 532 nm (verde), 650 nm (vermelho) & Calibração absoluta & 30-50 \\
+Fenda Óptica & Ajustável, 50-200 $\mu$m & Controle de resolução & 5-10 \\
+\hline
+\textbf{Total} & & & \textbf{< \$200} \\
+\hline
+\end{tabular}
+\fonte{Elaborada pelo autor (2025).}
+\end{table}
+
+\subsection{Arquitetura Óptica e Princípios de Funcionamento}
+
+A arquitetura óptica do espectrômetro "Osinha" segue o princípio clássico de um espectrômetro de grade de transmissão, adaptado para componentes de baixo custo. A Figura \ref{fig:osinha} ilustra a disposição dos componentes principais.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.6\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/Osinha - PAPER.png}
+\caption{Arquitetura do espectrômetro "Osinha": (1) Luz incidente, (2) Fenda óptica, (3) Grade de difração, (4) Webcam CMOS. Adaptado de \cite{gaudi_spectrometer}.}
+\label{fig:osinha}
+\end{figure}
+
+O caminho óptico segue a seguinte sequência:
+
+\begin{enumerate}
+    \item \textbf{Entrada de Luz}: A luz proveniente da amostra ou fonte de calibração entra através de uma fenda óptica ajustável, que controla a largura do feixe incidente e, consequentemente, a resolução espectral do sistema.
+    
+    \item \textbf{Dispersão Espectral}: A luz colimada incide sobre uma grade de difração de transmissão com densidade de 1000 linhas/mm. A relação entre o comprimento de onda ($\lambda$) e o ângulo de difração ($\theta$) é governada pela equação da grade de Fraunhofer:
+    
+    \begin{equation}
+        n\lambda = d(\sin\theta + \sin\alpha)
+        \label{eq:diffraction_metodologia}
+    \end{equation}
+    
+    onde $n$ representa a ordem de difração (geralmente $n=1$), $d = 1\,\mu\text{m}$ é o espaçamento da grade (inverso da densidade de linhas), e $\alpha$ é o ângulo de incidência da luz na grade \cite{fraunhofer_wiki}.
+    
+    \item \textbf{Detecção}: O espectro disperso é capturado por um sensor CMOS de uma webcam USB, posicionado no plano focal da grade. O sensor discretiza a informação espectral em uma matriz de pixels, onde cada coluna corresponde a uma faixa de comprimentos de onda.
+\end{enumerate}
+
+\subsection{Fabricação da Estrutura por Impressão 3D}
+
+A estrutura física do espectrômetro foi projetada utilizando software de modelagem 3D (CAD) e fabricada por meio de impressão 3D utilizando tecnologia de modelagem por deposição fundida (FDM - \textit{Fused Deposition Modeling}). Esta abordagem oferece várias vantagens estratégicas:
+
+\begin{itemize}
+    \item \textbf{Custo Reduzido}: A impressão 3D elimina a necessidade de ferramentas especializadas e processos de usinagem de precisão, reduzindo drasticamente os custos de fabricação \cite{stanford_3d_optics}.
+    
+    \item \textbf{Personalização}: O design pode ser facilmente modificado e adaptado para diferentes aplicações ou requisitos específicos, sem custos adicionais significativos.
+    
+    \item \textbf{Reprodutibilidade}: Os arquivos de modelo 3D podem ser compartilhados e replicados em qualquer local com acesso a uma impressora 3D, facilitando a disseminação do projeto.
+    
+    \item \textbf{Integração de Componentes}: A estrutura impressa incorpora suportes e guias para posicionamento preciso dos componentes ópticos, garantindo alinhamento adequado sem necessidade de ajustes mecânicos complexos.
+\end{itemize}
+
+O material utilizado foi filamento de ácido polilático (PLA), escolhido por sua estabilidade dimensional, facilidade de impressão e baixo custo. A resolução de impressão foi configurada para 0,2 mm de altura de camada, garantindo superfícies suficientemente lisas para aplicações ópticas de baixa precisão.
+
+\subsection{Montagem e Alinhamento Óptico}
+
+O processo de montagem seguiu uma sequência sistemática para garantir o alinhamento adequado dos componentes:
+
+\begin{enumerate}
+    \item \textbf{Instalação da Estrutura Base}: A estrutura impressa em 3D foi montada e verificada quanto à integridade estrutural e dimensional.
+    
+    \item \textbf{Posicionamento da Fenda Óptica}: A fenda foi instalada na entrada óptica e ajustada para uma largura de aproximadamente 100 $\mu$m, otimizando o compromisso entre resolução espectral e intensidade do sinal.
+    
+    \item \textbf{Instalação da Grade de Difração}: A grade foi posicionada perpendicularmente ao eixo óptico, com o ângulo de incidência ($\alpha$) ajustado para aproximadamente 45$^\circ$, garantindo dispersão adequada na faixa visível.
+    
+    \item \textbf{Posicionamento do Detector}: A webcam foi fixada na estrutura de forma que o sensor CMOS capture todo o espectro disperso, com o eixo horizontal do sensor alinhado com a direção de dispersão.
+    
+    \item \textbf{Verificação do Alinhamento}: O alinhamento foi verificado visualmente utilizando uma fonte de luz branca, observando a formação de um espectro contínuo e uniforme no sensor.
+\end{enumerate}
+
+\subsection{Caracterização do Sistema de Detecção}
+
+O sistema de detecção baseado em webcam USB apresenta características específicas que influenciam o desempenho do espectrômetro. O sensor CMOS utilizado possui resolução de $640 \times 480$ pixels, com taxa de amostragem de 30 fps. A discretização do sinal óptico é representada pela equação:
+
+\begin{equation}
+    I(x,y) = \sum_{k=0}^{255} k \cdot P(k|x,y)
+    \label{eq:sampling_metodologia}
+\end{equation}
+
+onde $I(x,y)$ é a intensidade digital no pixel $(x,y)$, $k$ representa os níveis de intensidade (0 a 255 em escala de 8 bits), e $P(k|x,y)$ é a probabilidade do pixel $(x,y)$ registrar a intensidade $k$.
+
+Uma característica importante do sensor CMOS é a presença de uma matriz de filtros Bayer (RGB), que significa que cada pixel é sensível a uma faixa específica do espectro (vermelho, verde ou azul). Para a calibração espectral, esta característica é contornada através da conversão para escala de cinza, que integra a resposta espectral dos três canais de cor.
+
+\section{DESENVOLVIMENTO DO SOFTWARE "OSA VISÍVEL"}
+
+\subsection{Arquitetura e Plataforma de Desenvolvimento}
+
+O software "OSA Visível" foi desenvolvido em Python 3.8+, escolhido por sua portabilidade, vasta gama de bibliotecas científicas e facilidade de integração com hardware. A arquitetura do software segue um modelo modular, separando as funcionalidades de aquisição de dados, processamento de imagem, calibração e visualização.
+
+As principais bibliotecas utilizadas incluem:
+
+\begin{itemize}
+    \item \textbf{OpenCV (cv2)}: Para aquisição de vídeo, processamento de imagem e implementação de algoritmos de visão computacional.
+    
+    \item \textbf{Pillow (PIL)}: Para manipulação adicional de imagens e conversão de formatos.
+    
+    \item \textbf{NumPy}: Para operações numéricas e manipulação de arrays multidimensionais.
+    
+    \item \textbf{SciPy}: Para funções científicas avançadas, incluindo regressão linear e processamento de sinais.
+    
+    \item \textbf{Matplotlib}: Para visualização de gráficos e espectros.
+    
+    \item \textbf{Tkinter}: Para desenvolvimento da interface gráfica do usuário (GUI).
+\end{itemize}
+
+A compatibilidade multiplataforma (Windows 10/11 e Linux Ubuntu 22.04) foi garantida através do uso de bibliotecas padrão e testes extensivos em ambos os ambientes.
+
+\subsection{Interface Gráfica do Usuário}
+
+A interface gráfica foi projetada para guiar o usuário através de um fluxo intuitivo de operação, dispensando conhecimentos avançados em programação. A Figura \ref{fig:gui_principal} ilustra a janela principal do software.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/janela_principal_recursos.png}
+\caption{Janela principal do software "OSA Visível": (1) Visualização do espectro em tempo real, (2) Gráfico de intensidade $I(\lambda)$ vs. comprimento de onda, (3) Painel de controle e calibração.}
+\label{fig:gui_principal}
+\end{figure}
+
+As principais funcionalidades da interface incluem:
+
+\begin{itemize}
+    \item \textbf{Visualização em Tempo Real}: Exibição contínua do espectro capturado pela webcam, permitindo monitoramento visual da qualidade do sinal.
+    
+    \item \textbf{Gráficos Espectrais}: Visualização dos dados processados em formato de gráfico $I(\lambda)$, com opções de zoom e análise de picos.
+    
+    \item \textbf{Painel de Calibração}: Acesso rápido às ferramentas de calibração, com assistente passo a passo para guiar o usuário.
+    
+    \item \textbf{Exportação de Dados}: Funcionalidade para salvar espectros em formato texto (.txt) para análise posterior.
+    
+    \item \textbf{Configurações do Sistema}: Ajustes de parâmetros da webcam, seleção de dispositivo de vídeo e configurações de processamento.
+\end{itemize}
+
+\section{PROCESSO DE CALIBRAÇÃO AUTOMATIZADA}
+
+A calibração do espectrômetro é o processo crítico que estabelece a correspondência precisa entre a posição dos pixels no sensor CMOS e os comprimentos de onda correspondentes. O método desenvolvido combina técnicas de visão computacional com referências metrológicas de comprimento de onda conhecido, resultando em um processo híbrido automatizado.
+
+\subsection{Etapa 1: Calibração Preliminar com Luz Branca}
+
+A primeira etapa do processo de calibração utiliza o espectro contínuo de uma fonte de luz branca para estabelecer uma relação preliminar entre posição de pixel e comprimento de onda. Esta etapa é fundamental para compensar desalinhamentos mecânicos e definir a orientação espacial do espectro na imagem.
+
+\subsubsection{Aquisição do Sinal Digital}
+
+A calibração inicia com a captura de um único quadro ($N=1$) do espectro contínuo via biblioteca OpenCV. A escolha de um único quadro é adequada para esta etapa, pois o espectro contínuo de luz branca apresenta alta intensidade e baixa variabilidade temporal, não requerendo média temporal para redução de ruído.
+
+O processo de aquisição segue os seguintes passos:
+
+\begin{enumerate}
+    \item Inicialização da webcam através da interface OpenCV.
+    
+    \item Configuração dos parâmetros de captura: resolução (640$\times$480), formato de cor (RGB), e taxa de quadros (30 fps).
+    
+    \item Captura de um quadro estático do espectro, armazenado como array NumPy de dimensões $(480, 640, 3)$, representando altura, largura e canais de cor (RGB).
+\end{enumerate}
+
+\subsubsection{Pré-processamento com Visão Computacional}
+
+O pré-processamento da imagem é essencial para isolar o sinal espectral do fundo e do ruído, preparando os dados para análise quantitativa.
+
+\textbf{Conversão para Escala de Cinza:}
+
+A imagem RGB capturada é convertida para escala de cinza utilizando a média ponderada dos canais de cor:
+
+\begin{equation}
+    I_{gray}(x,y) = \frac{R(x,y) + G(x,y) + B(x,y)}{3}
+    \label{eq:grayscale}
+\end{equation}
+
+onde $R(x,y)$, $G(x,y)$ e $B(x,y)$ são as intensidades dos canais vermelho, verde e azul no pixel $(x,y)$, respectivamente. Esta conversão simplifica a análise posterior, integrando a resposta espectral dos três canais de cor do sensor Bayer.
+
+\textbf{Segmentação por Limiarização Adaptativa:}
+
+Para isolar o espectro (sinal de interesse) do fundo escuro e do ruído residual, é aplicada uma etapa de segmentação utilizando o método de Otsu \cite{otsu1979}. Este método calcula automaticamente o limiar ótimo $T$ que maximiza a variância entre classes (foreground vs. background) no histograma de intensidade da imagem.
+
+O método de Otsu opera da seguinte forma:
+
+\begin{enumerate}
+    \item Cálculo do histograma de intensidades da imagem em escala de cinza.
+    
+    \item Para cada possível valor de limiar $t$ (0 a 255), cálculo da variância entre classes:
+    
+    \begin{equation}
+        \sigma_B^2(t) = \omega_0(t)\omega_1(t)[\mu_0(t) - \mu_1(t)]^2
+    \end{equation}
+    
+    onde $\omega_0(t)$ e $\omega_1(t)$ são as probabilidades das classes (fundo e objeto), e $\mu_0(t)$ e $\mu_1(t)$ são as médias das classes.
+    
+    \item Seleção do limiar $T$ que maximiza $\sigma_B^2(t)$.
+\end{enumerate}
+
+A aplicação do limiar resulta em uma máscara binária $M(x,y)$:
+
+\begin{equation}
+    M(x,y) = \begin{cases}
+        I_{gray}(x,y), & \text{se } I_{gray}(x,y) \geq T \\
+        0, & \text{caso contrário}
+    \end{cases}
+    \label{eq:threshold_metodologia}
+\end{equation}
+
+A utilização de um limiar adaptativo torna o processo robusto a variações na iluminação da fonte de luz branca e às condições ambientais, eliminando a necessidade de ajustes manuais.
+
+\subsubsection{Cálculo do Centróide e Regressão Linear Preliminar}
+
+\textbf{Cálculo do Centróide:}
+
+O centróide $(x_c, y_c)$ representa o centro de massa ponderado pela intensidade dos pixels ativos dentro da máscara $M$ \cite{spectral_centroid_wiki}:
+
+\begin{equation}
+    x_c = \frac{\sum_{x,y} x \cdot M(x,y)}{\sum_{x,y} M(x,y)}, \quad
+    y_c = \frac{\sum_{x,y} y \cdot M(x,y)}{\sum_{x,y} M(x,y)}
+    \label{eq:centroid_metodologia}
+\end{equation}
+
+Este cálculo é vital, pois o espectrômetro "Osinha", devido à sua construção 3D com tolerâncias inerentes, pode apresentar um desalinhamento rotacional do espectro no sensor CMOS. O centróide fornece um ponto de referência central que permite à regressão linear preliminar definir corretamente a orientação espacial da linha espectral na imagem.
+
+\textbf{Regressão Linear para Orientação Espacial:}
+
+Após a segmentação, os pixels ativos ($M(x,y) \geq T$) formam uma nuvem de pontos ao longo do espectro. Uma regressão linear é aplicada para determinar a inclinação da reta espectral ($y = m \cdot x + c$), que define o eixo de dispersão.
+
+A regressão linear é obtida via método dos mínimos quadrados, minimizando:
+
+\begin{equation}
+    \min_{m,c} \sum_{x,y} \left(y - (m \cdot x + c)\right)^2
+    \label{eq:regression_metodologia}
+\end{equation}
+
+Os coeficientes $m$ (inclinação) e $c$ (intercepto) definem a orientação espacial do espectro. Combinado com o centróide, esta reta estabelece uma relação preliminar entre posição de pixel e comprimento de onda, que será posteriormente ajustada pelos lasers de referência.
+
+Os parâmetros preliminares $a$ e $b$ da relação $\lambda(x) = a \cdot x + b$ são calculados com base nesta orientação inicial, resultando em um erro RMS de $\pm 2.1$ nm. Esta etapa estabelece uma correlação linear entre a intensidade dos pixels e sua posição na imagem, servindo como base para a calibração absoluta subsequente.
+
+\subsection{Etapa 2: Calibração Absoluta com Lasers de Referência}
+
+A segunda etapa do processo de calibração é a fase de ancoragem metrológica. Após a calibração inicial que alinha espacialmente o espectro, os lasers de referência são utilizados para mapear essa reta de dispersão preliminar aos comprimentos de onda absolutos conhecidos.
+
+\subsubsection{Seleção das Fontes de Referência}
+
+São utilizados dois lasers de comprimento de onda conhecido:
+
+\begin{itemize}
+    \item \textbf{Laser Verde}: Comprimento de onda $\lambda_{\text{verd}} = 532$ nm, correspondente ao segundo harmônico de um laser Nd:YAG.
+    
+    \item \textbf{Laser Vermelho}: Comprimento de onda $\lambda_{\text{verm}} = 650$ nm, típico de diodos laser de baixa potência.
+\end{itemize}
+
+A escolha destes dois comprimentos de onda específicos é estratégica:
+
+\begin{enumerate}
+    \item \textbf{Cobertura Espectral}: Os dois pontos estão distribuídos ao longo da faixa visível, permitindo uma calibração linear adequada para toda a faixa de operação (380-750 nm).
+    
+    \item \textbf{Disponibilidade e Custo}: Lasers de 532 nm e 650 nm são amplamente disponíveis comercialmente a baixo custo, adequados para aplicações educacionais.
+    
+    \item \textbf{Precisão Metrológica}: Lasers de diodo apresentam estabilidade de comprimento de onda adequada ($\pm 1$ nm) para a precisão desejada do sistema.
+\end{enumerate}
+
+\subsubsection{Aquisição com Média Temporal}
+
+Para a calibração utilizando lasers, $N=20$ quadros são capturados em um intervalo homogêneo de tempo (aproximadamente 2 segundos). A média temporal é aplicada para reduzir o ruído aleatório inerente a sensores CMOS de baixo custo:
+
+\begin{equation}
+    \bar{I}(x,y) = \frac{1}{N}\sum_{i=1}^{N} I_i(x,y)
+    \label{eq:frame_avg_metodologia}
+\end{equation}
+
+O cálculo da média temporal melhora drasticamente a Relação Sinal-Ruído (SNR), permitindo a detecção mais precisa dos picos de intensidade dos lasers. Em sensores CMOS de baixo custo, o ruído aleatório (ruído de disparo, ruído térmico) é significativo, e a média temporal é uma técnica eficaz e computacionalmente simples para mitigá-lo.
+
+\subsubsection{Detecção de Picos de Intensidade}
+
+A posição exata dos picos de intensidade dos lasers ($x_{532}$ e $x_{650}$) é determinada pelo cálculo do argumento máximo (Arg Max) ao longo da linha espectral previamente identificada:
+
+\begin{equation}
+    x_{peak} = \arg \max_{x} \, I(x)
+    \label{eq:peak_metodologia}
+\end{equation}
+
+onde $I(x)$ é a intensidade média ao longo da direção vertical (eixo $y$) para cada posição horizontal $x$:
+
+\begin{equation}
+    I(x) = \frac{1}{H}\sum_{y=0}^{H-1} \bar{I}(x,y)
+\end{equation}
+
+e $H$ é a altura da imagem (480 pixels).
+
+Esta precisão na localização dos picos é o que garante a acurácia metrológica final da calibração, fornecendo os pontos fixos necessários para a determinação dos coeficientes $a$ e $b$.
+
+\subsubsection{Cálculo dos Coeficientes de Calibração Final}
+
+Utilizando as coordenadas absolutas (pico de pixel, comprimento de onda real), o software calcula os coeficientes finais $a$ e $b$ que definem a relação $\lambda(x) = a \cdot x + b$.
+
+Os coeficientes são calculados diretamente a partir da posição dos picos de intensidade dos lasers:
+
+\begin{equation}
+    a = \frac{\lambda_{\text{verm}} - \lambda_{\text{verd}}}{x_{\text{verm}} - x_{\text{verd}}}, \quad
+    b = \lambda_{\text{verd}} - a \cdot x_{\text{verd}}
+    \label{eq:coeficientes_metodologia}
+\end{equation}
+
+onde $x_{\text{verd}}$ e $x_{\text{verm}}$ são as posições dos picos dos lasers verde e vermelho, respectivamente.
+
+A utilização de dois pontos fixos é essencial para definir inequivocamente tanto o \textit{offset} ($b$) quanto a dispersão ($a$) da reta linear. Um único ponto definiria apenas o \textit{offset}, mas deixaria a taxa de dispersão sujeita a erros sistêmicos. A determinação de ambos os parâmetros por dois pontos de referência garante que o escalonamento da dispersão angular seja corretamente aplicado em toda a faixa de operação do espectrômetro, minimizando o erro de inclinação.
+
+A Figura \ref{fig:calib_curve} ilustra a curva de calibração obtida experimentalmente.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.5\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/calibration_curve.png}
+\caption{Reta de calibração $\lambda(x) = a \cdot x + b$ ajustada via regressão linear utilizando lasers de referência (532 nm e 650 nm).}
+\label{fig:calib_curve}
+\end{figure}
+
+\subsection{Validação da Calibração e Métricas de Precisão}
+
+A acurácia do mapeamento comprimento de onda-pixel é avaliada utilizando o Erro Quadrático Médio (Root Mean Square Error - RMS), uma métrica padrão na metrologia espectral que quantifica a magnitude média do erro entre os valores medidos e os valores de referência \cite{henriksen_calibration}.
+
+O processo híbrido de calibração do OSA Visível demonstrou uma melhoria significativa de precisão: a calibração preliminar baseada em luz branca resultou em um erro RMS de $\pm 2.1$ nm, que foi subsequentemente refinado para \textbf{$\pm 1.8$ nm} após o ajuste absoluto utilizando os lasers de referência.
+
+A Tabela \ref{tab:calib_params_metodologia} apresenta os parâmetros de calibração obtidos experimentalmente.
+
+\begin{table}[ht]
+\centering
+\caption{Parâmetros de calibração obtidos experimentalmente}
+\label{tab:calib_params_metodologia}
+\begin{tabular}{lcc}
+\toprule
+Parâmetro & Luz Branca & Lasers (Final) \\
+\midrule
+Coeficiente $a$ (nm/pixel) & -0.0608250474 & 1.475 \\
+Coeficiente $b$ (nm) & 203.136815 & 195.7 \\
+Erro RMS (nm) & $\pm 2.1$ & $\pm 1.8$ \\
+\bottomrule
+\end{tabular}
+\fonte{Elaborada pelo autor (2025).}
+\end{table}
+
+O erro RMS final de $\pm 1.8$ nm valida a escolha do modelo de primeira ordem (regressão linear) para esta aplicação. Embora não atinja a precisão de sub-picômetros de OSAs comerciais sofisticados, esta acurácia é mais do que suficiente para distinguir picos espectrais largos na faixa visível e satisfazer os requisitos de aplicações quantitativas baseadas na Lei de Beer-Lambert.
+
+\subsection{Interface de Calibração do Software}
+
+A interface de calibração do software "OSA Visível" foi projetada para guiar o usuário através do processo de calibração de forma intuitiva e automatizada. A Figura \ref{fig:calib_window} ilustra a janela de calibração.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.5\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/calibration_window.png}
+\caption{Janela de calibração do software "OSA Visível": (1) Botão "Calibrar Luz Branca" para calibração automática preliminar, (2) Botões "Iniciar Laser (Verde/Vermelho)" para calibração absoluta passo a passo.}
+\label{fig:calib_window}
+\end{figure}
+
+O fluxo de calibração automatizada inclui:
+
+\begin{enumerate}
+    \item \textbf{Calibração com Luz Branca}:
+    \begin{itemize}
+        \item O usuário posiciona uma fonte de luz branca na entrada do espectrômetro.
+        \item Clica no botão "Calibrar Luz Branca".
+        \item O software executa automaticamente: captura de quadro, pré-processamento, cálculo de centróide e regressão linear preliminar.
+        \item Os parâmetros preliminares são salvos e exibidos na interface.
+    \end{itemize}
+    
+    \item \textbf{Calibração com Lasers}:
+    \begin{itemize}
+        \item O usuário é guiado passo a passo para posicionar cada laser (verde e vermelho) sequencialmente.
+        \item Para cada laser, o software captura 20 quadros, aplica média temporal e detecta o pico de intensidade.
+        \item Após ambos os lasers serem calibrados, o software calcula automaticamente os coeficientes finais $a$ e $b$.
+        \item A curva de calibração é exibida graficamente e os parâmetros finais são salvos.
+    \end{itemize}
+\end{enumerate}
+
+\section{CONSIDERAÇÕES METODOLÓGICAS E LIMITAÇÕES}
+
+A metodologia desenvolvida apresenta algumas limitações inerentes à escolha de componentes de baixo custo e à simplificação do modelo de calibração:
+
+\begin{itemize}
+    \item \textbf{Modelo Linear}: A escolha da regressão linear de primeira ordem, embora funcional na faixa visível, pode introduzir erros sistemáticos maiores nas extremidades do espectro (abaixo de 400 nm e acima de 700 nm), onde a não-linearidade da Equação de Difração de Fraunhofer se manifesta mais intensamente.
+    
+    \item \textbf{Resolução Espectral}: A resolução espectral do sistema é limitada pela resolução espacial do sensor CMOS (640 pixels) e pela largura da fenda óptica, resultando em uma resolução de aproximadamente 0.5 nm/pixel na faixa visível.
+    
+    \item \textbf{Estabilidade Temporal}: Componentes de baixo custo podem apresentar variações temporais de calibração devido a efeitos térmicos ou envelhecimento, requerendo recalibração periódica.
+    
+    \item \textbf{Resposta Espectral do Sensor}: A matriz de filtros Bayer do sensor CMOS introduz uma resposta espectral não-uniforme que, embora parcialmente compensada pela conversão para escala de cinza, pode afetar a precisão de medições de intensidade absoluta.
+\end{itemize}
+
+Trabalhos futuros devem explorar a incorporação de modelos não lineares (polinômios de ordem superior) para aprimorar a precisão nas extremidades do espectro, bem como técnicas de correção espectral mais sofisticadas para compensar a resposta não-uniforme do sensor.
+
 \chapter{RESULTADOS EXPERIMENTAIS E VALIDAÇÃO}
 
 \chapter{NOME DA SE\c{C}\~{A}O} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui
@@ -871,6 +1282,14 @@ Acesso em: 10 nov. 2025.
 \bibitem{yokogawa_aq6374} YOKOGAWA. \textbf{AQ6374E Optical Spectrum Analyzer}. Disponível em: 
 https://www.yokogawa.com/solutions/products-platforms/test-measurement/optical-spectrum-analyzer/aq6374e/. 
 Acesso em: 10 nov. 2025.
+
+\bibitem{anritsu_ms9740b} ANRITSU. \textbf{MS9740B Optical Spectrum Analyzer}. Disponível em: 
+https://www.anritsu.com/en-us/test-measurement/products/ms9740b. 
+Acesso em: 10 mar. 2025.
+
+\bibitem{terra2015} TERRA, Osama; HUSSEIN, Hatem. Calibration of grating based optical spectrum analyzers. \textbf{ResearchGate}, 2015. Disponível em: 
+https://www.researchgate.net/profile/Osama-Terra/publication/282900283\_Calibration\_of\_grating\_based\_optical\_spectrum\_analyzers/links/5a1a44aaa6fdcc50adeaee96/Calibration-of-grating-based-optical-spectrum-analyzers.pdf. 
+Acesso em: 10 mar. 2025.
 
 %%%2) Exemplos de refer\^encia no sistema autor-data. Para usar esse sistema (n\~ao o num\'erico), deve-se 
 %retirar % da linha %\usepackage{natbib} e colocar % antes de \usepackage[round, numbers]{natbib}, que est\~ao antes de \begin{document}
