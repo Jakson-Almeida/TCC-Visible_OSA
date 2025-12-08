@@ -17,6 +17,7 @@ O projeto apresenta o desenvolvimento de um Analisador de Espectro Óptico (OSA)
 - [x] Alcançar precisão de calibração de ±2 nm
 - [x] Interface intuitiva para visualização em tempo real
 - [x] Exportação de dados para análise
+- [x] Análise de dados em tempo real
 
 ## Tecnologias
 
@@ -71,7 +72,8 @@ Este projeto está sob licença acadêmica para fins educacionais.
 
 ---
 
-*Última atualização: Novembro 2025*
+*Última atualização: Dezembro 2025*
+
 
 
 
