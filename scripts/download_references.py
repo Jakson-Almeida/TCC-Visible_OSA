@@ -8,7 +8,7 @@ import re
 import os
 import sys
 import requests
-from urllib.parse import urlparse, unquote
+from urllib.parse import urlparse, unquote, urljoin
 from pathlib import Path
 import time
 from typing import List, Dict, Optional
@@ -27,7 +27,23 @@ DELAY_BETWEEN_REQUESTS = 1  # Delay em segundos entre requisições
 
 # Headers para simular um navegador
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'application/pdf,application/octet-stream,*/*',
+    'Accept-Language': 'en-US,en;q=0.9,pt-BR;q=0.8,pt;q=0.7',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
+    'Upgrade-Insecure-Requests': '1',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'none',
+    'Cache-Control': 'max-age=0'
+}
+
+# Headers alternativos para sites que bloqueiam
+HEADERS_ALT = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': '*/*',
+    'Referer': 'https://www.google.com/',
 }
 
 
@@ -85,11 +101,15 @@ def extract_bibliography_entries(latex_file: str) -> List[Dict[str, str]]:
         cleaned_urls = []
         for url in urls:
             # Remove escapes LaTeX comuns (importante fazer antes de outras operações)
+            # Primeiro remove escapes de underscore que podem estar no meio da URL
             url = url.replace('\\_', '_').replace('\\%', '%').replace('\\&', '&')
             # Remove caracteres de formatação LaTeX no final
             url = url.rstrip('.,;)}')
             # Remove espaços e quebras de linha
             url = url.strip().replace('\n', '').replace('\r', '')
+            # Remove ponto final se houver (comum em LaTeX)
+            if url.endswith('.'):
+                url = url[:-1]
             # Decodifica URLs codificadas
             try:
                 url = unquote(url)
@@ -128,45 +148,141 @@ def is_pdf_url(url: str) -> bool:
     return path.endswith('.pdf') or 'pdf' in parsed.query.lower()
 
 
-def try_download_pdf(url: str, output_path: Path, entry_key: str) -> bool:
+def try_download_pdf(url: str, output_path: Path, entry_key: str, use_alt_headers: bool = False) -> bool:
     """Tenta baixar um PDF da URL fornecida."""
+    headers_to_use = HEADERS_ALT if use_alt_headers else HEADERS
+    
     try:
-        print(f"  Tentando baixar: {url[:80]}...")
+        if use_alt_headers:
+            print(f"  Tentando baixar (headers alternativos): {url[:80]}...")
+        else:
+            print(f"  Tentando baixar: {url[:80]}...")
         
-        response = requests.get(url, headers=HEADERS, timeout=TIMEOUT, stream=True, allow_redirects=True)
+        # Usa sessão para manter cookies
+        session = requests.Session()
+        session.headers.update(headers_to_use)
+        
+        response = session.get(url, timeout=TIMEOUT, stream=True, allow_redirects=True)
+        
+        # Se recebeu 403, tenta com headers alternativos
+        if response.status_code == 403 and not use_alt_headers:
+            session.close()
+            print(f"  [INFO] Recebeu 403, tentando com headers alternativos...")
+            return try_download_pdf(url, output_path, entry_key, use_alt_headers=True)
+        
+        # Se recebeu 403 mesmo com headers alternativos, pode ser bloqueio permanente
+        if response.status_code == 403:
+            session.close()
+            print(f"  [ERRO] Bloqueado pelo servidor (403) mesmo com headers alternativos")
+            return False
+        
         response.raise_for_status()
         
-        # Verifica se é PDF pelo Content-Type
+        # Verifica Content-Type antes de baixar
         content_type = response.headers.get('Content-Type', '').lower()
-        if 'pdf' in content_type or is_pdf_url(url):
-            with open(output_path, 'wb') as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
-            
-            # Verifica se o arquivo baixado é realmente um PDF
-            if output_path.stat().st_size > 0:
-                with open(output_path, 'rb') as f:
-                    header = f.read(4)
-                    if header == b'%PDF':
-                        print(f"  [OK] PDF baixado com sucesso: {output_path.name}")
-                        return True
-                    else:
-                        print(f"  [ERRO] Arquivo baixado nao e PDF valido")
-                        output_path.unlink()
-                        return False
-        else:
+        is_pdf_by_url = is_pdf_url(url) or is_pdf_url(response.url)
+        
+        # Se a URL termina em .pdf, tenta baixar mesmo que Content-Type não indique PDF
+        # (alguns servidores retornam Content-Type incorreto)
+        should_download = False
+        if 'pdf' in content_type:
+            should_download = True
+        elif is_pdf_by_url or url.lower().endswith('.pdf'):
+            should_download = True
+            if 'pdf' not in content_type:
+                print(f"  [INFO] URL indica PDF mas Content-Type e {content_type}, tentando baixar mesmo assim...")
+        
+        if not should_download:
+            session.close()
             print(f"  [ERRO] URL nao retorna PDF (Content-Type: {content_type})")
             return False
+        
+        # Remove arquivo existente se houver
+        if output_path.exists():
+            try:
+                output_path.unlink()
+            except:
+                pass
+        
+        # Baixa o arquivo
+        with open(output_path, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+        
+        session.close()
+        
+        # Verifica se o arquivo baixado é realmente um PDF
+        if output_path.exists() and output_path.stat().st_size > 0:
+            # Aguarda um pouco para garantir que o arquivo foi escrito completamente
+            time.sleep(0.1)
             
+            with open(output_path, 'rb') as f:
+                header = f.read(4)
+                if header == b'%PDF':
+                    print(f"  [OK] PDF baixado com sucesso: {output_path.name} ({output_path.stat().st_size} bytes)")
+                    return True
+                else:
+                    # Verifica se pode ser HTML que redireciona para PDF
+                    f.seek(0)
+                    content_start = f.read(512).decode('utf-8', errors='ignore')
+                    
+                    # Tenta encontrar URL de PDF no HTML
+                    pdf_url_match = re.search(r'href=["\']([^"\']+\.pdf[^"\']*)["\']', content_start, re.IGNORECASE)
+                    if pdf_url_match:
+                        pdf_url = pdf_url_match.group(1)
+                        # Se é URL relativa, torna absoluta
+                        if not pdf_url.startswith('http'):
+                            pdf_url = urljoin(url, pdf_url)
+                        print(f"  [INFO] Encontrado link para PDF no HTML, tentando: {pdf_url[:80]}...")
+                        # Tenta baixar o PDF encontrado
+                        if try_download_pdf(pdf_url, output_path, entry_key, use_alt_headers=False):
+                            return True
+                    
+                    print(f"  [ERRO] Arquivo baixado nao e PDF valido (header: {header[:20]})")
+                    # Se a URL termina em .pdf mas retornou HTML, pode ser bloqueio
+                    if is_pdf_url(url) and 'html' in response.headers.get('Content-Type', '').lower():
+                        print(f"  [INFO] URL termina em .pdf mas retornou HTML - possivel bloqueio do servidor")
+                    try:
+                        output_path.unlink()
+                    except:
+                        pass
+                    return False
+        else:
+            print(f"  [ERRO] Arquivo baixado esta vazio ou nao existe")
+            if output_path.exists():
+                try:
+                    output_path.unlink()
+                except:
+                    pass
+            return False
+            
+    except requests.exceptions.HTTPError as e:
+        if e.response.status_code == 403 and not use_alt_headers:
+            # Tenta novamente com headers alternativos
+            return try_download_pdf(url, output_path, entry_key, use_alt_headers=True)
+        print(f"  [ERRO] HTTP {e.response.status_code}: {str(e)[:100]}")
+        if output_path.exists():
+            try:
+                output_path.unlink()
+            except:
+                pass
+        return False
     except requests.exceptions.RequestException as e:
         print(f"  [ERRO] Erro ao baixar: {str(e)[:100]}")
         if output_path.exists():
-            output_path.unlink()
+            try:
+                output_path.unlink()
+            except:
+                pass
         return False
     except Exception as e:
         print(f"  [ERRO] Erro inesperado: {str(e)[:100]}")
         if output_path.exists():
-            output_path.unlink()
+            try:
+                output_path.unlink()
+            except:
+                pass
         return False
 
 
@@ -236,6 +352,20 @@ def try_download_from_doi(doi: str, output_path: Path, entry_key: str) -> bool:
         return False
 
 
+def is_valid_pdf(file_path: Path) -> bool:
+    """Verifica se um arquivo é um PDF válido."""
+    if not file_path.exists():
+        return False
+    try:
+        if file_path.stat().st_size == 0:
+            return False
+        with open(file_path, 'rb') as f:
+            header = f.read(4)
+            return header == b'%PDF'
+    except Exception:
+        return False
+
+
 def download_reference_pdfs(entries: List[Dict[str, str]], output_dir: Path):
     """Baixa PDFs para todas as referências que têm URLs ou DOIs."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -246,6 +376,17 @@ def download_reference_pdfs(entries: List[Dict[str, str]], output_dir: Path):
     
     print(f"\nProcessando {len(entries)} referências...\n")
     
+    # Verifica arquivos já existentes antes de começar
+    existing_files = {}
+    for entry in entries:
+        filename = f"{entry['key']}.pdf"
+        output_path = output_dir / filename
+        if output_path.exists() and is_valid_pdf(output_path):
+            existing_files[entry['key']] = output_path
+    
+    if existing_files:
+        print(f"[INFO] Encontrados {len(existing_files)} PDFs validos ja existentes na pasta.\n")
+    
     for i, entry in enumerate(entries, 1):
         print(f"\n[{i}/{len(entries)}] Referência: {entry['key']}")
         
@@ -253,11 +394,17 @@ def download_reference_pdfs(entries: List[Dict[str, str]], output_dir: Path):
         filename = f"{entry['key']}.pdf"
         output_path = output_dir / filename
         
-        # Se já existe, pula
-        if output_path.exists():
-            print(f"  [SKIP] Arquivo ja existe: {filename}")
+        # Verifica se já existe e é válido
+        if output_path.exists() and is_valid_pdf(output_path):
+            print(f"  [SKIP] Arquivo ja existe e e valido: {filename} ({output_path.stat().st_size} bytes)")
             skipped += 1
             continue
+        elif output_path.exists():
+            print(f"  [INFO] Arquivo existe mas nao e PDF valido, tentando baixar novamente...")
+            try:
+                output_path.unlink()
+            except Exception as e:
+                print(f"  [AVISO] Nao foi possivel remover arquivo invalido: {str(e)[:50]}")
         
         success = False
         
@@ -266,9 +413,10 @@ def download_reference_pdfs(entries: List[Dict[str, str]], output_dir: Path):
             # Tenta URL direta primeiro
             if is_pdf_url(url):
                 if try_download_pdf(url, output_path, entry['key']):
-                    success = True
-                    downloaded += 1
-                    break
+                    # Verifica novamente após o download
+                    if is_valid_pdf(output_path):
+                        success = True
+                        break
                 continue
             
             # Para URLs que não são PDFs diretos, tenta variantes
@@ -295,9 +443,10 @@ def download_reference_pdfs(entries: List[Dict[str, str]], output_dir: Path):
             # Tenta variantes
             for variant in pdf_variants:
                 if try_download_pdf(variant, output_path, entry['key']):
-                    success = True
-                    downloaded += 1
-                    break
+                    # Verifica novamente após o download
+                    if is_valid_pdf(output_path):
+                        success = True
+                        break
             
             if success:
                 break
@@ -306,23 +455,40 @@ def download_reference_pdfs(entries: List[Dict[str, str]], output_dir: Path):
         if not success:
             for doi in entry['dois']:
                 if try_download_from_doi(doi, output_path, entry['key']):
-                    success = True
-                    downloaded += 1
-                    break
+                    # Verifica novamente após o download
+                    if is_valid_pdf(output_path):
+                        success = True
+                        break
         
-        if not success:
+        # Conta o resultado final
+        if success and is_valid_pdf(output_path):
+            downloaded += 1
+            print(f"  [OK] Referencia processada com sucesso")
+        else:
             print(f"  [ERRO] Nao foi possivel baixar PDF para esta referencia")
             failed += 1
+            # Remove arquivo inválido se existir
+            if output_path.exists() and not is_valid_pdf(output_path):
+                try:
+                    output_path.unlink()
+                except:
+                    pass
         
         # Delay entre requisições para não sobrecarregar servidores
         if i < len(entries):
             time.sleep(DELAY_BETWEEN_REQUESTS)
     
+    # Verifica quantos arquivos realmente existem na pasta
+    actual_files = [f for f in output_dir.glob('*.pdf') if is_valid_pdf(f)]
+    
     print(f"\n{'='*60}")
     print(f"Resumo:")
-    print(f"  [OK] Baixados: {downloaded}")
+    print(f"  [OK] Baixados nesta execucao: {downloaded}")
     print(f"  [SKIP] Ja existiam: {skipped}")
     print(f"  [ERRO] Falhas: {failed}")
+    print(f"  [TOTAL] Arquivos PDF validos na pasta: {len(actual_files)}")
+    if len(actual_files) != (downloaded + skipped):
+        print(f"  [AVISO] Discrepancia detectada! Verifique os arquivos na pasta.")
     print(f"{'='*60}\n")
 
 
