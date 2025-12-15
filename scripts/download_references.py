@@ -165,21 +165,23 @@ def is_pdf_url(url: str) -> bool:
 
 
 def get_chrome_driver():
-    """Cria e retorna uma instância do Chrome WebDriver."""
+    """Cria e retorna uma instância do Chrome WebDriver em modo headless."""
     if not SELENIUM_AVAILABLE:
         return None
     
     try:
         chrome_options = Options()
-        # Não usa headless para evitar detecção - mas minimiza a janela
-        chrome_options.add_argument('--start-minimized')
+        # Modo headless (oculto)
+        chrome_options.add_argument('--headless=new')  # Usa novo modo headless
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--disable-blink-features=AutomationControlled')
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         chrome_options.add_experimental_option('useAutomationExtension', False)
         chrome_options.add_argument('--window-size=1920,1080')
         chrome_options.add_argument('--disable-infobars')
+        chrome_options.add_argument('--disable-extensions')
         
         # Configurações para download de PDFs
         prefs = {
@@ -228,34 +230,75 @@ def try_download_pdf_selenium(url: str, output_path: Path, entry_key: str) -> bo
         time.sleep(1)
         
         # Navega para a URL
-        driver.get(url)
+        try:
+            driver.get(url)
+        except Exception as e:
+            print(f"  [ERRO] Erro ao navegar para URL: {str(e)[:100]}")
+            return False
         
         # Aguarda a página carregar (pode ser PDF ou HTML)
         time.sleep(3)
         
+        # Verifica se há erros na página
+        try:
+            page_source = driver.page_source[:500]  # Primeiros 500 caracteres
+            if 'error' in page_source.lower() or 'blocked' in page_source.lower():
+                print(f"  [INFO] Possivel erro ou bloqueio detectado na pagina")
+        except:
+            pass
+        
         # Verifica se a página atual é um PDF (Chrome pode abrir PDFs diretamente)
         current_url = driver.current_url
+        print(f"  [DEBUG] URL atual apos navegacao: {current_url[:80]}")
+        
+        # Valida que a URL atual é válida (não é data: ou about:)
+        if current_url.startswith('data:') or current_url.startswith('about:'):
+            current_url = url  # Usa a URL original se current_url for inválida
+            print(f"  [DEBUG] URL invalida detectada, usando URL original")
+        
+        # Verifica o título da página para entender o que foi carregado
+        try:
+            page_title = driver.title
+            print(f"  [DEBUG] Titulo da pagina: {page_title[:50]}")
+        except:
+            pass
         
         # Se a URL termina em .pdf, tenta baixar usando requests com cookies do Selenium
         if is_pdf_url(url) or url.lower().endswith('.pdf') or is_pdf_url(current_url):
+            print(f"  [DEBUG] URL identifica PDF, tentando baixar com cookies do Selenium...")
             # Obtém cookies do navegador
             cookies = driver.get_cookies()
             
             # Cria sessão requests com os cookies
             session = requests.Session()
             for cookie in cookies:
-                session.cookies.set(cookie['name'], cookie['value'], domain=cookie.get('domain', ''))
+                try:
+                    session.cookies.set(cookie['name'], cookie['value'], domain=cookie.get('domain', ''))
+                except:
+                    pass
             
             # Adiciona headers realistas
+            try:
+                user_agent = driver.execute_script("return navigator.userAgent;")
+            except:
+                user_agent = HEADERS['User-Agent']
+            
             session.headers.update({
-                'User-Agent': driver.execute_script("return navigator.userAgent;"),
+                'User-Agent': user_agent,
                 'Accept': 'application/pdf,application/octet-stream,*/*',
                 'Referer': url,
             })
             
-            # Tenta baixar usando a URL atual (pode ter sido redirecionada)
-            download_url = current_url if current_url != url else url
+            # Tenta baixar usando a URL atual (pode ter sido redirecionada), mas valida primeiro
+            download_url = current_url if (current_url != url and current_url.startswith('http')) else url
+            
+            # Valida que a URL é HTTP/HTTPS válida
+            if not download_url.startswith('http'):
+                download_url = url
+            
+            print(f"  [DEBUG] Tentando baixar de: {download_url[:80]}")
             response = session.get(download_url, timeout=TIMEOUT, stream=True, allow_redirects=True)
+            print(f"  [DEBUG] Status code: {response.status_code}, Content-Type: {response.headers.get('Content-Type', 'N/A')}")
             
             if response.status_code == 200:
                 # Remove arquivo existente se houver
@@ -291,20 +334,26 @@ def try_download_pdf_selenium(url: str, output_path: Path, entry_key: str) -> bo
                             if pdf_url_match:
                                 pdf_url = pdf_url_match.group(1)
                                 if not pdf_url.startswith('http'):
-                                    from urllib.parse import urljoin
                                     pdf_url = urljoin(url, pdf_url)
                                 print(f"  [INFO] Encontrado link PDF no HTML, tentando baixar: {pdf_url[:60]}...")
-                                # Tenta baixar o link encontrado
-                                return try_download_pdf_selenium(pdf_url, output_path, entry_key)
+                                # Tenta baixar o link encontrado (mas evita loop infinito)
+                                if pdf_url != url:  # Só tenta se for URL diferente
+                                    return try_download_pdf_selenium(pdf_url, output_path, entry_key)
                             
-                            print(f"  [ERRO] Arquivo baixado com Selenium nao e PDF valido (header: {header[:20]})")
+                            print(f"  [ERRO] Arquivo baixado com Selenium nao e PDF valido (header: {header[:20]}, tamanho: {output_path.stat().st_size} bytes)")
                             try:
                                 output_path.unlink()
                             except:
                                 pass
                             return False
-            
-            session.close()
+                else:
+                    print(f"  [ERRO] Arquivo baixado esta vazio ou nao existe")
+                    session.close()
+                    return False
+            else:
+                print(f"  [ERRO] Status code {response.status_code} ao baixar com Selenium")
+                session.close()
+                return False
         
         # Se não conseguiu baixar diretamente, tenta encontrar link de download na página
         try:
@@ -326,9 +375,12 @@ def try_download_pdf_selenium(url: str, output_path: Path, entry_key: str) -> bo
         return False
         
     except Exception as e:
-        print(f"  [ERRO] Erro ao usar Selenium: {str(e)[:100]}")
-        import traceback
-        print(f"  [DEBUG] Traceback: {traceback.format_exc()[:200]}")
+        error_msg = str(e)
+        print(f"  [ERRO] Erro ao usar Selenium: {error_msg[:150]}")
+        # Só mostra traceback completo se for erro não esperado
+        if 'timeout' not in error_msg.lower() and 'connection' not in error_msg.lower():
+            import traceback
+            print(f"  [DEBUG] Detalhes: {traceback.format_exc()[:300]}")
         return False
     finally:
         if driver:
