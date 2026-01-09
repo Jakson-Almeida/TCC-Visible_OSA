@@ -16,6 +16,9 @@ TCC_Documento/*.out
 # Arquivos de planejamento
 SEMANA2.MD
 
+# Pasta de imagens extraídas dos PDFs
+imagens/
+
 # Manter no git:
 # - TCC_Documento/modelo.pdf (mantido no git)
 # - OSAs_ Aplicações e Princípios de Funcionamento.md (mantido no git)
