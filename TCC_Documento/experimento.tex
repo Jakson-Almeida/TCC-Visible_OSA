@@ -1,0 +1,103 @@
+% ------------------------------------------------------------------------
+% Experimentos de validação do processo de calibração (OSA Visível / Osinha)
+% Arquivo para ser incluído no capítulo "RESULTADOS EXPERIMENTAIS E VALIDAÇÃO"
+% Ex.: no modelo.tex, após \chapter{RESULTADOS EXPERIMENTAIS E VALIDAÇÃO}:
+% \input{experimento}
+% ------------------------------------------------------------------------
+
+\section{Propostas de experimentos de validação em laboratório}
+
+Esta seção apresenta três sugestões viáveis de experimentos para validar o processo de calibração do OSA Visível (espectrômetro ``Osinha'' + software), considerando o método híbrido descrito neste trabalho: ajuste preliminar com luz branca (orientação espacial via centróide e regressão linear) e ancoragem absoluta com lasers de referência (532~nm e 650~nm), culminando na obtenção dos coeficientes finais da relação \(\lambda(x)=a\cdot x+b\) e na avaliação da acurácia via erro RMS.
+
+\subsection{Experimento 1 --- Comparação direta com OSA comercial (validação cruzada do eixo \(\lambda\))}
+\textbf{Objetivo:} comparar, para a mesma fonte óptica, o espectro obtido pelo OSA comercial do laboratório e pelo OSA Visível, verificando (i) a concordância do eixo de comprimento de onda e (ii) a repetibilidade do mapeamento \(\lambda(x)\) após calibração.
+
+\textbf{Instrumentos e materiais (viáveis em laboratório):}
+\begin{itemize}
+    \item OSA comercial disponível no laboratório (referência);
+    \item OSA Visível (Osinha + webcam) e o software desenvolvido;
+    \item Fonte(s) óptica(s) com espectros característicos (selecionar pelo que o laboratório tiver): LEDs coloridos (azul/verde/vermelho), laser(s) de referência, lâmpadas com linhas (se disponível), ou laser de diodo com driver estável;
+    \item Elementos de acoplamento: fibra óptica, colimador, difusor ou suporte mecânico para garantir geometria reprodutível (conforme disponibilidade).
+\end{itemize}
+
+\textbf{Procedimento sugerido:}
+\begin{enumerate}
+    \item \textbf{Preparação e estabilização:} ligar a fonte óptica e aguardar estabilização térmica (ex.: 5--10~min, dependendo da fonte).
+    \item \textbf{Calibração do OSA Visível:} executar o fluxo completo (luz branca + lasers 532/650~nm), salvar os coeficientes \(a\) e \(b\) e registrar a data/hora.
+    \item \textbf{Aquisição no OSA comercial:} medir o espectro da fonte no OSA comercial, registrar: pico(s) em \(\lambda\), largura (FWHM se disponível) e nível de potência (se aplicável).
+    \item \textbf{Aquisição no OSA Visível:} medir a mesma fonte com o Osinha, exportar o espectro \(I(\lambda)\) e registrar pico(s), forma espectral e condições de captura (exposição/ganho, ROI).
+    \item \textbf{Repetibilidade:} repetir o passo 4 múltiplas vezes (ex.: \(n\ge 10\)) sem alterar a montagem, e então repetir após desmontar/remontar (ex.: 3 montagens), para avaliar sensibilidade a alinhamento.
+\end{enumerate}
+
+\textbf{Métricas e análise (o que reportar):}
+\begin{itemize}
+    \item \textbf{Erro em comprimento de onda}: \(\Delta\lambda = \lambda_{\text{Visível}} - \lambda_{\text{OSA}}\) para cada pico/linha (relatar média e desvio padrão).
+    \item \textbf{Repetibilidade}: desvio padrão de \(\lambda_{\text{Visível}}\) em múltiplas aquisições (mesma montagem) e variação após remontagem.
+    \item \textbf{Acurácia global}: se houver múltiplos picos/linhas, calcular um erro RMS em relação ao OSA comercial.
+\end{itemize}
+
+\textbf{Observação prática:} para evitar vieses, manter a geometria de entrada (posição/ângulo/acoplamento) o mais constante possível. Caso o OSA comercial opere em faixa mais ampla, restringir a comparação à faixa efetiva do Osinha (VIS, tipicamente 380--750~nm).
+
+\subsection{Experimento 2 --- Validação com fontes de picos/linhas conhecidas (checar linearidade e erro nas extremidades)}
+\textbf{Objetivo:} validar o mapeamento \(\lambda(x)\) em diferentes regiões do VIS usando referências com comprimentos de onda conhecidos (picos estreitos), verificando a linearidade do modelo e o aumento de erro próximo às extremidades (abaixo de 400~nm e acima de 700~nm).
+
+\textbf{Opções de fontes (escolher as que forem viáveis no laboratório):}
+\begin{itemize}
+    \item \textbf{Lasers adicionais} (ex.: 405~nm, 450~nm, 635/638~nm, 808~nm --- usar apenas se a resposta do sensor permitir);
+    \item \textbf{LEDs de banda estreita} (azul, verde, âmbar, vermelho profundo) com datasheet do pico dominante (\(\lambda_d\)) e FWHM típica;
+    \item \textbf{Lâmpada fluorescente/mercúrio} (se disponível) para obter linhas discretas; alternativamente, lâmpadas de descarga do laboratório.
+\end{itemize}
+
+\textbf{Procedimento sugerido:}
+\begin{enumerate}
+    \item Executar calibração do OSA Visível com luz branca + lasers 532/650~nm (padrão do trabalho).
+    \item Para cada fonte de teste, adquirir \(N\) quadros e aplicar média temporal (ex.: \(N=20\), como no método descrito), exportando o espectro \(I(\lambda)\).
+    \item Extrair o pico principal \(\lambda_{\text{med}}\) (arg max) e, quando aplicável, estimar a largura (FWHM em nm) do pico medido.
+    \item Repetir para ao menos 5 fontes distribuídas ao longo do VIS, visando cobrir regiões próximas às bordas do intervalo.
+\end{enumerate}
+
+\textbf{Métricas e análise (o que reportar):}
+\begin{itemize}
+    \item \textbf{Erro por ponto}: \(\Delta\lambda_i = \lambda_{\text{med},i} - \lambda_{\text{ref},i}\) (onde \(\lambda_{\text{ref}}\) vem do laser ou do datasheet/linha conhecida).
+    \item \textbf{Curva de erro vs. \(\lambda\)}: gráfico de \(\Delta\lambda\) em função de \(\lambda_{\text{ref}}\), evidenciando tendência de erro nas extremidades.
+    \item \textbf{Erro RMS}: consolidar um RMS global com os pontos de teste (se houver pelo menos 3--5 pontos).
+\end{itemize}
+
+\textbf{Observação prática:} LEDs têm banda larga (FWHM tipicamente dezenas de nm), então o ``pico de referência'' do datasheet pode variar com corrente/temperatura; nesse caso, o experimento é útil principalmente para \textbf{consistência} e \textbf{tendências} (e não como padrão metrológico absoluto), enquanto lasers/linhas de descarga são melhores como referência.
+
+\subsection{Experimento 3 --- Validação quantitativa por Beer-Lambert (aplicação real + consistência espectral)}
+\textbf{Objetivo:} validar se, após calibração, o OSA Visível produz medidas espectrais consistentes o suficiente para aplicações quantitativas baseadas em absorbância, reproduzindo um ensaio do tipo Beer-Lambert com amostras de concentração controlada (como mencionado no trabalho).
+
+\textbf{Instrumentos e materiais (viáveis):}
+\begin{itemize}
+    \item Fonte(s) de iluminação (LED(s) ou luz branca) com montagem reprodutível;
+    \item Suporte de amostra (cuveta, célula ou caminho óptico fixo), idealmente com comprimento \(l\) conhecido/constante;
+    \item Soluto/solução de teste: por exemplo, diluições de glicerina em água (10--30\% v/v) ou outra solução segura e disponível com variação controlada de absorção/espalhamento;
+    \item OSA Visível calibrado (e, opcionalmente, instrumento de referência do laboratório: espectrofotômetro UV-Vis, se existir).
+\end{itemize}
+
+\textbf{Procedimento sugerido:}
+\begin{enumerate}
+    \item Calibrar o OSA Visível (luz branca + lasers 532/650~nm) e manter a montagem fixa.
+    \item Medir um \textbf{espectro de referência} \(I_0(\lambda)\) (sem amostra, ou com branco/solvente).
+    \item Para cada concentração \(c\), medir \(I(\lambda)\) com a amostra e calcular a transmitância \(T(\lambda)=I(\lambda)/I_0(\lambda)\).
+    \item Calcular a absorbância \(A(\lambda)=-\log(T(\lambda))\) para cada concentração.
+    \item Selecionar comprimentos de onda (ou regiões) de interesse e construir curvas \(A\) vs. \(c\) (ajuste linear), reportando \(R^2\).
+\end{enumerate}
+
+\textbf{Métricas e análise (o que reportar):}
+\begin{itemize}
+    \item \textbf{Linearidade Beer-Lambert}: \(R^2\) do ajuste \(A=\epsilon c l\) para \(\lambda\) selecionados.
+    \item \textbf{Repetibilidade}: variação de \(A(\lambda)\) em medições repetidas (mesma amostra e mesma configuração).
+    \item \textbf{Impacto da calibração espectral}: repetir o experimento (ou parte dele) após recalibrar e verificar se a posição dos picos/vales espectrais se mantém em \(\lambda\) consistente.
+\end{itemize}
+
+\textbf{Observação prática:} para maximizar a confiabilidade, controlar (na medida do possível) a exposição/ganho da câmera, a intensidade da fonte e o posicionamento da amostra. Mesmo que a calibração do eixo \(Y\) (potência absoluta) não seja rastreada, o método via razão \(I/I_0\) reduz sensibilidade a variações de intensidade e favorece a validação de consistência espectral.
+
+\subsection{Recomendações gerais de segurança e reprodutibilidade}
+\begin{itemize}
+    \item \textbf{Segurança com lasers:} utilizar óculos apropriados (especialmente para 532~nm) e evitar alinhamentos com feixe livre na altura dos olhos.
+    \item \textbf{Reprodutibilidade mecânica:} registrar posição da ROI, distância fonte--entrada, e quaisquer ajustes físicos (ângulos/altura), pois pequenas mudanças podem deslocar o espectro na webcam.
+    \item \textbf{Registro de parâmetros:} documentar parâmetros de câmera (resolução, FPS, exposição, ganho), \(N\) de quadros na média temporal, e versão do software, permitindo repetição do experimento por terceiros.
+\end{itemize}
+
