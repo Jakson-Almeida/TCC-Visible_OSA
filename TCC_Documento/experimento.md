@@ -75,6 +75,7 @@ e avaliação de acurácia (por exemplo) via **erro RMS**.
 **Observação prática:** LEDs têm banda larga (FWHM tipicamente dezenas de nm), então o “pico de referência” pode variar com corrente/temperatura; nesse caso, o experimento é ótimo para **consistência** e **tendências**, enquanto lasers/linhas de descarga são melhores como referência absoluta.
 
 ---
+**Nota:** Descontinuado.
 
 ## Experimento 3 — Validação quantitativa por Beer-Lambert (aplicação real + consistência espectral)
 
