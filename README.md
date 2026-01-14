@@ -1,4 +1,4 @@
-# TCC-Visible_OSA
+# TCC Visible OSA
 
 ## Sobre o Projeto
 
@@ -72,7 +72,7 @@ Este projeto está sob licença acadêmica para fins educacionais.
 
 ---
 
-*Última atualização: Dezembro 2025*
+*Última atualização: Janeiro 2026*
 
 
 
