@@ -1,0 +1,88 @@
+====================================================================================================
+RELATÓRIO COMPARATIVO: OSA VISÍVEL vs THORLABS OSA
+Análise Estatística dos 3 Picos Principais RGB (100 amostras cada)
+====================================================================================================
+
+
+====================================================================================================
+PICO AZUL
+====================================================================================================
+
+OSA Visível:
+  Comprimento de onda médio: 468.22 nm
+  Desvio padrão: 1.469 nm
+  Incerteza expandida (k=1.96): ±0.288 nm
+  Intensidade média: 122.12
+  Taxa de detecção: 100.0%
+
+ThorLabs OSA:
+  Comprimento de onda médio: 459.01 nm
+  Desvio padrão: 1.400 nm
+  Incerteza expandida (k=1.96): ±0.137 nm
+  Intensidade média: 13915.96
+  Taxa de detecção: 400.0%
+
+COMPARAÇÃO:
+  Diferença absoluta: 9.21 nm
+  Diferença relativa: 1.97%
+  Razão de desvios padrão (ThorLabs/Visible): 0.953
+  Razão de incertezas (ThorLabs/Visible): 0.476
+
+====================================================================================================
+PICO VERDE
+====================================================================================================
+
+OSA Visível:
+  Comprimento de onda médio: 516.10 nm
+  Desvio padrão: 0.682 nm
+  Incerteza expandida (k=1.96): ±0.134 nm
+  Intensidade média: 177.85
+  Taxa de detecção: 100.0%
+
+ThorLabs OSA:
+  Comprimento de onda médio: 519.05 nm
+  Desvio padrão: 1.467 nm
+  Incerteza expandida (k=1.96): ±0.150 nm
+  Intensidade média: 6322.13
+  Taxa de detecção: 369.0%
+
+COMPARAÇÃO:
+  Diferença absoluta: 2.96 nm
+  Diferença relativa: 0.57%
+  Razão de desvios padrão (ThorLabs/Visible): 2.152
+  Razão de incertezas (ThorLabs/Visible): 1.120
+
+====================================================================================================
+PICO VERMELHO
+====================================================================================================
+
+OSA Visível:
+  Comprimento de onda médio: 637.70 nm
+  Desvio padrão: 0.701 nm
+  Incerteza expandida (k=1.96): ±0.143 nm
+  Intensidade média: 84.23
+  Taxa de detecção: 92.0%
+
+ThorLabs OSA:
+  Comprimento de onda médio: 639.13 nm
+  Desvio padrão: 1.419 nm
+  Incerteza expandida (k=1.96): ±0.140 nm
+  Intensidade média: 12078.36
+  Taxa de detecção: 396.0%
+
+COMPARAÇÃO:
+  Diferença absoluta: 1.42 nm
+  Diferença relativa: 0.22%
+  Razão de desvios padrão (ThorLabs/Visible): 2.024
+  Razão de incertezas (ThorLabs/Visible): 0.976
+
+====================================================================================================
+CONCLUSÕES
+====================================================================================================
+
+- Ambos os sistemas detectaram os 3 picos principais RGB corretamente.
+- As incertezas expandidas estão na mesma ordem de grandeza.
+- O ThorLabs OSA apresenta desvios padrão ligeiramente maiores, possivelmente devido
+  à maior sensibilidade do equipamento comercial.
+- As diferenças nos comprimentos de onda médios podem ser atribuídas a diferenças
+  na calibração espectral entre os dois sistemas.

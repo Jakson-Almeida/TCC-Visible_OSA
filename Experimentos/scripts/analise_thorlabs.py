@@ -272,8 +272,39 @@ def agrupar_picos_correspondentes(resultados_todos, tolerancia_nm=5.0):
     # Ordena por taxa de detecção e intensidade (prioriza picos principais)
     grupos_principais.sort(key=lambda x: (x['taxa_deteccao'], x['int_media']), reverse=True)
     
-    # Identifica os 3 principais
-    picos_rgb = grupos_principais[:3] if len(grupos_principais) >= 3 else grupos_principais
+    # Identifica os 3 principais RGB: deve ter 1 de cada cor (Azul, Verde, Vermelho)
+    # Procura o melhor pico de cada cor RGB
+    picos_por_cor = {'Azul': [], 'Verde': [], 'Vermelho': []}
+    
+    for grupo in grupos_principais:
+        cor = grupo['nome_cor']
+        if cor in picos_por_cor:
+            picos_por_cor[cor].append(grupo)
+    
+    # Seleciona o melhor pico de cada cor (baseado em taxa de detecção e intensidade)
+    picos_rgb = []
+    ordem_rgb = ['Azul', 'Verde', 'Vermelho']
+    
+    for cor in ordem_rgb:
+        if picos_por_cor[cor]:
+            # Pega o melhor pico dessa cor (já está ordenado por taxa/intensidade)
+            melhor_pico = picos_por_cor[cor][0]
+            picos_rgb.append(melhor_pico)
+    
+    # Se não encontrou os 3, preenche com os melhores disponíveis
+    if len(picos_rgb) < 3:
+        cores_faltando = [cor for cor in ordem_rgb if cor not in [p['nome_cor'] for p in picos_rgb]]
+        for grupo in grupos_principais:
+            if len(picos_rgb) >= 3:
+                break
+            if grupo not in picos_rgb:
+                picos_rgb.append(grupo)
+    
+    # Garante que temos exatamente 3 picos
+    picos_rgb = picos_rgb[:3] if len(picos_rgb) >= 3 else picos_rgb
+    
+    # Ordena por comprimento de onda para manter ordem espectral
+    picos_rgb.sort(key=lambda x: x['wl_medio'])
     
     print(f"\n[INFO] 3 Picos Principais RGB Identificados:")
     for idx, pico in enumerate(picos_rgb, 1):
