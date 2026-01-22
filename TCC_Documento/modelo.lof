@@ -1,5 +1,5 @@
 \babel@toc {english}{}\relax 
 \contentsline {figure}{\numberline {1}{\ignorespaces Arquitetura do espectrômetro "Osinha": (1) Luz incidente, (2) Fenda óptica, (3) Grade de difração, (4) Webcam CMOS. Adaptado de \cite {gaudi_spectrometer}.}}{30}{figure.67}%
-\contentsline {figure}{\numberline {2}{\ignorespaces Janela principal do software "OSA Visível": (1) Visualização do espectro em tempo real, (2) Gráfico de intensidade $I(\lambda )$ vs. comprimento de onda, (3) Painel de controle e calibração.}}{33}{figure.84}%
-\contentsline {figure}{\numberline {3}{\ignorespaces Reta de calibração $\lambda (x) = a \cdot x + b$ ajustada via regressão linear utilizando lasers de referência (532 nm e 650 nm).}}{38}{figure.113}%
-\contentsline {figure}{\numberline {4}{\ignorespaces Janela de calibração do software "OSA Visível": (1) Botão "Calibrar Luz Branca" para calibração automática preliminar, (2) Botões "Iniciar Laser (Verde/Vermelho)" para calibração absoluta passo a passo.}}{39}{figure.117}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Janela principal do software "OSA Visível": (1) Visualização do espectro em tempo real, (2) Gráfico de intensidade $I(\lambda )$ vs. comprimento de onda, (3) Painel de controle e calibração.}}{34}{figure.84}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Reta de calibração $\lambda (x) = a \cdot x + b$ ajustada via regressão linear utilizando lasers de referência (532 nm e 650 nm).}}{39}{figure.113}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Janela de calibração do software "OSA Visível": (1) Botão "Calibrar Luz Branca" para calibração automática preliminar, (2) Botões "Iniciar Laser (Verde/Vermelho)" para calibração absoluta passo a passo.}}{40}{figure.117}%
