@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro de dados - Duty Cycle, λ pico e intensidade</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header__title">
+        <h1>Cadastro de dados do experimento</h1>
+        <p>
+          Preencha <strong>λ de pico (nm)</strong> e <strong>intensidade</strong> para LEDs
+          <strong>verde</strong>, <strong>vermelho</strong> e <strong>azul</strong>, para cada
+          <strong>Duty Cycle</strong>.
+        </p>
+      </div>
+
+      <div class="app-header__controls">
+        <div class="tabs" role="tablist" aria-label="Equipamento">
+          <button
+            id="tab-osa"
+            class="tab"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-osa"
+            data-equipment="osa_visivel"
+          >
+            OSA Visível
+          </button>
+          <button
+            id="tab-thorlabs"
+            class="tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-thorlabs"
+            data-equipment="thorlabs"
+          >
+            ThorLabs
+          </button>
+        </div>
+
+        <div class="actions">
+          <button id="btn-export-csv" class="btn btn--primary" type="button">
+            Exportar CSV (equipamento atual)
+          </button>
+          <button id="btn-export-json" class="btn" type="button">Exportar JSON (tudo)</button>
+          <label class="btn btn--file" for="file-import-json">
+            Importar JSON
+            <input id="file-import-json" type="file" accept="application/json" />
+          </label>
+          <button id="btn-clear-current" class="btn btn--danger" type="button">
+            Limpar dados (equipamento atual)
+          </button>
+        </div>
+
+        <div class="status">
+          <span class="status__label">Status:</span>
+          <span id="save-status" class="status__value">—</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section id="panel-osa" class="panel" role="tabpanel" aria-labelledby="tab-osa">
+        <div class="table-wrap">
+          <table class="data-table" aria-label="Tabela OSA Visível">
+            <thead>
+              <tr>
+                <th class="sticky-col" rowspan="2">Duty Cycle (%)</th>
+                <th class="th--green" colspan="2">Verde</th>
+                <th class="th--red" colspan="2">Vermelho</th>
+                <th class="th--blue" colspan="2">Azul</th>
+              </tr>
+              <tr>
+                <th class="th--green">λ pico (nm)</th>
+                <th class="th--green">Intensidade</th>
+                <th class="th--red">λ pico (nm)</th>
+                <th class="th--red">Intensidade</th>
+                <th class="th--blue">λ pico (nm)</th>
+                <th class="th--blue">Intensidade</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-osa"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section
+        id="panel-thorlabs"
+        class="panel panel--hidden"
+        role="tabpanel"
+        aria-labelledby="tab-thorlabs"
+      >
+        <div class="table-wrap">
+          <table class="data-table" aria-label="Tabela ThorLabs">
+            <thead>
+              <tr>
+                <th class="sticky-col" rowspan="2">Duty Cycle (%)</th>
+                <th class="th--green" colspan="2">Verde</th>
+                <th class="th--red" colspan="2">Vermelho</th>
+                <th class="th--blue" colspan="2">Azul</th>
+              </tr>
+              <tr>
+                <th class="th--green">λ pico (nm)</th>
+                <th class="th--green">Intensidade</th>
+                <th class="th--red">λ pico (nm)</th>
+                <th class="th--red">Intensidade</th>
+                <th class="th--blue">λ pico (nm)</th>
+                <th class="th--blue">Intensidade</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-thorlabs"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <div class="app-footer__hint">
+        Dica: os dados ficam salvos no seu navegador automaticamente. Use exportação para gerar arquivo.
+      </div>
+    </footer>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
