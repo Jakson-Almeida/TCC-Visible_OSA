@@ -112,6 +112,8 @@ def main():
     prominence = 5.0
     show_peaks = False  # Por padrão picos desabilitados
     dark_theme = False
+    last_clicked_wl = None  # último pico clicado (para copiar)
+    last_clicked_int = None
 
     # Figura matplotlib embutida
     fig = Figure(figsize=(8, 4), dpi=100)
@@ -199,6 +201,7 @@ def main():
     canvas.get_tk_widget().bind("<KeyPress>", on_key)
 
     def on_click_grafico(event):
+        nonlocal last_clicked_wl, last_clicked_int
         if event.inaxes != ax or not spectra_data or not show_peaks:
             return
         idx = max(0, min(current_index, len(spectra_data) - 1))
@@ -213,11 +216,33 @@ def main():
         int_picos = spec[peaks]
         distancias = (wl_picos - x_click) ** 2 + (int_picos - y_click) ** 2
         i_min = int(np.argmin(distancias))
-        wl_p = wl_picos[i_min]
-        int_p = int_picos[i_min]
+        wl_p = float(wl_picos[i_min])
+        int_p = float(int_picos[i_min])
+        last_clicked_wl = wl_p
+        last_clicked_int = int_p
         status_var.set(
-            f"Pico clicado: λ = {wl_p:.2f} nm  |  Intensidade = {int_p:.2f} u.a."
+            f"Pico clicado: λ = {wl_p:.2f} nm  |  Intensidade = {int_p:.2f} u.a.  (use os botões para copiar)"
         )
+
+    def copiar_lambda():
+        if last_clicked_wl is None:
+            status_var.set("Clique em um pico antes de copiar λ.")
+            return
+        texto = f"{last_clicked_wl:.6g}"
+        root.clipboard_clear()
+        root.clipboard_append(texto)
+        root.update()
+        status_var.set(f"λ = {texto} nm copiado para a área de transferência.")
+
+    def copiar_intensidade():
+        if last_clicked_int is None:
+            status_var.set("Clique em um pico antes de copiar intensidade.")
+            return
+        texto = f"{last_clicked_int:.6g}"
+        root.clipboard_clear()
+        root.clipboard_append(texto)
+        root.update()
+        status_var.set(f"Intensidade = {texto} copiada para a área de transferência.")
 
     canvas.mpl_connect("button_press_event", on_click_grafico)
 
@@ -273,6 +298,11 @@ def main():
     spin_prominence.pack(side=tk.LEFT, padx=2)
     spin_prominence.bind("<Return>", lambda e: on_prominence_change())
     spin_prominence.bind("<FocusOut>", lambda e: on_prominence_change())
+
+    # Copiar λ ou intensidade do último pico clicado
+    tk.Label(fr_btn, text="Copiar pico clicado:", fg="gray").pack(side=tk.LEFT, padx=(12, 2))
+    ttk.Button(fr_btn, text="Copiar λ", command=copiar_lambda).pack(side=tk.LEFT, padx=2)
+    ttk.Button(fr_btn, text="Copiar I", command=copiar_intensidade).pack(side=tk.LEFT, padx=2)
 
     # Inicial
     atualizar_grafico()
