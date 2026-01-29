@@ -198,6 +198,29 @@ def main():
     root.bind("<KeyPress>", on_key)
     canvas.get_tk_widget().bind("<KeyPress>", on_key)
 
+    def on_click_grafico(event):
+        if event.inaxes != ax or not spectra_data or not show_peaks:
+            return
+        idx = max(0, min(current_index, len(spectra_data) - 1))
+        _, wl_nm, spec = spectra_data[idx]
+        peaks = detectar_picos(spec, prominence=prominence)
+        if len(peaks) == 0:
+            return
+        x_click, y_click = event.xdata, event.ydata
+        if x_click is None or y_click is None:
+            return
+        wl_picos = wl_nm[peaks]
+        int_picos = spec[peaks]
+        distancias = (wl_picos - x_click) ** 2 + (int_picos - y_click) ** 2
+        i_min = int(np.argmin(distancias))
+        wl_p = wl_picos[i_min]
+        int_p = int_picos[i_min]
+        status_var.set(
+            f"Pico clicado: λ = {wl_p:.2f} nm  |  Intensidade = {int_p:.2f} u.a."
+        )
+
+    canvas.mpl_connect("button_press_event", on_click_grafico)
+
     # Botões e controles
     fr_btn = ttk.Frame(root, padding=4)
     fr_btn.pack(fill=tk.X, padx=8, pady=4)
@@ -228,7 +251,7 @@ def main():
             val = prominence_var.get()
         try:
             p = float(val)
-            prominence = max(0.5, min(200.0, p))
+            prominence = max(0.5, min(1000.0, p))
             prominence_var.set(prominence)
         except (ValueError, tk.TclError):
             prominence = 5.0
