@@ -2,7 +2,7 @@
 % Script para análise dos dados do OSA Visível
 % Gera gráficos de Intensidade vs Duty Cycle para cada cor (Verde, Vermelho, Azul)
 %
-% Autor: Análise de dados experimentais
+% Autor: Jakson Almeida
 % Data: 2026-01-28
 
 clear; close all; clc;
