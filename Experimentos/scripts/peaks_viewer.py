@@ -47,9 +47,9 @@ def detectar_picos(intensidade, prominence=5, valley=False):
     return peaks
 
 
-def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=False):
+def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=False, show_peaks=False):
     """
-    Plota espectro em ax, detecta picos e desenha marcadores.
+    Plota espectro em ax. Se show_peaks=True, detecta picos e desenha marcadores.
     Limpa marcadores antigos em ax (ax.markers e ax.marker).
     """
     ax.clear()
@@ -79,20 +79,20 @@ def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=
         except Exception:
             pass
 
-    # Detectar e marcar picos
-    peaks = detectar_picos(spec, prominence=prominence, valley=valley)
-    for idx in peaks:
-        wl_p = wl_nm[idx]
-        int_p = spec[idx]
-        marker = ax.scatter(
-            wl_p,
-            int_p,
-            color=color_fg,
-            marker=11 if valley else 10,
-            zorder=5,
-            s=60,
-        )
-        ax.markers.append(marker)
+    if show_peaks:
+        peaks = detectar_picos(spec, prominence=prominence, valley=valley)
+        for idx in peaks:
+            wl_p = wl_nm[idx]
+            int_p = spec[idx]
+            marker = ax.scatter(
+                wl_p,
+                int_p,
+                color=color_fg,
+                marker=11 if valley else 10,
+                zorder=5,
+                s=60,
+            )
+            ax.markers.append(marker)
 
     ax.set_xlim(wl_nm.min(), wl_nm.max())
     ymin, ymax = np.nanmin(spec), np.nanmax(spec)
@@ -110,6 +110,7 @@ def main():
     spectra_data = []
     current_index = 0
     prominence = 5.0
+    show_peaks = False  # Por padrão picos desabilitados
     dark_theme = False
 
     # Figura matplotlib embutida
@@ -165,7 +166,12 @@ def main():
         path, wl_nm, spec = spectra_data[idx]
         nome = os.path.basename(path)
         status_var.set(f"Arquivo {idx + 1} / {len(spectra_data)}: {nome}")
-        plotar_espectro_com_picos(ax, wl_nm, spec, prominence=prominence, dark=dark_theme)
+        plotar_espectro_com_picos(
+            ax, wl_nm, spec,
+            prominence=prominence,
+            dark=dark_theme,
+            show_peaks=show_peaks,
+        )
         canvas.draw_idle()
 
     def anterior():
@@ -192,13 +198,58 @@ def main():
     root.bind("<KeyPress>", on_key)
     canvas.get_tk_widget().bind("<KeyPress>", on_key)
 
-    # Botões
+    # Botões e controles
     fr_btn = ttk.Frame(root, padding=4)
     fr_btn.pack(fill=tk.X, padx=8, pady=4)
     ttk.Button(fr_btn, text="Carregar arquivo(s)...", command=carregar_arquivos).pack(side=tk.LEFT, padx=(0, 8))
     ttk.Button(fr_btn, text="< Anterior", command=anterior).pack(side=tk.LEFT, padx=2)
     ttk.Button(fr_btn, text="Próximo >", command=proximo).pack(side=tk.LEFT, padx=2)
     tk.Label(fr_btn, text="Navegação: < ou > (ou setas)", fg="gray").pack(side=tk.LEFT, padx=12)
+
+    # Exibir picos (por padrão desligado)
+    def toggle_peaks():
+        nonlocal show_peaks
+        show_peaks = var_show_peaks.get()
+        atualizar_grafico()
+
+    var_show_peaks = tk.BooleanVar(value=False)
+    chk_peaks = ttk.Checkbutton(
+        fr_btn,
+        text="Exibir picos",
+        variable=var_show_peaks,
+        command=toggle_peaks,
+    )
+    chk_peaks.pack(side=tk.LEFT, padx=(16, 4))
+
+    # Sensibilidade (prominência): valor maior = menos picos (filtra ruído)
+    def on_prominence_change(val=None):
+        nonlocal prominence
+        if val is None:
+            val = prominence_var.get()
+        try:
+            p = float(val)
+            prominence = max(0.5, min(200.0, p))
+            prominence_var.set(prominence)
+        except (ValueError, tk.TclError):
+            prominence = 5.0
+            prominence_var.set(5.0)
+        if show_peaks:
+            atualizar_grafico()
+
+    tk.Label(fr_btn, text="Prominência (↑ menos picos):", fg="gray").pack(side=tk.LEFT, padx=(8, 2))
+    prominence_var = tk.DoubleVar(value=5.0)
+    spin_prominence = ttk.Spinbox(
+        fr_btn,
+        from_=0.5,
+        to=200.0,
+        increment=0.5,
+        textvariable=prominence_var,
+        width=6,
+        command=on_prominence_change,
+    )
+    spin_prominence.pack(side=tk.LEFT, padx=2)
+    spin_prominence.bind("<Return>", lambda e: on_prominence_change())
+    spin_prominence.bind("<FocusOut>", lambda e: on_prominence_change())
 
     # Inicial
     atualizar_grafico()
