@@ -157,6 +157,7 @@ def main():
         atualizar_grafico()
 
     def atualizar_grafico():
+        nonlocal last_clicked_wl, last_clicked_int
         if not spectra_data:
             ax.clear()
             ax.set_xlabel("Comprimento de onda (nm)")
@@ -174,6 +175,20 @@ def main():
             dark=dark_theme,
             show_peaks=show_peaks,
         )
+        # Se exibir picos e houver exatamente um, já mostrar suas informações
+        if show_peaks:
+            peaks = detectar_picos(spec, prominence=prominence)
+            if len(peaks) == 1:
+                wl_p = float(wl_nm[peaks[0]])
+                int_p = float(spec[peaks[0]])
+                last_clicked_wl = wl_p
+                last_clicked_int = int_p
+                status_var.set(
+                    f"Pico clicado: λ = {wl_p:.2f} nm  |  Intensidade = {int_p:.2f} u.a.  (use os botões para copiar)"
+                )
+        else:
+            last_clicked_wl = None
+            last_clicked_int = None
         canvas.draw_idle()
 
     def anterior():
