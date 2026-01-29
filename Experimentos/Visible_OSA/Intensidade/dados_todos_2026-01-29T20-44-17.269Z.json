@@ -1,0 +1,570 @@
+{
+  "version": 1,
+  "updatedAt": "2026-01-29T20:44:13.304Z",
+  "data": {
+    "osa_visivel": {
+      "5": {
+        "green": {
+          "peak_nm": "512.83",
+          "intensity": "54.15"
+        },
+        "red": {
+          "peak_nm": "619.03",
+          "intensity": "48.03"
+        },
+        "blue": {
+          "peak_nm": "453.82",
+          "intensity": "35.23"
+        }
+      },
+      "10": {
+        "green": {
+          "peak_nm": "512.83",
+          "intensity": "90.76"
+        },
+        "red": {
+          "peak_nm": "619.03",
+          "intensity": "69.16"
+        },
+        "blue": {
+          "peak_nm": "453.82",
+          "intensity": "57.96"
+        }
+      },
+      "15": {
+        "green": {
+          "peak_nm": "511.35",
+          "intensity": "115.89"
+        },
+        "red": {
+          "peak_nm": "620.50",
+          "intensity": "82.25"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "79.15"
+        }
+      },
+      "20": {
+        "green": {
+          "peak_nm": "511.35",
+          "intensity": "136.27"
+        },
+        "red": {
+          "peak_nm": "620.50",
+          "intensity": "82.63"
+        },
+        "blue": {
+          "peak_nm": "453.82",
+          "intensity": "88.19"
+        }
+      },
+      "25": {
+        "green": {
+          "peak_nm": "511.35",
+          "intensity": "153.70"
+        },
+        "red": {
+          "peak_nm": "621.98",
+          "intensity": "82.02"
+        },
+        "blue": {
+          "peak_nm": "453.82",
+          "intensity": "92.35"
+        }
+      },
+      "30": {
+        "green": {
+          "peak_nm": "511.35",
+          "intensity": "166.49"
+        },
+        "red": {
+          "peak_nm": "623.45",
+          "intensity": "81.55"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "97.29"
+        }
+      },
+      "35": {
+        "green": {
+          "peak_nm": "509.88",
+          "intensity": "175.61"
+        },
+        "red": {
+          "peak_nm": "624.92",
+          "intensity": "81.17"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "101.15"
+        }
+      },
+      "40": {
+        "green": {
+          "peak_nm": "508.40",
+          "intensity": "180.06"
+        },
+        "red": {
+          "peak_nm": "619.03",
+          "intensity": "84.42"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "103.91"
+        }
+      },
+      "45": {
+        "green": {
+          "peak_nm": "508.40",
+          "intensity": "181.38"
+        },
+        "red": {
+          "peak_nm": "619.03",
+          "intensity": "91.76"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "108.26"
+        }
+      },
+      "50": {
+        "green": {
+          "peak_nm": "505.45",
+          "intensity": "181.73"
+        },
+        "red": {
+          "peak_nm": "619.03",
+          "intensity": "101.66"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "111.39"
+        }
+      },
+      "55": {
+        "green": {
+          "peak_nm": "502.50",
+          "intensity": "181.63"
+        },
+        "red": {
+          "peak_nm": "619.03",
+          "intensity": "113.14"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "107.74"
+        }
+      },
+      "60": {
+        "green": {
+          "peak_nm": "502.50",
+          "intensity": "182.41"
+        },
+        "red": {
+          "peak_nm": "619.03",
+          "intensity": "120.69"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "114.54"
+        }
+      },
+      "65": {
+        "green": {
+          "peak_nm": "502.50",
+          "intensity": "184.04"
+        },
+        "red": {
+          "peak_nm": "620.50",
+          "intensity": "136.50"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "118.05"
+        }
+      },
+      "70": {
+        "green": {
+          "peak_nm": "502.50",
+          "intensity": "184.55"
+        },
+        "red": {
+          "peak_nm": "620.50",
+          "intensity": "145.20"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "119.96"
+        }
+      },
+      "75": {
+        "green": {
+          "peak_nm": "502.50",
+          "intensity": "184.13"
+        },
+        "red": {
+          "peak_nm": "620.50",
+          "intensity": "154.30"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "123.05"
+        }
+      },
+      "80": {
+        "green": {
+          "peak_nm": "502.50",
+          "intensity": "184.17"
+        },
+        "red": {
+          "peak_nm": "620.50",
+          "intensity": "159.01"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "124.53"
+        }
+      },
+      "85": {
+        "green": {
+          "peak_nm": "502.50",
+          "intensity": "183.85"
+        },
+        "red": {
+          "peak_nm": "620.50",
+          "intensity": "167.78"
+        },
+        "blue": {
+          "peak_nm": "455.30",
+          "intensity": "125.96"
+        }
+      },
+      "90": {
+        "green": {
+          "peak_nm": "502.50",
+          "intensity": "182.96"
+        },
+        "red": {
+          "peak_nm": "620.50",
+          "intensity": "176"
+        },
+        "blue": {
+          "peak_nm": "453.82",
+          "intensity": "128.7"
+        }
+      },
+      "95": {
+        "green": {
+          "peak_nm": "502.50",
+          "intensity": "182.44"
+        },
+        "red": {
+          "peak_nm": "620.50",
+          "intensity": "185.22"
+        },
+        "blue": {
+          "peak_nm": "453.82",
+          "intensity": "130.58"
+        }
+      },
+      "100": {
+        "green": {
+          "peak_nm": "502.50",
+          "intensity": "181.51"
+        },
+        "red": {
+          "peak_nm": "620.50",
+          "intensity": "184.04"
+        },
+        "blue": {
+          "peak_nm": "453.82",
+          "intensity": "131.88"
+        }
+      }
+    },
+    "thorlabs": {
+      "5": {
+        "green": {
+          "peak_nm": "520.268",
+          "intensity": "647"
+        },
+        "red": {
+          "peak_nm": "627.9",
+          "intensity": "1024"
+        },
+        "blue": {
+          "peak_nm": "454.689",
+          "intensity": "471"
+        }
+      },
+      "10": {
+        "green": {
+          "peak_nm": "520.268",
+          "intensity": "874"
+        },
+        "red": {
+          "peak_nm": "628.524",
+          "intensity": "1739"
+        },
+        "blue": {
+          "peak_nm": "457.097",
+          "intensity": "704"
+        }
+      },
+      "15": {
+        "green": {
+          "peak_nm": "518.636",
+          "intensity": "1118"
+        },
+        "red": {
+          "peak_nm": "628.94",
+          "intensity": "2519"
+        },
+        "blue": {
+          "peak_nm": "456.093",
+          "intensity": "831"
+        }
+      },
+      "20": {
+        "green": {
+          "peak_nm": "515.984",
+          "intensity": "1351"
+        },
+        "red": {
+          "peak_nm": "629.564",
+          "intensity": "3178"
+        },
+        "blue": {
+          "peak_nm": "454.89",
+          "intensity": "1086"
+        }
+      },
+      "25": {
+        "green": {
+          "peak_nm": "515.169",
+          "intensity": "1584"
+        },
+        "red": {
+          "peak_nm": "628.94",
+          "intensity": "3840"
+        },
+        "blue": {
+          "peak_nm": "454.488",
+          "intensity": "1289"
+        }
+      },
+      "30": {
+        "green": {
+          "peak_nm": "517.616",
+          "intensity": "1805"
+        },
+        "red": {
+          "peak_nm": "628.524",
+          "intensity": "4553"
+        },
+        "blue": {
+          "peak_nm": "457.097",
+          "intensity": "1496"
+        }
+      },
+      "35": {
+        "green": {
+          "peak_nm": "514.965",
+          "intensity": "2063"
+        },
+        "red": {
+          "peak_nm": "628.94",
+          "intensity": "5275"
+        },
+        "blue": {
+          "peak_nm": "456.294",
+          "intensity": "1672"
+        }
+      },
+      "40": {
+        "green": {
+          "peak_nm": "515.984",
+          "intensity": "2320"
+        },
+        "red": {
+          "peak_nm": "629.772",
+          "intensity": "5917"
+        },
+        "blue": {
+          "peak_nm": "456.896",
+          "intensity": "1867"
+        }
+      },
+      "45": {
+        "green": {
+          "peak_nm": "516.8",
+          "intensity": "2508"
+        },
+        "red": {
+          "peak_nm": "629.564",
+          "intensity": "6545"
+        },
+        "blue": {
+          "peak_nm": "457.097",
+          "intensity": "2047"
+        }
+      },
+      "50": {
+        "green": {
+          "peak_nm": "518.942",
+          "intensity": "2711"
+        },
+        "red": {
+          "peak_nm": "628.94",
+          "intensity": "7229"
+        },
+        "blue": {
+          "peak_nm": "455.491",
+          "intensity": "2224"
+        }
+      },
+      "55": {
+        "green": {
+          "peak_nm": "515.984",
+          "intensity": "2985"
+        },
+        "red": {
+          "peak_nm": "629.979",
+          "intensity": "7806"
+        },
+        "blue": {
+          "peak_nm": "456.093",
+          "intensity": "2409"
+        }
+      },
+      "60": {
+        "green": {
+          "peak_nm": "517.616",
+          "intensity": "3168"
+        },
+        "red": {
+          "peak_nm": "629.979",
+          "intensity": "8454"
+        },
+        "blue": {
+          "peak_nm": "456.695",
+          "intensity": "2625"
+        }
+      },
+      "65": {
+        "green": {
+          "peak_nm": "518.432",
+          "intensity": "3432"
+        },
+        "red": {
+          "peak_nm": "629.979",
+          "intensity": "9107"
+        },
+        "blue": {
+          "peak_nm": "456.896",
+          "intensity": "2754"
+        }
+      },
+      "70": {
+        "green": {
+          "peak_nm": "514.965",
+          "intensity": "3568"
+        },
+        "red": {
+          "peak_nm": "630.915",
+          "intensity": "9608"
+        },
+        "blue": {
+          "peak_nm": "456.294",
+          "intensity": "2940"
+        }
+      },
+      "75": {
+        "green": {
+          "peak_nm": "516.698",
+          "intensity": "3789"
+        },
+        "red": {
+          "peak_nm": "630.811",
+          "intensity": "10296"
+        },
+        "blue": {
+          "peak_nm": "456.996",
+          "intensity": "3162"
+        }
+      },
+      "80": {
+        "green": {
+          "peak_nm": "518.84",
+          "intensity": "3904"
+        },
+        "red": {
+          "peak_nm": "630.603",
+          "intensity": "10739"
+        },
+        "blue": {
+          "peak_nm": "457.699",
+          "intensity": "3326"
+        }
+      },
+      "85": {
+        "green": {
+          "peak_nm": "517.84",
+          "intensity": "4014"
+        },
+        "red": {
+          "peak_nm": "631.227",
+          "intensity": "11430"
+        },
+        "blue": {
+          "peak_nm": "456.896",
+          "intensity": "3596"
+        }
+      },
+      "90": {
+        "green": {
+          "peak_nm": "515.984",
+          "intensity": "4484"
+        },
+        "red": {
+          "peak_nm": "631.019",
+          "intensity": "11982"
+        },
+        "blue": {
+          "peak_nm": "457.097",
+          "intensity": "3722"
+        }
+      },
+      "95": {
+        "green": {
+          "peak_nm": "516.392",
+          "intensity": "4706"
+        },
+        "red": {
+          "peak_nm": "630.707",
+          "intensity": "12364"
+        },
+        "blue": {
+          "peak_nm": "459.305",
+          "intensity": "4006"
+        }
+      },
+      "100": {
+        "green": {
+          "peak_nm": "515.984",
+          "intensity": "4896"
+        },
+        "red": {
+          "peak_nm": "630.915",
+          "intensity": "12913"
+        },
+        "blue": {
+          "peak_nm": "456.695",
+          "intensity": "4099"
+        }
+      }
+    }
+  }
+}
