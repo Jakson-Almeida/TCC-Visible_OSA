@@ -10,7 +10,53 @@ import numpy as np
 from scipy.signal import find_peaks
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+from matplotlib.collections import PolyCollection
 import os
+
+
+def wavelength_to_rgb(wavelength, gamma=0.8, dark=False):
+    """Converte comprimento de onda (nm) para RGB com degradê suave para UV e IR."""
+    wavelength = float(wavelength)
+    if 380 <= wavelength < 420:
+        return (0, 0, 0) if dark else (1.0, 1.0, 1.0)
+    if wavelength < 380:
+        return (0, 0, 0) if dark else (1.0, 1.0, 1.0)
+    if 680 <= wavelength < 720:
+        return (0, 0, 0) if dark else (1.0, 1.0, 1.0)
+    if wavelength >= 720:
+        return (0, 0, 0) if dark else (1.0, 1.0, 1.0)
+    if 420 <= wavelength < 440:
+        r = ((-(wavelength - 440) / (440 - 420))) ** gamma
+        g = 0.0
+        b = 1.0 ** gamma
+    elif 440 <= wavelength < 490:
+        r = 0.0
+        g = ((wavelength - 440) / (490 - 440)) ** gamma
+        b = 1.0 ** gamma
+    elif 490 <= wavelength < 510:
+        r = 0.0
+        g = 1.0 ** gamma
+        b = (-(wavelength - 510) / (510 - 490)) ** gamma
+    elif 510 <= wavelength < 580:
+        r = ((wavelength - 510) / (580 - 510)) ** gamma
+        g = 1.0 ** gamma
+        b = 0.0
+    elif 580 <= wavelength < 645:
+        r = 1.0 ** gamma
+        g = (-(wavelength - 645) / (645 - 580)) ** gamma
+        b = 0.0
+    elif 645 <= wavelength < 680:
+        r = 1.0 ** gamma
+        g = 0.0
+        b = 0.0
+    else:
+        r = g = b = 0.0
+    return (max(0, r), max(0, g), max(0, b))
+
+
+def precompute_gradient(wl_nm, dark=False):
+    """Pré-calcula as cores do gradiente para cada segmento do espectro (wl em nm)."""
+    return [wavelength_to_rgb((wl_nm[j] + wl_nm[j + 1]) / 2, dark=dark) for j in range(len(wl_nm) - 1)]
 
 
 def ler_dados_arquivo(caminho_arquivo):
@@ -47,9 +93,10 @@ def detectar_picos(intensidade, prominence=5, valley=False):
     return peaks
 
 
-def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=False, show_peaks=False):
+def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=False, show_peaks=False, show_gradient=False):
     """
     Plota espectro em ax. Se show_peaks=True, detecta picos e desenha marcadores.
+    Se show_gradient=True, preenche a área sob a curva com gradiente de cores (λ).
     Limpa marcadores antigos em ax (ax.markers e ax.marker).
     """
     ax.clear()
@@ -61,7 +108,17 @@ def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=
     ax.tick_params(colors=color_fg)
     ax.grid(True)
 
-    ax.plot(wl_nm, spec, color="gray" if dark else "steelblue", lw=1.5, alpha=0.9)
+    if show_gradient:
+        gradient_colors = precompute_gradient(wl_nm, dark=dark)
+        verts = [
+            [(wl_nm[j], 0), (wl_nm[j], spec[j]), (wl_nm[j + 1], spec[j + 1]), (wl_nm[j + 1], 0)]
+            for j in range(len(wl_nm) - 1)
+        ]
+        poly = PolyCollection(verts, facecolors=gradient_colors, edgecolors="none")
+        ax.add_collection(poly)
+        ax.plot(wl_nm, spec, color="white" if dark else "gray", lw=1.5, alpha=0.8)
+    else:
+        ax.plot(wl_nm, spec, color="gray" if dark else "steelblue", lw=1.5, alpha=0.9)
 
     # Remover marcadores antigos
     if hasattr(ax, "markers"):
@@ -111,6 +168,7 @@ def main():
     current_index = 0
     prominence = 5.0
     show_peaks = False  # Por padrão picos desabilitados
+    show_gradient = False  # Por padrão gradiente desabilitado
     dark_theme = False
     last_clicked_wl = None  # último pico clicado (para copiar)
     last_clicked_int = None
@@ -174,6 +232,7 @@ def main():
             prominence=prominence,
             dark=dark_theme,
             show_peaks=show_peaks,
+            show_gradient=show_gradient,
         )
         # Se exibir picos e houver exatamente um, já mostrar suas informações
         if show_peaks:
@@ -283,6 +342,21 @@ def main():
         command=toggle_peaks,
     )
     chk_peaks.pack(side=tk.LEFT, padx=(16, 4))
+
+    # Gradiente de cores (por padrão desligado)
+    def toggle_gradient():
+        nonlocal show_gradient
+        show_gradient = var_show_gradient.get()
+        atualizar_grafico()
+
+    var_show_gradient = tk.BooleanVar(value=False)
+    chk_gradient = ttk.Checkbutton(
+        fr_btn,
+        text="Gradiente de cores",
+        variable=var_show_gradient,
+        command=toggle_gradient,
+    )
+    chk_gradient.pack(side=tk.LEFT, padx=(8, 4))
 
     # Sensibilidade (prominência): valor maior = menos picos (filtra ruído)
     def on_prominence_change(val=None):
