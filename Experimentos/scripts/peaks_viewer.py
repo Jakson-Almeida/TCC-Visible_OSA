@@ -15,16 +15,33 @@ import os
 
 
 def wavelength_to_rgb(wavelength, gamma=0.8, dark=False):
-    """Converte comprimento de onda (nm) para RGB com degradê suave para UV e IR."""
+    """
+    Converte comprimento de onda (nm) para RGB.
+    Espectro visível (420–680 nm): cores do arco-íris.
+    Fora do intervalo: preto, com degradê entre a última cor e o preto.
+    """
     wavelength = float(wavelength)
-    if 380 <= wavelength < 420:
-        return (0, 0, 0) if dark else (1.0, 1.0, 1.0)
+    # Abaixo de 380 nm: preto
     if wavelength < 380:
-        return (0, 0, 0) if dark else (1.0, 1.0, 1.0)
-    if 680 <= wavelength < 720:
-        return (0, 0, 0) if dark else (1.0, 1.0, 1.0)
+        return (0.0, 0.0, 0.0)
+    # 380–420 nm: degradê de preto até a cor no limite (violeta em 420 nm)
+    if wavelength < 420:
+        t = (wavelength - 380) / (420 - 380)
+        r = t ** gamma
+        g = 0.0
+        b = t ** gamma
+        return (r, g, b)
+    # Acima de 720 nm: preto
     if wavelength >= 720:
-        return (0, 0, 0) if dark else (1.0, 1.0, 1.0)
+        return (0.0, 0.0, 0.0)
+    # 680–720 nm: degradê da última cor (vermelho em 680 nm) até preto
+    if wavelength > 680:
+        t = (720 - wavelength) / (720 - 680)
+        r = t ** gamma
+        g = 0.0
+        b = 0.0
+        return (r, g, b)
+    # Espectro visível 420–680 nm
     if 420 <= wavelength < 440:
         r = ((-(wavelength - 440) / (440 - 420))) ** gamma
         g = 0.0
@@ -45,12 +62,10 @@ def wavelength_to_rgb(wavelength, gamma=0.8, dark=False):
         r = 1.0 ** gamma
         g = (-(wavelength - 645) / (645 - 580)) ** gamma
         b = 0.0
-    elif 645 <= wavelength < 680:
+    else:  # 645 <= wavelength <= 680
         r = 1.0 ** gamma
         g = 0.0
         b = 0.0
-    else:
-        r = g = b = 0.0
     return (max(0, r), max(0, g), max(0, b))
 
 
