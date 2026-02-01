@@ -69,9 +69,13 @@
           </span>
           <button id="btn-export-csv" class="btn btn--primary" type="button">Exportar CSV (tabela atual)</button>
           <button id="btn-export-json" class="btn" type="button">Exportar JSON (tudo)</button>
-          <label class="btn btn--file" for="file-import-json">
-            Importar JSON
-            <input id="file-import-json" type="file" accept="application/json" />
+          <label class="btn btn--file" for="file-import-json-total">
+            Importar JSON (substituir tudo)
+            <input id="file-import-json-total" type="file" accept="application/json" />
+          </label>
+          <label class="btn btn--file" for="file-import-json-merge">
+            Importar JSON (complementar)
+            <input id="file-import-json-merge" type="file" accept="application/json" />
           </label>
           <button id="btn-clear-current" class="btn btn--danger" type="button">Limpar dados (equipamento atual)</button>
         </div>

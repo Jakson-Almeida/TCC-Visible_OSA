@@ -28,7 +28,8 @@
   const btnPasteClipboard = document.getElementById("btn-paste-clipboard");
   const btnExportCsv = document.getElementById("btn-export-csv");
   const btnExportJson = document.getElementById("btn-export-json");
-  const fileImportJson = document.getElementById("file-import-json");
+  const fileImportJsonTotal = document.getElementById("file-import-json-total");
+  const fileImportJsonMerge = document.getElementById("file-import-json-merge");
   const btnClearCurrent = document.getElementById("btn-clear-current");
   const tabOsa = document.getElementById("tab-osa");
   const tabThorlabs = document.getElementById("tab-thorlabs");
@@ -558,23 +559,34 @@
     });
   }
 
-  if (fileImportJson) {
-    fileImportJson.addEventListener("change", async () => {
-      const file = fileImportJson.files?.[0];
-      if (!file) return;
-      const text = await file.text();
+  function handleJsonFile(fileInput, isTotalImport) {
+    const file = fileInput?.files?.[0];
+    if (!file) return;
+    file.text().then((text) => {
       const parsed = safeParseJson(text);
       if (!parsed.ok) {
         alert("JSON inválido. Verifique o arquivo e tente novamente.");
-        fileImportJson.value = "";
+        if (fileInput) fileInput.value = "";
         return;
       }
-      mergeImportIntoState(parsed.value);
+      if (isTotalImport) {
+        state = importStateFromObject(parsed.value);
+        alert("Importação concluída. Os dados do arquivo substituíram todos os dados atuais.");
+      } else {
+        mergeImportIntoState(parsed.value);
+        alert("Importação concluída. Apenas células vazias foram preenchidas; células já preenchidas não foram alteradas.");
+      }
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       renderAll();
-      fileImportJson.value = "";
-      alert("Importação concluída. Apenas células vazias foram preenchidas com os dados do arquivo; células já preenchidas não foram alteradas.");
+      if (fileInput) fileInput.value = "";
     });
+  }
+
+  if (fileImportJsonTotal) {
+    fileImportJsonTotal.addEventListener("change", () => handleJsonFile(fileImportJsonTotal, true));
+  }
+  if (fileImportJsonMerge) {
+    fileImportJsonMerge.addEventListener("change", () => handleJsonFile(fileImportJsonMerge, false));
   }
 
   if (btnClearCurrent) {
