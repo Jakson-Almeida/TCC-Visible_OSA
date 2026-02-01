@@ -1,11 +1,14 @@
 /* eslint-disable no-alert */
 (() => {
-  const STORAGE_KEY = "tcc_visible_osa_experimento_leds_v1";
+  const STORAGE_KEY = "tcc_visible_osa_experimento_leds_v2";
 
-  const DUTY_CYCLES = Array.from({ length: 20 }, (_, i) => (i + 1) * 5); // 5..100
-  const EQUIPMENTS = [
-    { id: "osa_visivel", label: "OSA Visível", tbodyId: "tbody-osa" },
-    { id: "thorlabs", label: "ThorLabs", tbodyId: "tbody-thorlabs" },
+  const DUTY_CYCLES = Array.from({ length: 10 }, (_, i) => i + 1); // 1..10
+  const NUM_TOMADAS = 5;
+  const OSA_ESPECTROS = [
+    { id: 1, label: "Combinado RGB" },
+    { id: 2, label: "Canal R" },
+    { id: 3, label: "Canal G" },
+    { id: 4, label: "Canal B" },
   ];
 
   const COLORS = [
@@ -14,38 +17,49 @@
     { id: "blue", label: "Azul", nmPlaceholder: "ex: 468.2", intPlaceholder: "ex: 122.12" },
   ];
 
-  /** @type {Record<string, any>} */
   let state = loadState();
   let currentEquipmentId = "osa_visivel";
-  let saveTimer = /** @type {number | null} */ (null);
+  let currentTomada = 1;
+  let currentEspectro = 1;
+  let saveTimer = null;
 
-  const elSaveStatus = /** @type {HTMLSpanElement | null} */ (document.getElementById("save-status"));
-  const btnExportCsv = /** @type {HTMLButtonElement | null} */ (document.getElementById("btn-export-csv"));
-  const btnExportJson = /** @type {HTMLButtonElement | null} */ (document.getElementById("btn-export-json"));
-  const fileImportJson = /** @type {HTMLInputElement | null} */ (document.getElementById("file-import-json"));
-  const btnClearCurrent = /** @type {HTMLButtonElement | null} */ (document.getElementById("btn-clear-current"));
-
-  const tabOsa = /** @type {HTMLButtonElement | null} */ (document.getElementById("tab-osa"));
-  const tabThorlabs = /** @type {HTMLButtonElement | null} */ (document.getElementById("tab-thorlabs"));
-  const panelOsa = /** @type {HTMLElement | null} */ (document.getElementById("panel-osa"));
-  const panelThorlabs = /** @type {HTMLElement | null} */ (document.getElementById("panel-thorlabs"));
+  const elSaveStatus = document.getElementById("save-status");
+  const btnExportCsv = document.getElementById("btn-export-csv");
+  const btnExportJson = document.getElementById("btn-export-json");
+  const fileImportJson = document.getElementById("file-import-json");
+  const btnClearCurrent = document.getElementById("btn-clear-current");
+  const tabOsa = document.getElementById("tab-osa");
+  const tabThorlabs = document.getElementById("tab-thorlabs");
+  const panelOsa = document.getElementById("panel-osa");
+  const panelThorlabs = document.getElementById("panel-thorlabs");
+  const osaSub = document.getElementById("osa-sub");
+  const thorlabsSub = document.getElementById("thorlabs-sub");
 
   function defaultState() {
-    const data = {};
-    for (const eq of EQUIPMENTS) {
-      data[eq.id] = {};
+    const data = { osa_visivel: {}, thorlabs: {} };
+
+    for (let t = 1; t <= NUM_TOMADAS; t++) {
+      data.thorlabs[String(t)] = {};
       for (const duty of DUTY_CYCLES) {
-        data[eq.id][String(duty)] = {};
+        data.thorlabs[String(t)][String(duty)] = {};
         for (const c of COLORS) {
-          data[eq.id][String(duty)][c.id] = { peak_nm: "", intensity: "" };
+          data.thorlabs[String(t)][String(duty)][c.id] = { peak_nm: "", intensity: "" };
+        }
+      }
+
+      data.osa_visivel[String(t)] = {};
+      for (let e = 1; e <= OSA_ESPECTROS.length; e++) {
+        data.osa_visivel[String(t)][String(e)] = {};
+        for (const duty of DUTY_CYCLES) {
+          data.osa_visivel[String(t)][String(e)][String(duty)] = {};
+          for (const c of COLORS) {
+            data.osa_visivel[String(t)][String(e)][String(duty)][c.id] = { peak_nm: "", intensity: "" };
+          }
         }
       }
     }
-    return {
-      version: 1,
-      updatedAt: null,
-      data,
-    };
+
+    return { version: 2, updatedAt: null, data };
   }
 
   function safeParseJson(text) {
@@ -65,17 +79,41 @@
     const loaded = parsed.value;
     const base = defaultState();
 
-    // Merge only expected shape.
-    for (const eq of EQUIPMENTS) {
-      for (const duty of DUTY_CYCLES) {
-        for (const c of COLORS) {
-          const v =
-            loaded?.data?.[eq.id]?.[String(duty)]?.[c.id] ??
-            loaded?.[eq.id]?.[String(duty)]?.[c.id]; // tolerate older shape
-          if (v && typeof v === "object") {
-            if (typeof v.peak_nm === "string") base.data[eq.id][String(duty)][c.id].peak_nm = v.peak_nm;
-            if (typeof v.intensity === "string")
-              base.data[eq.id][String(duty)][c.id].intensity = v.intensity;
+    if (loaded?.data?.osa_visivel) {
+      for (let t = 1; t <= NUM_TOMADAS; t++) {
+        const T = String(t);
+        if (!loaded.data.osa_visivel[T]) continue;
+        for (let e = 1; e <= OSA_ESPECTROS.length; e++) {
+          const E = String(e);
+          if (!loaded.data.osa_visivel[T][E]) continue;
+          for (const duty of DUTY_CYCLES) {
+            const D = String(duty);
+            if (!loaded.data.osa_visivel[T][E][D]) continue;
+            for (const c of COLORS) {
+              const v = loaded.data.osa_visivel[T][E][D][c.id];
+              if (v && typeof v === "object") {
+                if (typeof v.peak_nm === "string") base.data.osa_visivel[T][E][D][c.id].peak_nm = v.peak_nm;
+                if (typeof v.intensity === "string") base.data.osa_visivel[T][E][D][c.id].intensity = v.intensity;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (loaded?.data?.thorlabs) {
+      for (let t = 1; t <= NUM_TOMADAS; t++) {
+        const T = String(t);
+        if (!loaded.data.thorlabs[T]) continue;
+        for (const duty of DUTY_CYCLES) {
+          const D = String(duty);
+          if (!loaded.data.thorlabs[T][D]) continue;
+          for (const c of COLORS) {
+            const v = loaded.data.thorlabs[T][D][c.id];
+            if (v && typeof v === "object") {
+              if (typeof v.peak_nm === "string") base.data.thorlabs[T][D][c.id].peak_nm = v.peak_nm;
+              if (typeof v.intensity === "string") base.data.thorlabs[T][D][c.id].intensity = v.intensity;
+            }
           }
         }
       }
@@ -86,8 +124,7 @@
   }
 
   function setSaveStatus(text) {
-    if (!elSaveStatus) return;
-    elSaveStatus.textContent = text;
+    if (elSaveStatus) elSaveStatus.textContent = text;
   }
 
   function formatDateTime(iso) {
@@ -122,11 +159,17 @@
 
   function escapeCsvCell(value) {
     const s = String(value ?? "");
-    // Always quote to be safe with decimal commas, etc.
     return `"${s.replaceAll('"', '""')}"`;
   }
 
-  function buildCsvForEquipment(eqId) {
+  function getCurrentTableData() {
+    if (currentEquipmentId === "osa_visivel") {
+      return state.data.osa_visivel[String(currentTomada)][String(currentEspectro)];
+    }
+    return state.data.thorlabs[String(currentTomada)];
+  }
+
+  function buildCsvForCurrentTable() {
     const headers = [
       "DutyCycle_percent",
       "Green_peak_nm",
@@ -136,23 +179,24 @@
       "Blue_peak_nm",
       "Blue_intensity",
     ];
-
     const rows = [headers.map(escapeCsvCell).join(",")];
+    const tableData = getCurrentTableData();
+    if (!tableData) return rows.join("\n");
 
     for (const duty of DUTY_CYCLES) {
-      const d = state.data[eqId][String(duty)];
+      const d = tableData[String(duty)];
+      if (!d) continue;
       const row = [
         duty,
-        d.green.peak_nm,
-        d.green.intensity,
-        d.red.peak_nm,
-        d.red.intensity,
-        d.blue.peak_nm,
-        d.blue.intensity,
+        d.green?.peak_nm ?? "",
+        d.green?.intensity ?? "",
+        d.red?.peak_nm ?? "",
+        d.red?.intensity ?? "",
+        d.blue?.peak_nm ?? "",
+        d.blue?.intensity ?? "",
       ];
       rows.push(row.map(escapeCsvCell).join(","));
     }
-
     return rows.join("\n");
   }
 
@@ -169,20 +213,41 @@
       if (eqId === "osa_visivel") {
         panelOsa.classList.remove("panel--hidden");
         panelThorlabs.classList.add("panel--hidden");
+        if (osaSub) osaSub.classList.remove("sub-tabs--hidden");
+        if (thorlabsSub) thorlabsSub.classList.add("sub-tabs--hidden");
       } else {
         panelThorlabs.classList.remove("panel--hidden");
         panelOsa.classList.add("panel--hidden");
+        if (osaSub) osaSub.classList.add("sub-tabs--hidden");
+        if (thorlabsSub) thorlabsSub.classList.remove("sub-tabs--hidden");
       }
     }
+
+    updateTomadaEspectroButtons();
+    renderCurrentTable();
   }
 
-  function buildInput({ eqId, duty, colorId, field }) {
+  function updateTomadaEspectroButtons() {
+    const isOsa = currentEquipmentId === "osa_visivel";
+    document.querySelectorAll("#osa-sub [data-tomada], #thorlabs-sub [data-tomada]").forEach((btn) => {
+      const t = Number(btn.getAttribute("data-tomada"));
+      btn.setAttribute("aria-selected", t === currentTomada ? "true" : "false");
+    });
+    document.querySelectorAll("#osa-sub [data-espectro]").forEach((btn) => {
+      const esp = Number(btn.getAttribute("data-espectro"));
+      btn.setAttribute("aria-selected", isOsa && esp === currentEspectro ? "true" : "false");
+    });
+  }
+
+  function buildInput(params) {
+    const { eqId, tomada, espectro, duty, colorId, field } = params;
     const input = document.createElement("input");
     input.type = "number";
     input.inputMode = "decimal";
     input.step = "any";
-
     input.dataset.eq = eqId;
+    input.dataset.tomada = String(tomada);
+    if (eqId === "osa_visivel") input.dataset.espectro = String(espectro);
     input.dataset.duty = String(duty);
     input.dataset.color = colorId;
     input.dataset.field = field;
@@ -195,27 +260,39 @@
       input.placeholder = colorMeta?.intPlaceholder ?? "—";
     }
 
-    const v = state.data[eqId][String(duty)][colorId][field];
-    input.value = v === "" ? "" : v;
+    let value;
+    if (eqId === "osa_visivel") {
+      value = state.data.osa_visivel[String(tomada)][String(espectro)][String(duty)][colorId][field];
+    } else {
+      value = state.data.thorlabs[String(tomada)][String(duty)][colorId][field];
+    }
+    input.value = value === "" ? "" : value;
 
     input.addEventListener("input", () => {
       const next = input.value;
-      state.data[eqId][String(duty)][colorId][field] = next;
+      if (eqId === "osa_visivel") {
+        state.data.osa_visivel[String(tomada)][String(espectro)][String(duty)][colorId][field] = next;
+      } else {
+        state.data.thorlabs[String(tomada)][String(duty)][colorId][field] = next;
+      }
       scheduleSave();
     });
 
     return input;
   }
 
-  function buildTableBody(eqId, tbodyId) {
-    const tbody = /** @type {HTMLTableSectionElement | null} */ (document.getElementById(tbodyId));
+  function renderCurrentTable() {
+    const tbodyId = currentEquipmentId === "osa_visivel" ? "tbody-osa" : "tbody-thorlabs";
+    const tbody = document.getElementById(tbodyId);
     if (!tbody) return;
 
     tbody.textContent = "";
+    const tomada = currentTomada;
+    const espectro = currentEspectro;
+    const eqId = currentEquipmentId;
 
     for (const duty of DUTY_CYCLES) {
       const tr = document.createElement("tr");
-
       const tdDuty = document.createElement("td");
       tdDuty.className = "sticky-col";
       tdDuty.textContent = String(duty);
@@ -223,45 +300,104 @@
 
       for (const color of COLORS) {
         const tdNm = document.createElement("td");
-        tdNm.appendChild(buildInput({ eqId, duty, colorId: color.id, field: "peak_nm" }));
+        tdNm.appendChild(
+          buildInput({
+            eqId,
+            tomada,
+            espectro,
+            duty,
+            colorId: color.id,
+            field: "peak_nm",
+          })
+        );
         tr.appendChild(tdNm);
-
         const tdInt = document.createElement("td");
-        tdInt.appendChild(buildInput({ eqId, duty, colorId: color.id, field: "intensity" }));
+        tdInt.appendChild(
+          buildInput({
+            eqId,
+            tomada,
+            espectro,
+            duty,
+            colorId: color.id,
+            field: "intensity",
+          })
+        );
         tr.appendChild(tdInt);
       }
-
       tbody.appendChild(tr);
     }
+
+    updateTomadaEspectroButtons();
   }
 
   function renderAll() {
-    for (const eq of EQUIPMENTS) buildTableBody(eq.id, eq.tbodyId);
     setSaveStatus(state.updatedAt ? `Salvo em ${formatDateTime(state.updatedAt)}` : "Sem alterações ainda");
     applyEquipmentTab(currentEquipmentId);
   }
 
   function clearEquipment(eqId) {
-    for (const duty of DUTY_CYCLES) {
-      for (const c of COLORS) {
-        state.data[eqId][String(duty)][c.id].peak_nm = "";
-        state.data[eqId][String(duty)][c.id].intensity = "";
+    if (eqId === "osa_visivel") {
+      for (let t = 1; t <= NUM_TOMADAS; t++) {
+        for (let e = 1; e <= OSA_ESPECTROS.length; e++) {
+          for (const duty of DUTY_CYCLES) {
+            for (const c of COLORS) {
+              state.data.osa_visivel[String(t)][String(e)][String(duty)][c.id].peak_nm = "";
+              state.data.osa_visivel[String(t)][String(e)][String(duty)][c.id].intensity = "";
+            }
+          }
+        }
+      }
+    } else {
+      for (let t = 1; t <= NUM_TOMADAS; t++) {
+        for (const duty of DUTY_CYCLES) {
+          for (const c of COLORS) {
+            state.data.thorlabs[String(t)][String(duty)][c.id].peak_nm = "";
+            state.data.thorlabs[String(t)][String(duty)][c.id].intensity = "";
+          }
+        }
       }
     }
   }
 
   function importStateFromObject(obj) {
-    // Accept either full object (with data/updatedAt) or "data-like".
     const base = defaultState();
     const incoming = obj?.data ? obj : { data: obj };
+    if (!incoming.data) return base;
 
-    for (const eq of EQUIPMENTS) {
-      for (const duty of DUTY_CYCLES) {
-        for (const c of COLORS) {
-          const src = incoming?.data?.[eq.id]?.[String(duty)]?.[c.id];
-          if (!src || typeof src !== "object") continue;
-          if (typeof src.peak_nm === "string") base.data[eq.id][String(duty)][c.id].peak_nm = src.peak_nm;
-          if (typeof src.intensity === "string") base.data[eq.id][String(duty)][c.id].intensity = src.intensity;
+    if (incoming.data.osa_visivel) {
+      for (let t = 1; t <= NUM_TOMADAS; t++) {
+        const T = String(t);
+        if (!incoming.data.osa_visivel[T]) continue;
+        for (let e = 1; e <= OSA_ESPECTROS.length; e++) {
+          const E = String(e);
+          if (!incoming.data.osa_visivel[T][E]) continue;
+          for (const duty of DUTY_CYCLES) {
+            const D = String(duty);
+            if (!incoming.data.osa_visivel[T][E][D]) continue;
+            for (const c of COLORS) {
+              const src = incoming.data.osa_visivel[T][E][D][c.id];
+              if (!src || typeof src !== "object") continue;
+              if (typeof src.peak_nm === "string") base.data.osa_visivel[T][E][D][c.id].peak_nm = src.peak_nm;
+              if (typeof src.intensity === "string") base.data.osa_visivel[T][E][D][c.id].intensity = src.intensity;
+            }
+          }
+        }
+      }
+    }
+
+    if (incoming.data.thorlabs) {
+      for (let t = 1; t <= NUM_TOMADAS; t++) {
+        const T = String(t);
+        if (!incoming.data.thorlabs[T]) continue;
+        for (const duty of DUTY_CYCLES) {
+          const D = String(duty);
+          if (!incoming.data.thorlabs[T][D]) continue;
+          for (const c of COLORS) {
+            const src = incoming.data.thorlabs[T][D][c.id];
+            if (!src || typeof src !== "object") continue;
+            if (typeof src.peak_nm === "string") base.data.thorlabs[T][D][c.id].peak_nm = src.peak_nm;
+            if (typeof src.intensity === "string") base.data.thorlabs[T][D][c.id].intensity = src.intensity;
+          }
         }
       }
     }
@@ -270,15 +406,36 @@
     return base;
   }
 
-  // Wire UI
   if (tabOsa) tabOsa.addEventListener("click", () => applyEquipmentTab("osa_visivel"));
   if (tabThorlabs) tabThorlabs.addEventListener("click", () => applyEquipmentTab("thorlabs"));
 
+  document.querySelectorAll("#osa-sub [data-tomada]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentTomada = Number(btn.getAttribute("data-tomada"));
+      renderCurrentTable();
+    });
+  });
+  document.querySelectorAll("#osa-sub [data-espectro]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentEspectro = Number(btn.getAttribute("data-espectro"));
+      renderCurrentTable();
+    });
+  });
+  document.querySelectorAll("#thorlabs-sub [data-tomada]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentTomada = Number(btn.getAttribute("data-tomada"));
+      renderCurrentTable();
+    });
+  });
+
   if (btnExportCsv) {
     btnExportCsv.addEventListener("click", () => {
-      const csv = buildCsvForEquipment(currentEquipmentId);
+      const csv = buildCsvForCurrentTable();
       const ts = new Date().toISOString().replaceAll(":", "-");
-      downloadText(`dados_${currentEquipmentId}_${ts}.csv`, csv, "text/csv;charset=utf-8");
+      let name = `dados_${currentEquipmentId}_tomada${currentTomada}`;
+      if (currentEquipmentId === "osa_visivel") name += `_espectro${currentEspectro}`;
+      name += `_${ts}.csv`;
+      downloadText(name, csv, "text/csv;charset=utf-8");
     });
   }
 
@@ -311,7 +468,7 @@
   if (btnClearCurrent) {
     btnClearCurrent.addEventListener("click", () => {
       const name = currentEquipmentId === "osa_visivel" ? "OSA Visível" : "ThorLabs";
-      const ok = confirm(`Tem certeza que deseja apagar todos os dados do equipamento: ${name}?`);
+      const ok = confirm(`Apagar todos os dados do equipamento: ${name}? (todas as tomadas e espectros)`);
       if (!ok) return;
       clearEquipment(currentEquipmentId);
       scheduleSave();
@@ -319,7 +476,5 @@
     });
   }
 
-  // Initial render
   renderAll();
 })();
-

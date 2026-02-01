@@ -11,50 +11,60 @@
       <div class="app-header__title">
         <h1>Cadastro de dados do experimento</h1>
         <p>
-          Preencha <strong>λ de pico (nm)</strong> e <strong>intensidade</strong> para LEDs
-          <strong>verde</strong>, <strong>vermelho</strong> e <strong>azul</strong>, para cada
-          <strong>Duty Cycle</strong>.
+          Duty Cycle <strong>1–10%</strong>. Preencha <strong>λ de pico (nm)</strong> e
+          <strong>intensidade</strong> para LEDs verde, vermelho e azul. <strong>5 tomadas</strong>
+          por equipamento; no OSA Visível há <strong>4 espectros por tomada</strong> (combinado RGB
+          + canais R, G, B da câmera).
         </p>
       </div>
 
       <div class="app-header__controls">
         <div class="tabs" role="tablist" aria-label="Equipamento">
-          <button
-            id="tab-osa"
-            class="tab"
-            type="button"
-            role="tab"
-            aria-selected="true"
-            aria-controls="panel-osa"
-            data-equipment="osa_visivel"
-          >
+          <button id="tab-osa" class="tab" type="button" role="tab" aria-selected="true" aria-controls="panel-osa" data-equipment="osa_visivel">
             OSA Visível
           </button>
-          <button
-            id="tab-thorlabs"
-            class="tab"
-            type="button"
-            role="tab"
-            aria-selected="false"
-            aria-controls="panel-thorlabs"
-            data-equipment="thorlabs"
-          >
+          <button id="tab-thorlabs" class="tab" type="button" role="tab" aria-selected="false" aria-controls="panel-thorlabs" data-equipment="thorlabs">
             ThorLabs
           </button>
         </div>
 
+        <div id="osa-sub" class="sub-tabs">
+          <span class="sub-tabs__label">Tomada:</span>
+          <div class="tabs" role="tablist" aria-label="Tomada OSA">
+            <button type="button" class="tab tab--sub" data-tomada="1" aria-label="Tomada 1">1</button>
+            <button type="button" class="tab tab--sub" data-tomada="2" aria-label="Tomada 2">2</button>
+            <button type="button" class="tab tab--sub" data-tomada="3" aria-label="Tomada 3">3</button>
+            <button type="button" class="tab tab--sub" data-tomada="4" aria-label="Tomada 4">4</button>
+            <button type="button" class="tab tab--sub" data-tomada="5" aria-label="Tomada 5">5</button>
+          </div>
+          <span class="sub-tabs__label">Espectro:</span>
+          <div class="tabs" role="tablist" aria-label="Espectro OSA">
+            <button type="button" class="tab tab--sub" data-espectro="1" aria-label="Combinado RGB">Combinado</button>
+            <button type="button" class="tab tab--sub" data-espectro="2" aria-label="Canal R">Canal R</button>
+            <button type="button" class="tab tab--sub" data-espectro="3" aria-label="Canal G">Canal G</button>
+            <button type="button" class="tab tab--sub" data-espectro="4" aria-label="Canal B">Canal B</button>
+          </div>
+        </div>
+
+        <div id="thorlabs-sub" class="sub-tabs sub-tabs--hidden">
+          <span class="sub-tabs__label">Tomada:</span>
+          <div class="tabs" role="tablist" aria-label="Tomada ThorLabs">
+            <button type="button" class="tab tab--sub" data-tomada="1" aria-label="Tomada 1">1</button>
+            <button type="button" class="tab tab--sub" data-tomada="2" aria-label="Tomada 2">2</button>
+            <button type="button" class="tab tab--sub" data-tomada="3" aria-label="Tomada 3">3</button>
+            <button type="button" class="tab tab--sub" data-tomada="4" aria-label="Tomada 4">4</button>
+            <button type="button" class="tab tab--sub" data-tomada="5" aria-label="Tomada 5">5</button>
+          </div>
+        </div>
+
         <div class="actions">
-          <button id="btn-export-csv" class="btn btn--primary" type="button">
-            Exportar CSV (equipamento atual)
-          </button>
+          <button id="btn-export-csv" class="btn btn--primary" type="button">Exportar CSV (tabela atual)</button>
           <button id="btn-export-json" class="btn" type="button">Exportar JSON (tudo)</button>
           <label class="btn btn--file" for="file-import-json">
             Importar JSON
             <input id="file-import-json" type="file" accept="application/json" />
           </label>
-          <button id="btn-clear-current" class="btn btn--danger" type="button">
-            Limpar dados (equipamento atual)
-          </button>
+          <button id="btn-clear-current" class="btn btn--danger" type="button">Limpar dados (equipamento atual)</button>
         </div>
 
         <div class="status">
@@ -89,12 +99,7 @@
         </div>
       </section>
 
-      <section
-        id="panel-thorlabs"
-        class="panel panel--hidden"
-        role="tabpanel"
-        aria-labelledby="tab-thorlabs"
-      >
+      <section id="panel-thorlabs" class="panel panel--hidden" role="tabpanel" aria-labelledby="tab-thorlabs">
         <div class="table-wrap">
           <table class="data-table" aria-label="Tabela ThorLabs">
             <thead>
@@ -121,7 +126,7 @@
 
     <footer class="app-footer">
       <div class="app-footer__hint">
-        Dica: os dados ficam salvos no seu navegador automaticamente. Use exportação para gerar arquivo.
+        Dados salvos automaticamente no navegador. Exporte CSV/JSON para backup.
       </div>
     </footer>
 

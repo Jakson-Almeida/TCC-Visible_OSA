@@ -85,6 +85,21 @@ body {
   box-shadow: 0 0 0 3px var(--focus);
 }
 
+.sub-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.sub-tabs--hidden {
+  display: none;
+}
+.sub-tabs__label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
 .actions {
   display: flex;
   gap: 8px;
