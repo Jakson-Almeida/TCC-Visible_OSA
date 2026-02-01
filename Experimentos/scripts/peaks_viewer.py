@@ -465,24 +465,46 @@ def main():
         )
 
     def copiar_lambda():
-        if last_clicked_wl is None:
-            status_var.set("Clique em um pico antes de copiar λ.")
+        wl_valor = last_clicked_wl
+        origem = "pico"
+        
+        # Se não há pico clicado, tenta usar o centro da curva ajustada
+        if wl_valor is None and fit_info is not None:
+            modelo, params, r2, fwhm = fit_info
+            amp, center, width = params
+            wl_valor = center
+            origem = "curva ajustada"
+        
+        if wl_valor is None:
+            status_var.set("Clique em um pico ou ajuste uma curva antes de copiar λ.")
             return
-        texto = f"{last_clicked_wl:.6g}"
+        
+        texto = f"{wl_valor:.6g}"
         root.clipboard_clear()
         root.clipboard_append(texto)
         root.update()
-        status_var.set(f"λ = {texto} nm copiado para a área de transferência.")
+        status_var.set(f"λ = {texto} nm ({origem}) copiado para a área de transferência.")
 
     def copiar_intensidade():
-        if last_clicked_int is None:
-            status_var.set("Clique em um pico antes de copiar intensidade.")
+        int_valor = last_clicked_int
+        origem = "pico"
+        
+        # Se não há pico clicado, tenta usar a amplitude da curva ajustada
+        if int_valor is None and fit_info is not None:
+            modelo, params, r2, fwhm = fit_info
+            amp, center, width = params
+            int_valor = amp
+            origem = "curva ajustada"
+        
+        if int_valor is None:
+            status_var.set("Clique em um pico ou ajuste uma curva antes de copiar intensidade.")
             return
-        texto = f"{last_clicked_int:.6g}"
+        
+        texto = f"{int_valor:.6g}"
         root.clipboard_clear()
         root.clipboard_append(texto)
         root.update()
-        status_var.set(f"Intensidade = {texto} copiada para a área de transferência.")
+        status_var.set(f"Intensidade = {texto} ({origem}) copiada para a área de transferência.")
 
     canvas.mpl_connect("button_press_event", on_click_grafico)
 
