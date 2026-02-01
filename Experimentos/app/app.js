@@ -426,6 +426,65 @@
     return base;
   }
 
+  /**
+   * Complementa dados faltantes: preenche apenas células vazias com valores do JSON importado.
+   * Células já preenchidas não são alteradas. Vale para todos os equipamentos e tabelas.
+   */
+  function mergeImportIntoState(obj) {
+    const incoming = obj?.data ? obj : { data: obj };
+    if (!incoming.data) return;
+
+    if (incoming.data.osa_visivel) {
+      for (let t = 1; t <= NUM_TOMADAS; t++) {
+        const T = String(t);
+        if (!state.data.osa_visivel[T] || !incoming.data.osa_visivel[T]) continue;
+        for (let e = 1; e <= OSA_ESPECTROS.length; e++) {
+          const E = String(e);
+          if (!state.data.osa_visivel[T][E] || !incoming.data.osa_visivel[T][E]) continue;
+          for (const duty of DUTY_CYCLES) {
+            const D = String(duty);
+            if (!state.data.osa_visivel[T][E][D] || !incoming.data.osa_visivel[T][E][D]) continue;
+            for (const c of COLORS) {
+              const cur = state.data.osa_visivel[T][E][D][c.id];
+              const src = incoming.data.osa_visivel[T][E][D][c.id];
+              if (!cur || !src || typeof src !== "object") continue;
+              if (typeof src.peak_nm === "string" && src.peak_nm.trim() !== "" && (cur.peak_nm === "" || cur.peak_nm == null)) {
+                cur.peak_nm = src.peak_nm;
+              }
+              if (typeof src.intensity === "string" && src.intensity.trim() !== "" && (cur.intensity === "" || cur.intensity == null)) {
+                cur.intensity = src.intensity;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (incoming.data.thorlabs) {
+      for (let t = 1; t <= NUM_TOMADAS; t++) {
+        const T = String(t);
+        if (!state.data.thorlabs[T] || !incoming.data.thorlabs[T]) continue;
+        for (const duty of DUTY_CYCLES) {
+          const D = String(duty);
+          if (!state.data.thorlabs[T][D] || !incoming.data.thorlabs[T][D]) continue;
+          for (const c of COLORS) {
+            const cur = state.data.thorlabs[T][D][c.id];
+            const src = incoming.data.thorlabs[T][D][c.id];
+            if (!cur || !src || typeof src !== "object") continue;
+            if (typeof src.peak_nm === "string" && src.peak_nm.trim() !== "" && (cur.peak_nm === "" || cur.peak_nm == null)) {
+              cur.peak_nm = src.peak_nm;
+            }
+            if (typeof src.intensity === "string" && src.intensity.trim() !== "" && (cur.intensity === "" || cur.intensity == null)) {
+              cur.intensity = src.intensity;
+            }
+          }
+        }
+      }
+    }
+
+    state.updatedAt = new Date().toISOString();
+  }
+
   if (cbPasteMode) {
     cbPasteMode.addEventListener("change", () => {
       if (btnPasteClipboard) btnPasteClipboard.disabled = !cbPasteMode.checked;
@@ -510,11 +569,11 @@
         fileImportJson.value = "";
         return;
       }
-      state = importStateFromObject(parsed.value);
+      mergeImportIntoState(parsed.value);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       renderAll();
       fileImportJson.value = "";
-      alert("Importação concluída. Os dados foram carregados e salvos.");
+      alert("Importação concluída. Apenas células vazias foram preenchidas com os dados do arquivo; células já preenchidas não foram alteradas.");
     });
   }
 

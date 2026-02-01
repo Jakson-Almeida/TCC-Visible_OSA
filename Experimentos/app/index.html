@@ -58,13 +58,15 @@
         </div>
 
         <div class="actions">
-          <label class="checkbox-label">
-            <input id="cb-paste-mode" type="checkbox" />
-            <span>Habilitar colagem rápida</span>
-          </label>
-          <button id="btn-paste-clipboard" class="btn" type="button" disabled title="Habilite a colagem rápida e clique aqui após copiar um número">
-            Colar da área de transferência
-          </button>
+          <span class="paste-quick-wrap u-hidden" aria-hidden="true">
+            <label class="checkbox-label">
+              <input id="cb-paste-mode" type="checkbox" />
+              <span>Habilitar colagem rápida</span>
+            </label>
+            <button id="btn-paste-clipboard" class="btn" type="button" disabled title="Habilite a colagem rápida e clique aqui após copiar um número">
+              Colar da área de transferência
+            </button>
+          </span>
           <button id="btn-export-csv" class="btn btn--primary" type="button">Exportar CSV (tabela atual)</button>
           <button id="btn-export-json" class="btn" type="button">Exportar JSON (tudo)</button>
           <label class="btn btn--file" for="file-import-json">

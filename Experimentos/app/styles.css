@@ -131,6 +131,10 @@ body {
   cursor: not-allowed;
 }
 
+.u-hidden {
+  display: none !important;
+}
+
 .btn {
   appearance: none;
   border: 1px solid var(--border);
