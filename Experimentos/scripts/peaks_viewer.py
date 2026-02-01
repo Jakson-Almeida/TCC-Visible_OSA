@@ -281,13 +281,24 @@ def main():
 
     def on_key(event):
         key = event.keysym
-        if key in ("Left", "comma", "less"):
+        if key in ("Left", "Prior", "comma", "less", "minus"):
             anterior()
-        elif key in ("Right", "period", "greater"):
+            return "break"
+        if key in ("Right", "Next", "period", "greater", "plus"):
             proximo()
+            return "break"
 
-    root.bind("<KeyPress>", on_key)
-    canvas.get_tk_widget().bind("<KeyPress>", on_key)
+    # Navegação por teclado: funciona em qualquer lugar da janela
+    root.bind_all("<Left>", on_key)
+    root.bind_all("<Right>", on_key)
+    root.bind_all("<Prior>", on_key)    # Page Up
+    root.bind_all("<Next>", on_key)     # Page Down
+    root.bind_all("<comma>", on_key)    # , (anterior)
+    root.bind_all("<period>", on_key)   # . (próximo)
+    root.bind_all("<less>", on_key)     # < (anterior)
+    root.bind_all("<greater>", on_key)  # > (próximo)
+    root.bind_all("<minus>", on_key)    # - (anterior)
+    root.bind_all("<plus>", on_key)     # + (próximo)
 
     def on_click_grafico(event):
         nonlocal last_clicked_wl, last_clicked_int
@@ -341,7 +352,7 @@ def main():
     ttk.Button(fr_btn, text="Carregar arquivo(s)...", command=carregar_arquivos).pack(side=tk.LEFT, padx=(0, 8))
     ttk.Button(fr_btn, text="< Anterior", command=anterior).pack(side=tk.LEFT, padx=2)
     ttk.Button(fr_btn, text="Próximo >", command=proximo).pack(side=tk.LEFT, padx=2)
-    tk.Label(fr_btn, text="Navegação: < ou > (ou setas)", fg="gray").pack(side=tk.LEFT, padx=12)
+    tk.Label(fr_btn, text="Navegação: ← →  |  < >  |  − +  |  Page Up/Down", fg="gray").pack(side=tk.LEFT, padx=12)
 
     # Exibir picos (por padrão desligado)
     def toggle_peaks():
