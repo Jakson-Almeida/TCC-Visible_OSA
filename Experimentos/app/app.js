@@ -24,6 +24,8 @@
   let saveTimer = null;
 
   const elSaveStatus = document.getElementById("save-status");
+  const cbPasteMode = document.getElementById("cb-paste-mode");
+  const btnPasteClipboard = document.getElementById("btn-paste-clipboard");
   const btnExportCsv = document.getElementById("btn-export-csv");
   const btnExportJson = document.getElementById("btn-export-json");
   const fileImportJson = document.getElementById("file-import-json");
@@ -34,6 +36,9 @@
   const panelThorlabs = document.getElementById("panel-thorlabs");
   const osaSub = document.getElementById("osa-sub");
   const thorlabsSub = document.getElementById("thorlabs-sub");
+
+  let pasteMode = false;
+  let pasteValue = null;
 
   function defaultState() {
     const data = { osa_visivel: {}, thorlabs: {} };
@@ -125,6 +130,21 @@
 
   function setSaveStatus(text) {
     if (elSaveStatus) elSaveStatus.textContent = text;
+  }
+
+  function isValidNumber(str) {
+    if (typeof str !== "string") return false;
+    const trimmed = str.trim();
+    if (trimmed === "") return false;
+    const n = parseFloat(trimmed.replace(",", "."));
+    return Number.isFinite(n);
+  }
+
+  function exitPasteMode() {
+    pasteMode = false;
+    pasteValue = null;
+    if (btnPasteClipboard) btnPasteClipboard.classList.remove("btn--paste-active");
+    setSaveStatus(state.updatedAt ? `Salvo em ${formatDateTime(state.updatedAt)}` : "Sem alterações ainda");
   }
 
   function formatDateTime(iso) {
@@ -405,6 +425,39 @@
     base.updatedAt = new Date().toISOString();
     return base;
   }
+
+  if (cbPasteMode) {
+    cbPasteMode.addEventListener("change", () => {
+      if (btnPasteClipboard) btnPasteClipboard.disabled = !cbPasteMode.checked;
+      if (!cbPasteMode.checked) exitPasteMode();
+    });
+  }
+  if (btnPasteClipboard) {
+    btnPasteClipboard.addEventListener("click", async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (!isValidNumber(text)) {
+          setSaveStatus("Área de transferência não contém número válido.");
+          return;
+        }
+        const trimmed = text.trim().replace(",", ".");
+        pasteValue = trimmed;
+        pasteMode = true;
+        btnPasteClipboard.classList.add("btn--paste-active");
+        setSaveStatus(`Clique em uma célula para colar: ${trimmed}`);
+      } catch (err) {
+        setSaveStatus("Não foi possível ler a área de transferência (permissão ou navegador).");
+      }
+    });
+  }
+  document.addEventListener("click", (e) => {
+    if (!pasteMode || pasteValue == null) return;
+    const input = e.target.tagName === "INPUT" && e.target.dataset.eq && e.target.closest(".data-table") ? e.target : null;
+    if (!input) return;
+    input.value = pasteValue;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    exitPasteMode();
+  });
 
   if (tabOsa) tabOsa.addEventListener("click", () => applyEquipmentTab("osa_visivel"));
   if (tabThorlabs) tabThorlabs.addEventListener("click", () => applyEquipmentTab("thorlabs"));
