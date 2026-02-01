@@ -1,4 +1,3 @@
-/* eslint-disable no-alert */
 (() => {
   const STORAGE_KEY = "tcc_visible_osa_experimento_leds_v2";
 
@@ -131,6 +130,52 @@
 
   function setSaveStatus(text) {
     if (elSaveStatus) elSaveStatus.textContent = text;
+  }
+
+  let toastTimer = null;
+  function showToast(message, type = "info") {
+    const el = document.getElementById("toast");
+    if (!el) return;
+    if (toastTimer) clearTimeout(toastTimer);
+    el.textContent = message;
+    el.className = "toast toast--visible toast--" + (type === "error" || type === "success" ? type : "info");
+    toastTimer = setTimeout(() => {
+      el.classList.remove("toast--visible");
+      toastTimer = null;
+    }, 4500);
+  }
+
+  function showConfirm(message) {
+    return new Promise((resolve) => {
+      const overlay = document.getElementById("confirm-overlay");
+      const title = document.getElementById("confirm-title");
+      const btnCancel = document.getElementById("confirm-cancel");
+      const btnOk = document.getElementById("confirm-ok");
+      if (!overlay || !title || !btnCancel || !btnOk) {
+        resolve(false);
+        return;
+      }
+      title.textContent = message;
+      overlay.setAttribute("aria-hidden", "false");
+      overlay.classList.add("confirm-overlay--visible");
+
+      const close = (result) => {
+        overlay.classList.remove("confirm-overlay--visible");
+        overlay.setAttribute("aria-hidden", "true");
+        btnCancel.removeEventListener("click", onCancel);
+        btnOk.removeEventListener("click", onOk);
+        overlay.removeEventListener("click", onBackdrop);
+        resolve(result);
+      };
+      const onCancel = () => close(false);
+      const onOk = () => close(true);
+      const onBackdrop = (e) => {
+        if (e.target === overlay) close(false);
+      };
+      btnCancel.addEventListener("click", onCancel);
+      btnOk.addEventListener("click", onOk);
+      overlay.addEventListener("click", onBackdrop);
+    });
   }
 
   function isValidNumber(str) {
@@ -565,16 +610,16 @@
     file.text().then((text) => {
       const parsed = safeParseJson(text);
       if (!parsed.ok) {
-        alert("JSON inválido. Verifique o arquivo e tente novamente.");
+        showToast("JSON inválido. Verifique o arquivo e tente novamente.", "error");
         if (fileInput) fileInput.value = "";
         return;
       }
       if (isTotalImport) {
         state = importStateFromObject(parsed.value);
-        alert("Importação concluída. Os dados do arquivo substituíram todos os dados atuais.");
+        showToast("Importação concluída. Os dados do arquivo substituíram todos os dados atuais.", "success");
       } else {
         mergeImportIntoState(parsed.value);
-        alert("Importação concluída. Apenas células vazias foram preenchidas; células já preenchidas não foram alteradas.");
+        showToast("Apenas células vazias foram preenchidas; células já preenchidas não foram alteradas.", "success");
       }
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       renderAll();
@@ -592,11 +637,13 @@
   if (btnClearCurrent) {
     btnClearCurrent.addEventListener("click", () => {
       const name = currentEquipmentId === "osa_visivel" ? "OSA Visível" : "ThorLabs";
-      const ok = confirm(`Apagar todos os dados do equipamento: ${name}? (todas as tomadas e espectros)`);
-      if (!ok) return;
-      clearEquipment(currentEquipmentId);
-      scheduleSave();
-      renderAll();
+      showConfirm(`Apagar todos os dados do equipamento: ${name}? (todas as tomadas e espectros)`).then((ok) => {
+        if (!ok) return;
+        clearEquipment(currentEquipmentId);
+        scheduleSave();
+        renderAll();
+        showToast("Dados do equipamento apagados.", "success");
+      });
     });
   }
 
