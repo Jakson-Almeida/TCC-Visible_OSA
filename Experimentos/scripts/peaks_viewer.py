@@ -8,9 +8,11 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import numpy as np
 from scipy.signal import find_peaks
+from scipy.optimize import curve_fit
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from matplotlib.collections import PolyCollection
+from matplotlib.widgets import SpanSelector
 import os
 
 
@@ -74,6 +76,58 @@ def precompute_gradient(wl_nm, dark=False):
     return [wavelength_to_rgb((wl_nm[j] + wl_nm[j + 1]) / 2, dark=dark) for j in range(len(wl_nm) - 1)]
 
 
+def gaussian(x, amp, center, sigma):
+    """Função gaussiana: amp * exp(-(x-center)^2 / (2*sigma^2))"""
+    return amp * np.exp(-((x - center) ** 2) / (2 * sigma ** 2))
+
+
+def lorentzian(x, amp, center, gamma):
+    """Função lorentziana: amp * gamma^2 / ((x-center)^2 + gamma^2)"""
+    return amp * gamma ** 2 / ((x - center) ** 2 + gamma ** 2)
+
+
+def ajustar_curva(wl_nm, spec, modelo="gaussian"):
+    """
+    Ajusta uma curva gaussiana ou lorentziana aos dados do espectro.
+    
+    Args:
+        wl_nm: Array de comprimentos de onda (nm)
+        spec: Array de intensidades
+        modelo: "gaussian" ou "lorentzian"
+    
+    Returns:
+        (params, curva_ajustada, r_squared, fwhm) ou (None, None, None, None) se falhar
+        params: (amp, center, width) onde width é sigma (gaussian) ou gamma (lorentzian)
+    """
+    try:
+        # Estimativa inicial dos parâmetros
+        amp_guess = np.max(spec)
+        center_guess = wl_nm[np.argmax(spec)]
+        width_guess = (wl_nm[-1] - wl_nm[0]) / 10  # ~10% da faixa
+        
+        p0 = [amp_guess, center_guess, width_guess]
+        
+        # Ajuste
+        if modelo == "gaussian":
+            popt, _ = curve_fit(gaussian, wl_nm, spec, p0=p0, maxfev=5000)
+            curva = gaussian(wl_nm, *popt)
+            fwhm = 2.355 * abs(popt[2])  # FWHM = 2.355 * sigma
+        else:  # lorentzian
+            popt, _ = curve_fit(lorentzian, wl_nm, spec, p0=p0, maxfev=5000)
+            curva = lorentzian(wl_nm, *popt)
+            fwhm = 2 * abs(popt[2])  # FWHM = 2 * gamma
+        
+        # Calcula R²
+        ss_res = np.sum((spec - curva) ** 2)
+        ss_tot = np.sum((spec - np.mean(spec)) ** 2)
+        r_squared = 1 - (ss_res / ss_tot) if ss_tot > 0 else 0
+        
+        return popt, curva, r_squared, fwhm
+    
+    except Exception:
+        return None, None, None, None
+
+
 def ler_dados_arquivo(caminho_arquivo):
     """
     Lê arquivo de espectro (uma linha por ponto: wavelength;intensity).
@@ -108,10 +162,12 @@ def detectar_picos(intensidade, prominence=5, valley=False):
     return peaks
 
 
-def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=False, show_peaks=False, show_gradient=False):
+def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=False, show_peaks=False, show_gradient=False, fit_curve=None, fit_data=None, fit_wl=None, selected_range=None):
     """
     Plota espectro em ax. Se show_peaks=True, detecta picos e desenha marcadores.
     Se show_gradient=True, preenche a área sob a curva com gradiente de cores (λ).
+    Se fit_curve e fit_data são fornecidos, plota a curva ajustada.
+    Se selected_range é fornecido, desenha a região selecionada.
     Limpa marcadores antigos em ax (ax.markers e ax.marker).
     """
     ax.clear()
@@ -131,9 +187,24 @@ def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=
         ]
         poly = PolyCollection(verts, facecolors=gradient_colors, edgecolors="none")
         ax.add_collection(poly)
-        ax.plot(wl_nm, spec, color="white" if dark else "gray", lw=1.5, alpha=0.8)
+        ax.plot(wl_nm, spec, color="white" if dark else "gray", lw=1.5, alpha=0.8, label="Dados")
     else:
-        ax.plot(wl_nm, spec, color="gray" if dark else "steelblue", lw=1.5, alpha=0.9)
+        ax.plot(wl_nm, spec, color="gray" if dark else "steelblue", lw=1.5, alpha=0.9, label="Dados")
+
+    # Região selecionada (se houver)
+    if selected_range is not None:
+        wl_min, wl_max = selected_range
+        ymin, ymax = ax.get_ylim()
+        ax.axvspan(wl_min, wl_max, alpha=0.15, color="cyan" if not dark else "yellow", zorder=0)
+        ax.axvline(wl_min, color="cyan" if not dark else "yellow", linestyle=":", lw=1, alpha=0.7)
+        ax.axvline(wl_max, color="cyan" if not dark else "yellow", linestyle=":", lw=1, alpha=0.7)
+
+    # Curva ajustada (se fornecida)
+    if fit_curve is not None and fit_data is not None and fit_wl is not None:
+        modelo, curva = fit_curve, fit_data
+        color_fit = "yellow" if dark else "red"
+        ax.plot(fit_wl, curva, color=color_fit, lw=2, linestyle="--", alpha=0.85, label=f"Ajuste {modelo}")
+        ax.legend(loc="upper right", fontsize=8, framealpha=0.8)
 
     # Remover marcadores antigos
     if hasattr(ax, "markers"):
@@ -184,9 +255,14 @@ def main():
     prominence = 5.0
     show_peaks = False  # Por padrão picos desabilitados
     show_gradient = False  # Por padrão gradiente desabilitado
+    fit_curve_enabled = False  # Ajuste de curva desabilitado por padrão
+    fit_model = "gaussian"  # Modelo padrão: "gaussian" ou "lorentzian"
     dark_theme = False
     last_clicked_wl = None  # último pico clicado (para copiar)
     last_clicked_int = None
+    fit_info = None  # Informações do ajuste: (modelo, params, r², fwhm)
+    selected_range = None  # Região selecionada para ajuste: (wl_min, wl_max) ou None
+    span_selector = None  # Widget de seleção de região
 
     # Figura matplotlib embutida
     fig = Figure(figsize=(8, 4), dpi=100)
@@ -230,7 +306,7 @@ def main():
         atualizar_grafico()
 
     def atualizar_grafico():
-        nonlocal last_clicked_wl, last_clicked_int
+        nonlocal last_clicked_wl, last_clicked_int, fit_info, span_selector, selected_range
         if not spectra_data:
             ax.clear()
             ax.set_xlabel("Comprimento de onda (nm)")
@@ -241,16 +317,80 @@ def main():
         idx = max(0, min(current_index, len(spectra_data) - 1))
         path, wl_nm, spec = spectra_data[idx]
         nome = os.path.basename(path)
-        status_var.set(f"Arquivo {idx + 1} / {len(spectra_data)}: {nome}")
+        
+        # Filtra dados se houver região selecionada
+        wl_fit = wl_nm
+        spec_fit = spec
+        if selected_range is not None and fit_curve_enabled:
+            wl_min, wl_max = selected_range
+            mask = (wl_nm >= wl_min) & (wl_nm <= wl_max)
+            if np.sum(mask) > 10:  # Mínimo de pontos para ajuste
+                wl_fit = wl_nm[mask]
+                spec_fit = spec[mask]
+        
+        # Ajuste de curva (se habilitado)
+        fit_curve_name = None
+        fit_curve_data = None
+        fit_curve_wl = None
+        if fit_curve_enabled:
+            params, curva, r2, fwhm = ajustar_curva(wl_fit, spec_fit, modelo=fit_model)
+            if params is not None:
+                fit_curve_name = "Gaussiana" if fit_model == "gaussian" else "Lorentziana"
+                # Curva ajustada sobre a região filtrada
+                fit_curve_wl = wl_fit
+                fit_curve_data = curva
+                fit_info = (fit_model, params, r2, fwhm)
+                # Atualiza status com info do ajuste
+                amp, center, width = params
+                range_info = ""
+                if selected_range is not None:
+                    range_info = f" [Região: {selected_range[0]:.1f}–{selected_range[1]:.1f}nm]"
+                status_var.set(
+                    f"Arquivo {idx + 1}/{len(spectra_data)}: {nome}  |  "
+                    f"Ajuste {fit_curve_name}: λ={center:.2f}nm, A={amp:.1f}, FWHM={fwhm:.2f}nm, R²={r2:.4f}{range_info}"
+                )
+            else:
+                fit_info = None
+                status_var.set(f"Arquivo {idx + 1} / {len(spectra_data)}: {nome}  |  [ERRO] Falha no ajuste de curva")
+        else:
+            fit_info = None
+            status_var.set(f"Arquivo {idx + 1} / {len(spectra_data)}: {nome}")
+        
         plotar_espectro_com_picos(
             ax, wl_nm, spec,
             prominence=prominence,
             dark=dark_theme,
             show_peaks=show_peaks,
             show_gradient=show_gradient,
+            fit_curve=fit_curve_name,
+            fit_data=fit_curve_data,
+            fit_wl=fit_curve_wl,
+            selected_range=selected_range,
         )
+        
+        # Ativa/desativa SpanSelector conforme fit_curve_enabled
+        if fit_curve_enabled and span_selector is None:
+            def onselect(xmin, xmax):
+                nonlocal selected_range
+                selected_range = (float(xmin), float(xmax))
+                atualizar_grafico()
+            
+            span_selector = SpanSelector(
+                ax,
+                onselect,
+                "horizontal",
+                useblit=True,
+                props=dict(alpha=0.3, facecolor="cyan"),
+                interactive=True,
+                drag_from_anywhere=True,
+            )
+        elif not fit_curve_enabled and span_selector is not None:
+            span_selector.set_active(False)
+            span_selector = None
+            selected_range = None
+        
         # Se exibir picos e houver exatamente um, já mostrar suas informações
-        if show_peaks:
+        if show_peaks and not fit_curve_enabled:
             peaks = detectar_picos(spec, prominence=prominence)
             if len(peaks) == 1:
                 wl_p = float(wl_nm[peaks[0]])
@@ -260,7 +400,7 @@ def main():
                 status_var.set(
                     f"Pico clicado: λ = {wl_p:.2f} nm  |  Intensidade = {int_p:.2f} u.a.  (use os botões para copiar)"
                 )
-        else:
+        elif not fit_curve_enabled:
             last_clicked_wl = None
             last_clicked_int = None
         canvas.draw_idle()
@@ -383,6 +523,49 @@ def main():
         command=toggle_gradient,
     )
     chk_gradient.pack(side=tk.LEFT, padx=(8, 4))
+
+    # Ajuste de curva gaussiana/lorentziana
+    def toggle_fit():
+        nonlocal fit_curve_enabled
+        fit_curve_enabled = var_fit_curve.get()
+        atualizar_grafico()
+
+    var_fit_curve = tk.BooleanVar(value=False)
+    chk_fit = ttk.Checkbutton(
+        fr_btn,
+        text="Ajustar curva",
+        variable=var_fit_curve,
+        command=toggle_fit,
+    )
+    chk_fit.pack(side=tk.LEFT, padx=(8, 4))
+
+    # Modelo de ajuste (Gaussiana ou Lorentziana)
+    def change_fit_model(event=None):
+        nonlocal fit_model
+        fit_model = fit_model_var.get()
+        
+        if fit_curve_enabled:
+            atualizar_grafico()
+
+    fit_model_var = tk.StringVar(value="gaussian")
+    combo_model = ttk.Combobox(
+        fr_btn,
+        textvariable=fit_model_var,
+        values=["gaussian", "lorentzian"],
+        state="readonly",
+        width=10,
+    )
+    combo_model.pack(side=tk.LEFT, padx=2)
+    combo_model.bind("<<ComboboxSelected>>", change_fit_model)
+
+    # Botão para limpar seleção de região
+    def limpar_selecao():
+        nonlocal selected_range
+        selected_range = None
+        atualizar_grafico()
+
+    btn_limpar_selecao = ttk.Button(fr_btn, text="Limpar seleção", command=limpar_selecao)
+    btn_limpar_selecao.pack(side=tk.LEFT, padx=2)
 
     # Sensibilidade (prominência): valor maior = menos picos (filtra ruído)
     def on_prominence_change(val=None):
