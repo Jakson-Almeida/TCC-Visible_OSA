@@ -1,0 +1,44 @@
+Modelos Calibrados:
+- Verde e Azul: Linear P(lambda) = a*Pr + b*Pg + c*Pb + d
+- Vermelho: Saturacao P(lambda) = A*x/(B+x), x = a*Pr + b*Pg + c*Pb + d
+
+Parâmetros:
+
+--- Verde ---
+Modelo: linear
+  a (ganho Pr) = -101.049362
+  b (ganho Pg) = 11.829692
+  c (ganho Pb) = 91.503236
+  d (offset)   = 545.853662
+Metricas:
+  R²   = 0.995822
+  RMSE = 212.08
+  MAE  = 163.98
+  Erro = 3.17%
+
+--- Vermelho ---
+Modelo: saturacao
+  a (ganho Pr) = 88.793390
+  b (ganho Pg) = 1414.452625
+  c (ganho Pb) = 244.870882
+  d (offset)   = -11909.576735
+  A (plato)    = 2672676635.60
+  B (K_m)      = 2313866118.84
+Metricas:
+  R²   = 0.927900
+  RMSE = 3187.84
+  MAE  = 2672.29
+  Erro = 20.70%
+
+--- Azul ---
+Modelo: linear
+  a (ganho Pr) = 33.352562
+  b (ganho Pg) = 123.100387
+  c (ganho Pb) = 0.026086
+  d (offset)   = 317.824790
+Metricas:
+  R²   = 0.992761
+  RMSE = 245.81
+  MAE  = 168.93
+  Erro = 3.18%
+
