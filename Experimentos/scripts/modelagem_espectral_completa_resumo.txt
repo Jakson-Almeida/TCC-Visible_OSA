@@ -1,6 +1,6 @@
 === MODELAGEM ESPECTRAL COMPLETA - RESUMO ===
 
-Data: 02-Feb-2026 17:01:03
+Data: 02-Feb-2026 17:03:28
 Faixa espectral: 372.7 - 681.0 nm
 Comprimentos de onda amostrados: 100
 
