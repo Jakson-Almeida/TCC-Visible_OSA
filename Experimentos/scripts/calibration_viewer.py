@@ -142,10 +142,12 @@ def main():
     
     # Variáveis de estado
     arquivos = {'R': None, 'G': None, 'B': None}
+    arquivo_referencia = None
     dados = {'R': (None, None), 'G': (None, None), 'B': (None, None)}
     df_modelo = None
     fonte_atual = tk.StringVar(value="Verde")
     duty_cycle = tk.DoubleVar(value=5.0)
+    mostrar_referencia = tk.BooleanVar(value=True)
     
     # Frame superior para controles
     frame_controles = ttk.Frame(root, padding=10)
@@ -171,6 +173,30 @@ def main():
         ttk.Button(frame_controles, text=f"Canal {canal}", command=criar_callback(canal)).grid(row=1+i, column=0, sticky=tk.W, padx=5, pady=2)
         labels_arquivo[canal] = ttk.Label(frame_controles, text="(não selecionado)", foreground="gray")
         labels_arquivo[canal].grid(row=1+i, column=1, sticky=tk.W, padx=5, pady=2)
+    
+    # Espectro de referência (ThorLabs ou outro)
+    ttk.Label(frame_controles, text="Referência:", font=("Arial", 10, "bold")).grid(row=4, column=0, sticky=tk.W, pady=5)
+    
+    def selecionar_referencia():
+        nonlocal arquivo_referencia
+        arquivo = filedialog.askopenfilename(
+            title="Selecionar espectro de referência (ex.: ThorLabs)",
+            filetypes=[("Arquivos TXT", "*.txt"), ("Todos", "*.*")]
+        )
+        if arquivo:
+            arquivo_referencia = arquivo
+            label_referencia.config(text=os.path.basename(arquivo))
+    
+    def limpar_referencia():
+        nonlocal arquivo_referencia
+        arquivo_referencia = None
+        label_referencia.config(text="(não selecionado)")
+    
+    ttk.Button(frame_controles, text="Espectro referência", command=selecionar_referencia).grid(row=5, column=0, sticky=tk.W, padx=5, pady=2)
+    label_referencia = ttk.Label(frame_controles, text="(não selecionado)", foreground="gray")
+    label_referencia.grid(row=5, column=1, sticky=tk.W, padx=5, pady=2)
+    ttk.Button(frame_controles, text="Limpar ref.", command=limpar_referencia).grid(row=6, column=0, sticky=tk.W, padx=5, pady=2)
+    ttk.Checkbutton(frame_controles, text="Mostrar referência", variable=mostrar_referencia).grid(row=6, column=1, sticky=tk.W, padx=5, pady=2)
     
     # Seleção de fonte
     ttk.Label(frame_controles, text="Fonte LED:", font=("Arial", 10, "bold")).grid(row=0, column=2, sticky=tk.W, padx=20, pady=5)
@@ -277,6 +303,16 @@ def main():
         duty = duty_cycle.get()
         P_calibrado = aplicar_modelo(wl_nm, Pr, Pg, Pb, duty, df_modelo)
         
+        # Carregar espectro de referência (se houver)
+        P_referencia = None
+        if arquivo_referencia and mostrar_referencia.get():
+            status_var.set("Carregando espectro de referência...")
+            root.update()
+            wl_ref, I_ref = ler_espectro(arquivo_referencia)
+            if wl_ref is not None:
+                # Interpolar referência na grade do OSA para comparação
+                P_referencia = np.interp(wl_nm, wl_ref, I_ref)
+        
         # Plotar resultados
         status_var.set("Gerando gráficos...")
         root.update()
@@ -295,7 +331,7 @@ def main():
         ax1.grid(True, alpha=0.3)
         ax1.set_xlim(wl_nm.min(), wl_nm.max())
         
-        # Plot 2: Espectro calibrado com gradiente
+        # Plot 2: Espectro calibrado (e referência se houver)
         # Preencher área com gradiente espectral
         for j in range(len(wl_nm) - 1):
             wl_mid = (wl_nm[j] + wl_nm[j + 1]) / 2
@@ -305,10 +341,15 @@ def main():
                             [P_calibrado[j], P_calibrado[j + 1]], 
                             color=color, alpha=0.6, linewidth=0)
         
-        ax2.plot(wl_nm, P_calibrado, 'k-', linewidth=2, alpha=0.7, label='Espectro Calibrado')
+        ax2.plot(wl_nm, P_calibrado, 'k-', linewidth=2, alpha=0.7, label='Calibrado (OSA→ThorLabs)')
+        
+        # Plotar referência sobreposto
+        if P_referencia is not None:
+            ax2.plot(wl_nm, P_referencia, '--', color='orangered', linewidth=2, alpha=0.9, label='Referência (ThorLabs)')
+        
         ax2.set_xlabel("Comprimento de onda (nm)")
-        ax2.set_ylabel("Intensidade Calibrada (u.a.)")
-        ax2.set_title(f"Espectro Calibrado - Fonte {fonte_atual.get()} - Duty {duty:.1f}%")
+        ax2.set_ylabel("Intensidade (u.a.)")
+        ax2.set_title(f"Calibrado vs Referência - Fonte {fonte_atual.get()} - Duty {duty:.1f}%")
         ax2.legend(loc='best')
         ax2.grid(True, alpha=0.3)
         ax2.set_xlim(wl_nm.min(), wl_nm.max())
@@ -322,7 +363,16 @@ def main():
         idx_max = P_calibrado.argmax()
         lambda_max = wl_nm[idx_max]
         
-        status_var.set(f"✓ Processado! Pico: λ={lambda_max:.2f} nm, I={max_calib:.2f}")
+        msg_status = f"✓ Processado! Pico calibrado: λ={lambda_max:.2f} nm, I={max_calib:.2f}"
+        if P_referencia is not None:
+            # Métricas de comparação na faixa comum
+            valid = np.isfinite(P_referencia) & np.isfinite(P_calibrado) & (P_referencia > 0)
+            if np.any(valid):
+                rmse = np.sqrt(np.mean((P_calibrado[valid] - P_referencia[valid])**2))
+                erro_rel_medio = 100 * np.mean(np.abs(P_calibrado[valid] - P_referencia[valid]) / np.maximum(P_referencia[valid], 1e-10))
+                max_ref = P_referencia.max()
+                msg_status += f"  |  Referência: I_max={max_ref:.2f}  |  RMSE={rmse:.2f}  Erro médio={erro_rel_medio:.1f}%"
+        status_var.set(msg_status)
     
     root.mainloop()
 
