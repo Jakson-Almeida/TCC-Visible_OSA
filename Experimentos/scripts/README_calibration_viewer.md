@@ -5,12 +5,14 @@ Script Python para visualizar e aplicar o modelo de calibração espectral do OS
 ## 🎯 Funcionalidades
 
 1. **Seleção de Arquivos**: Carregue 3 arquivos de espectros (canais R, G, B do OSA)
-2. **Escolha de Fonte**: Selecione qual LED está sendo medido (Verde, Vermelho, Azul)
-3. **Ajuste de Duty Cycle**: Defina o duty cycle de 1% a 10%
-4. **Visualização Dupla**:
+2. **Espectro de Referência**: Opcional — importe um espectro de referência (ex.: ThorLabs) para comparar com o calibrado
+3. **Escolha de Fonte**: Selecione qual LED está sendo medido (Verde, Vermelho, Azul)
+4. **Ajuste de Duty Cycle**: Defina o duty cycle de 1% a 10%
+5. **Visualização Dupla**:
    - Gráfico 1: Canais RGB originais do OSA
-   - Gráfico 2: Espectro calibrado com gradiente de cores espectrais
-5. **Estatísticas**: Mostra pico máximo e comprimento de onda
+   - Gráfico 2: Espectro calibrado (e referência, se importada) com gradiente de cores espectrais
+6. **Comparação**: Com referência ativa, exibe RMSE e erro médio relativo na barra de status
+7. **Estatísticas**: Mostra pico máximo e comprimento de onda
 
 ---
 
@@ -42,13 +44,19 @@ python calibration_viewer.py
    - Clique em "Canal G" → selecione `spectrum_g_XXX.txt`
    - Clique em "Canal B" → selecione `spectrum_b_XXX.txt`
 
-2. **Configurar Parâmetros**:
+2. **Espectro de Referência (opcional)**:
+   - Clique em "Espectro referência" e escolha um arquivo (ex.: espectro ThorLabs no mesmo duty/fonte)
+   - Marque "Mostrar referência" para exibir no gráfico
+   - Use "Limpar ref." para remover
+
+3. **Configurar Parâmetros**:
    - Marque a fonte LED sendo medida (Verde/Vermelho/Azul)
    - Ajuste o slider de Duty Cycle (1-10%)
 
-3. **Processar**:
+4. **Processar**:
    - Clique em "▶ Processar e Visualizar"
    - Aguarde a geração dos gráficos
+   - Se houver referência, a barra de status mostrará RMSE e erro médio (%)
 
 ---
 
