@@ -434,9 +434,9 @@ print('modelagem_espectral_completa_coeficientes.png', '-dpng', '-r300');
 
 fprintf('\n✓ Figuras salvas!\n');
 
-%% PASSO 8: SALVAR RESULTADOS
+%% PASSO 8: EXPORTAR MODELO PARA USO EXTERNO
 
-fprintf('\nPASSO 8: Salvando resultados...\n');
+fprintf('\nPASSO 8: Exportando modelo para uso externo...\n');
 
 % Salvar em arquivo .mat
 save('modelagem_espectral_completa_resultados.mat', 'resultados', ...
@@ -463,4 +463,248 @@ end
 fclose(fid);
 fprintf('✓ Resumo salvo em: modelagem_espectral_completa_resumo.txt\n');
 
-fprintf('\n=== MODELAGEM CONCLUÍDA COM SUCESSO! ===\n');
+%% PASSO 9: IMPRIMIR MODELO FINAL E PARÂMETROS
+
+fprintf('\n=== PASSO 9: MODELO FINAL E PARÂMETROS ===\n\n');
+
+% Definir comprimentos de onda típicos dos LEDs para impressão detalhada
+lambda_picos = struct();
+lambda_picos.Verde = 516e-9;      % ~516 nm
+lambda_picos.Vermelho = 628e-9;   % ~628 nm
+lambda_picos.Azul = 457e-9;       % ~457 nm
+
+fprintf('FÓRMULA GERAL DO MODELO:\n');
+fprintf('========================\n\n');
+fprintf('Para cada comprimento de onda λ e duty cycle d:\n\n');
+fprintf('1. Polinômios de 2ª ordem para cada canal OSA:\n');
+fprintf('   y_R(d) = a_R·d² + b_R·d + c_R\n');
+fprintf('   y_G(d) = a_G·d² + b_G·d + c_G\n');
+fprintf('   y_B(d) = a_B·d² + b_B·d + c_B\n\n');
+fprintf('2. Combinação linear para calibração:\n');
+fprintf('   P_ThorLabs(d,λ) = α₁·y_R(d) + α₂·y_G(d) + α₃·y_B(d)\n\n');
+fprintf('Todos os coeficientes dependem de λ (específicos espectralmente)\n\n');
+
+fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n');
+
+% Para cada fonte, imprimir os coeficientes nos picos
+for i_fonte = 1:length(fontes)
+    fonte = fontes{i_fonte};
+    lambda_pico = lambda_picos.(fonte);
+    
+    % Encontrar índice mais próximo
+    [~, idx_pico] = min(abs(resultados.(fonte).lambda - lambda_pico));
+    lambda_real = resultados.(fonte).lambda(idx_pico) * 1e9;  % nm
+    
+    fprintf('═══════════════════════════════════════════════════════════════\n');
+    fprintf('  FONTE: %s (λ ≈ %.2f nm)\n', fonte, lambda_real);
+    fprintf('═══════════════════════════════════════════════════════════════\n\n');
+    
+    % Extrair coeficientes
+    p_R = resultados.(fonte).poly_R(idx_pico, :);
+    p_G = resultados.(fonte).poly_G(idx_pico, :);
+    p_B = resultados.(fonte).poly_B(idx_pico, :);
+    alpha = resultados.(fonte).alpha(idx_pico, :);
+    R2 = resultados.(fonte).R2(idx_pico);
+    RMSE = resultados.(fonte).RMSE(idx_pico);
+    
+    fprintf('COEFICIENTES DOS POLINÔMIOS:\n');
+    fprintf('─────────────────────────────\n');
+    fprintf('  Canal R: y_R(d) = %.6e·d² + %.6e·d + %.6e\n', p_R(1), p_R(2), p_R(3));
+    fprintf('  Canal G: y_G(d) = %.6e·d² + %.6e·d + %.6e\n', p_G(1), p_G(2), p_G(3));
+    fprintf('  Canal B: y_B(d) = %.6e·d² + %.6e·d + %.6e\n\n', p_B(1), p_B(2), p_B(3));
+    
+    fprintf('COEFICIENTES DE CALIBRAÇÃO (GANHOS):\n');
+    fprintf('────────────────────────────────────\n');
+    fprintf('  α₁ (peso Canal R) = %+.6f\n', alpha(1));
+    fprintf('  α₂ (peso Canal G) = %+.6f\n', alpha(2));
+    fprintf('  α₃ (peso Canal B) = %+.6f\n\n', alpha(3));
+    
+    fprintf('QUALIDADE DO AJUSTE:\n');
+    fprintf('────────────────────\n');
+    fprintf('  R² = %.4f\n', R2);
+    fprintf('  RMSE = %.2f\n\n', RMSE);
+    
+    fprintf('MODELO COMPLETO EXPANDIDO:\n');
+    fprintf('──────────────────────────\n');
+    fprintf('  P_ThorLabs(d) = %+.6f·[%.6e·d² + %.6e·d + %.6e]\n', ...
+        alpha(1), p_R(1), p_R(2), p_R(3));
+    fprintf('                + %+.6f·[%.6e·d² + %.6e·d + %.6e]\n', ...
+        alpha(2), p_G(1), p_G(2), p_G(3));
+    fprintf('                + %+.6f·[%.6e·d² + %.6e·d + %.6e]\n\n', ...
+        alpha(3), p_B(1), p_B(2), p_B(3));
+    
+    % Calcular coeficientes do polinômio resultante
+    a_total = alpha(1)*p_R(1) + alpha(2)*p_G(1) + alpha(3)*p_B(1);
+    b_total = alpha(1)*p_R(2) + alpha(2)*p_G(2) + alpha(3)*p_B(2);
+    c_total = alpha(1)*p_R(3) + alpha(2)*p_G(3) + alpha(3)*p_B(3);
+    
+    fprintf('FORMA SIMPLIFICADA:\n');
+    fprintf('───────────────────\n');
+    fprintf('  P_ThorLabs(d) = %.6e·d² + %.6e·d + %.6e\n\n', ...
+        a_total, b_total, c_total);
+    
+    fprintf('\n');
+end
+
+fprintf('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n');
+
+%% PASSO 10: EXPORTAR TABELA CSV COM TODOS OS PARÂMETROS
+
+fprintf('PASSO 10: Exportando tabela CSV com todos os parâmetros...\n');
+
+for i_fonte = 1:length(fontes)
+    fonte = fontes{i_fonte};
+    nome_arquivo = sprintf('modelo_%s_parametros.csv', lower(fonte));
+    
+    fid_csv = fopen(nome_arquivo, 'w');
+    
+    % Cabeçalho
+    fprintf(fid_csv, 'lambda_nm,a_R,b_R,c_R,a_G,b_G,c_G,a_B,b_B,c_B,alpha_1,alpha_2,alpha_3,R2,RMSE\n');
+    
+    % Dados
+    for i_wn = 1:n_wavelengths
+        lambda_nm = resultados.(fonte).lambda(i_wn) * 1e9;
+        fprintf(fid_csv, '%.6f,', lambda_nm);
+        fprintf(fid_csv, '%.6e,%.6e,%.6e,', resultados.(fonte).poly_R(i_wn, :));
+        fprintf(fid_csv, '%.6e,%.6e,%.6e,', resultados.(fonte).poly_G(i_wn, :));
+        fprintf(fid_csv, '%.6e,%.6e,%.6e,', resultados.(fonte).poly_B(i_wn, :));
+        fprintf(fid_csv, '%.6f,%.6f,%.6f,', resultados.(fonte).alpha(i_wn, :));
+        fprintf(fid_csv, '%.6f,%.6f\n', resultados.(fonte).R2(i_wn), resultados.(fonte).RMSE(i_wn));
+    end
+    
+    fclose(fid_csv);
+    fprintf('  ✓ %s: %s\n', fonte, nome_arquivo);
+end
+
+%% PASSO 11: GERAR CÓDIGO MATLAB PRONTO PARA USO
+
+fprintf('\nPASSO 11: Gerando código MATLAB reutilizável...\n');
+
+fid_code = fopen('modelo_osa_calibrado.m', 'w');
+
+fprintf(fid_code, '%% modelo_osa_calibrado.m\n');
+fprintf(fid_code, '%% Função para calcular intensidade ThorLabs a partir de leituras do OSA Visível\n');
+fprintf(fid_code, '%% Gerado automaticamente em: %s\n\n', datestr(now));
+
+fprintf(fid_code, 'function P_thorlabs = modelo_osa_calibrado(Pr_osa, Pg_osa, Pb_osa, duty_cycle, lambda_nm, fonte)\n');
+fprintf(fid_code, '%% MODELO_OSA_CALIBRADO Calibra leituras do OSA Visível para ThorLabs\n');
+fprintf(fid_code, '%%\n');
+fprintf(fid_code, '%% Entradas:\n');
+fprintf(fid_code, '%%   Pr_osa      - Intensidade do canal R (Vermelho) do OSA\n');
+fprintf(fid_code, '%%   Pg_osa      - Intensidade do canal G (Verde) do OSA\n');
+fprintf(fid_code, '%%   Pb_osa      - Intensidade do canal B (Azul) do OSA\n');
+fprintf(fid_code, '%%   duty_cycle  - Duty cycle em %% (1-10)\n');
+fprintf(fid_code, '%%   lambda_nm   - Comprimento de onda em nm (373-681)\n');
+fprintf(fid_code, '%%   fonte       - ''Verde'', ''Vermelho'', ou ''Azul''\n');
+fprintf(fid_code, '%%\n');
+fprintf(fid_code, '%% Saída:\n');
+fprintf(fid_code, '%%   P_thorlabs  - Intensidade calibrada (equivalente ThorLabs)\n\n');
+
+fprintf(fid_code, '    %% Carregar parâmetros do modelo\n');
+fprintf(fid_code, '    persistent params_loaded params;\n');
+fprintf(fid_code, '    \n');
+fprintf(fid_code, '    if isempty(params_loaded)\n');
+fprintf(fid_code, '        params = struct();\n');
+
+% Para cada fonte, adicionar parâmetros
+for i_fonte = 1:length(fontes)
+    fonte = fontes{i_fonte};
+    fprintf(fid_code, '        params.%s = struct();\n', fonte);
+    fprintf(fid_code, '        params.%s.lambda = [...\n', fonte);
+    
+    % Lambda
+    for i_wn = 1:n_wavelengths
+        if mod(i_wn-1, 5) == 0
+            fprintf(fid_code, '            ');
+        end
+        fprintf(fid_code, '%.4f', resultados.(fonte).lambda(i_wn)*1e9);
+        if i_wn < n_wavelengths
+            fprintf(fid_code, ', ');
+        end
+        if mod(i_wn, 5) == 0
+            fprintf(fid_code, ' ...\n');
+        end
+    end
+    fprintf(fid_code, '];\n');
+    
+    % Matrizes de coeficientes
+    fprintf(fid_code, '        params.%s.poly_R = [...\n', fonte);
+    for i_wn = 1:n_wavelengths
+        fprintf(fid_code, '            %.6e, %.6e, %.6e', resultados.(fonte).poly_R(i_wn, :));
+        if i_wn < n_wavelengths
+            fprintf(fid_code, '; ...\n');
+        else
+            fprintf(fid_code, '];\n');
+        end
+    end
+    
+    fprintf(fid_code, '        params.%s.poly_G = [...\n', fonte);
+    for i_wn = 1:n_wavelengths
+        fprintf(fid_code, '            %.6e, %.6e, %.6e', resultados.(fonte).poly_G(i_wn, :));
+        if i_wn < n_wavelengths
+            fprintf(fid_code, '; ...\n');
+        else
+            fprintf(fid_code, '];\n');
+        end
+    end
+    
+    fprintf(fid_code, '        params.%s.poly_B = [...\n', fonte);
+    for i_wn = 1:n_wavelengths
+        fprintf(fid_code, '            %.6e, %.6e, %.6e', resultados.(fonte).poly_B(i_wn, :));
+        if i_wn < n_wavelengths
+            fprintf(fid_code, '; ...\n');
+        else
+            fprintf(fid_code, '];\n');
+        end
+    end
+    
+    fprintf(fid_code, '        params.%s.alpha = [...\n', fonte);
+    for i_wn = 1:n_wavelengths
+        fprintf(fid_code, '            %.6f, %.6f, %.6f', resultados.(fonte).alpha(i_wn, :));
+        if i_wn < n_wavelengths
+            fprintf(fid_code, '; ...\n');
+        else
+            fprintf(fid_code, '];\n');
+        end
+    end
+end
+
+fprintf(fid_code, '        params_loaded = true;\n');
+fprintf(fid_code, '    end\n\n');
+
+fprintf(fid_code, '    %% Obter parâmetros para a fonte\n');
+fprintf(fid_code, '    p = params.(fonte);\n\n');
+
+fprintf(fid_code, '    %% Encontrar comprimento de onda mais próximo\n');
+fprintf(fid_code, '    [~, idx] = min(abs(p.lambda - lambda_nm));\n\n');
+
+fprintf(fid_code, '    %% Extrair coeficientes\n');
+fprintf(fid_code, '    p_R = p.poly_R(idx, :);\n');
+fprintf(fid_code, '    p_G = p.poly_G(idx, :);\n');
+fprintf(fid_code, '    p_B = p.poly_B(idx, :);\n');
+fprintf(fid_code, '    alpha = p.alpha(idx, :);\n\n');
+
+fprintf(fid_code, '    %% Avaliar polinômios de 2ª ordem\n');
+fprintf(fid_code, '    y_R = polyval(p_R, duty_cycle);\n');
+fprintf(fid_code, '    y_G = polyval(p_G, duty_cycle);\n');
+fprintf(fid_code, '    y_B = polyval(p_B, duty_cycle);\n\n');
+
+fprintf(fid_code, '    %% Combinação linear (calibração)\n');
+fprintf(fid_code, '    P_thorlabs = alpha(1)*y_R + alpha(2)*y_G + alpha(3)*y_B;\n\n');
+
+fprintf(fid_code, 'end\n');
+
+fclose(fid_code);
+
+fprintf('  ✓ Código MATLAB gerado: modelo_osa_calibrado.m\n');
+
+fprintf('\n=== MODELAGEM E EXPORTAÇÃO CONCLUÍDAS COM SUCESSO! ===\n\n');
+fprintf('Arquivos gerados:\n');
+fprintf('  • modelagem_espectral_completa_resultados.mat (dados brutos)\n');
+fprintf('  • modelagem_espectral_completa_resumo.txt (estatísticas)\n');
+fprintf('  • modelo_verde_parametros.csv (parâmetros Verde)\n');
+fprintf('  • modelo_vermelho_parametros.csv (parâmetros Vermelho)\n');
+fprintf('  • modelo_azul_parametros.csv (parâmetros Azul)\n');
+fprintf('  • modelo_osa_calibrado.m (função MATLAB reutilizável)\n');
+fprintf('  • modelagem_espectral_completa_qualidade.png (gráficos R²/RMSE)\n');
+fprintf('  • modelagem_espectral_completa_coeficientes.png (gráficos alpha)\n\n');
