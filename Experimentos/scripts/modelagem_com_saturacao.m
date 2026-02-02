@@ -1,8 +1,9 @@
 % modelagem_com_saturacao.m
-% Script para modelagem do OSA Visível em relação ao ThorLabs
-% - Verde e Azul: Modelo linear P(λ) = a·Pr + b·Pg + c·Pb + d
-% - Vermelho: Modelo com saturação (Michaelis-Menten)
-%             P(λ) = A·x / (B + x), onde x = a·Pr + b·Pg + c·Pb + d
+% Script para modelagem LINEAR do OSA Visível em relação ao ThorLabs
+% Modelo: P(λ) = a·Pr + b·Pg + c·Pb + d (para todas as cores)
+%
+% Nota: Tentativa de modelo com saturação para vermelho não melhorou os resultados,
+%       portanto foi mantido modelo linear para todas as cores.
 %
 % Autor: Jakson Almeida
 % Data: 2026-02-01
@@ -19,7 +20,7 @@ if ~exist(json_file, 'file')
 end
 
 %% Leitura do JSON
-fprintf('=== Modelagem com Saturação para Vermelho ===\n\n');
+fprintf('=== Modelagem Linear Completa ===\n\n');
 fprintf('Lendo dados de: %s\n', json_file);
 json_text = fileread(json_file);
 data = jsondecode(json_text);
@@ -127,244 +128,49 @@ for cor_idx = 1:length(cores)
     Pg = dados_cor.(cor).Pg_osa;
     Pb = dados_cor.(cor).Pb_osa;
     
-    if strcmp(cor, 'red')
-        %% Modelo com saturação para VERMELHO (Michaelis-Menten)
-        % Modelo: P(λ) = A * x / (B + x)
-        % onde x = a·Pr + b·Pg + c·Pb + d
-        
-        % Passo 1: Estimativa inicial usando modelo linear
-        X_linear = [Pr, Pg, Pb, ones(size(Pr))];
-        beta_init = (X_linear' * X_linear) \ (X_linear' * Y);
-        x_linear = X_linear * beta_init;
-        
-        % Passo 2: Estimativa melhorada de A e B usando análise dos dados
-        % A deve ser o platô (valor máximo esperado)
-        % Estimar A a partir dos dados de maior intensidade
-        [Y_sorted, idx_sorted] = sort(Y);
-        top_20_percent = round(0.2 * length(Y));
-        A_init = mean(Y_sorted(end-top_20_percent+1:end)) * 1.15;
-        
-        % B é o valor de x onde P = A/2
-        % Usar transformação de Lineweaver-Burk: 1/P = B/(A*x) + 1/A
-        % Mas de forma mais simples: estimar B pelo range de x
-        x_min = min(x_linear);
-        x_max = max(x_linear);
-        x_range = x_max - x_min;
-        B_init = x_range * 0.5;  % B na metade do range
-        
-        % Se B_init for muito pequeno, ajustar
-        if B_init < x_range * 0.1
-            B_init = x_range * 0.3;
-        end
-        
-        params_init = [beta_init(1); beta_init(2); beta_init(3); beta_init(4); A_init; B_init];
-        
-        fprintf('  Inicialização:\n');
-        fprintf('    a=%.2f, b=%.2f, c=%.2f, d=%.2f\n', beta_init(1), beta_init(2), beta_init(3), beta_init(4));
-        fprintf('    A (platô estimado)=%.0f\n', A_init);
-        fprintf('    B (meia-sat estimada)=%.0f\n', B_init);
-        fprintf('    x_range=[%.0f, %.0f]\n', x_min, x_max);
-        
-        % Função objetivo (soma dos quadrados dos resíduos)
-        objetivo = @(params) sum((Y - modelo_saturacao(params, Pr, Pg, Pb)).^2);
-        
-        % Otimização (com restrições: A > 0, B > 0)
-        % Bounds mais razoáveis baseados nos dados
-        lb = [beta_init(1)*0.1; beta_init(2)*0.1; beta_init(3)*0.1; -Inf; max(Y)*0.5; x_range*0.01];
-        ub = [beta_init(1)*10; beta_init(2)*10; beta_init(3)*10; Inf; max(Y)*3; x_range*5];
-        
-        options = optimoptions('fmincon', 'Display', 'off', 'MaxIterations', 2000, ...
-            'MaxFunctionEvaluations', 10000, 'OptimalityTolerance', 1e-8);
-        
-        try
-            [params_opt, fval, exitflag, output] = fmincon(objetivo, params_init, [], [], [], [], lb, ub, [], options);
-            
-            a = params_opt(1);
-            b = params_opt(2);
-            c = params_opt(3);
-            d = params_opt(4);
-            A = params_opt(5);
-            B = params_opt(6);
-            
-            fprintf('  Otimização: exitflag=%d, iterações=%d\n', exitflag, output.iterations);
-            
-            % Calcular P(λ) usando o modelo com saturação
-            P_modelo = modelo_saturacao(params_opt, Pr, Pg, Pb);
-            
-            % Calcular x para análise
-            x_valores = a * Pr + b * Pg + c * Pb + d;
-            
-            % Validar solução
-            fprintf('  Validação do modelo:\n');
-            fprintf('    x_min = %.2f, x_max = %.2f\n', min(x_valores), max(x_valores));
-            fprintf('    A (platô) = %.2f\n', A);
-            fprintf('    B (meia-saturação) = %.2f\n', B);
-            fprintf('    B / x_medio = %.4f ', B / mean(x_valores));
-            
-            if B / mean(x_valores) > 10
-                fprintf('⚠️  Modelo comporta-se como LINEAR (B >> x)\n');
-            elseif B / mean(x_valores) < 0.1
-                fprintf('⚠️  Saturação extrema (B << x)\n');
-            else
-                fprintf('✓ Faixa adequada de saturação\n');
-            end
-            
-            % Calcular métricas de erro
-            R2 = calcular_r2(Y, P_modelo);
-            RMSE = sqrt(mean((Y - P_modelo).^2));
-            MAE = mean(abs(Y - P_modelo));
-            erro_percentual_medio = mean(abs((Y - P_modelo) ./ Y)) * 100;
-            
-            % Comparar com modelo linear
-            P_linear = X_linear * beta_init;
-            R2_linear = calcular_r2(Y, P_linear);
-            RMSE_linear = sqrt(mean((Y - P_linear).^2));
-            
-            fprintf('  Comparação local:\n');
-            fprintf('    Linear:    R²=%.6f, RMSE=%.2f\n', R2_linear, RMSE_linear);
-            fprintf('    Saturação: R²=%.6f, RMSE=%.2f\n', R2, RMSE);
-            
-            % Decidir qual modelo usar baseado no desempenho
-            if R2 > R2_linear && RMSE < RMSE_linear
-                fprintf('  ✓ Modelo de saturação é melhor!\n');
-                usar_saturacao = true;
-            else
-                fprintf('  ⚠️  Modelo linear é melhor - usando linear\n');
-                usar_saturacao = false;
-            end
-            
-            % Armazenar resultados
-            if usar_saturacao
-                resultados.(cor).modelo = 'saturacao';
-            else
-                % Usar modelo linear ao invés de saturação
-                resultados.(cor).modelo = 'linear';
-                a = beta_init(1);
-                b = beta_init(2);
-                c = beta_init(3);
-                d = beta_init(4);
-                P_modelo = P_linear;
-                R2 = R2_linear;
-                RMSE = RMSE_linear;
-                MAE = mean(abs(Y - P_modelo));
-                erro_percentual_medio = mean(abs((Y - P_modelo) ./ Y)) * 100;
-                A = NaN;
-                B = NaN;
-            end
-            resultados.(cor).a = a;
-            resultados.(cor).b = b;
-            resultados.(cor).c = c;
-            resultados.(cor).d = d;
-            resultados.(cor).A = A;
-            resultados.(cor).B = B;
-            resultados.(cor).R2 = R2;
-            resultados.(cor).RMSE = RMSE;
-            resultados.(cor).MAE = MAE;
-            resultados.(cor).erro_perc = erro_percentual_medio;
-            resultados.(cor).P_thorlabs = Y;
-            resultados.(cor).P_modelo = P_modelo;
-            resultados.(cor).exitflag = exitflag;
-            
-            % Exibir resultados finais
-            fprintf('\nModelo Final Escolhido: %s\n', resultados.(cor).modelo);
-            if usar_saturacao
-                fprintf('  P(λ) = A·x / (B + x)\n');
-                fprintf('  onde x = %.4f·Pr + %.4f·Pg + %.4f·Pb + %.4f\n', a, b, c, d);
-                fprintf('  A = %.2f, B = %.2f\n', A, B);
-            else
-                fprintf('  P(λ) = %.4f·Pr + %.4f·Pg + %.4f·Pb + %.4f\n', a, b, c, d);
-            end
-            fprintf('Métricas:\n');
-            fprintf('  R² = %.6f\n', R2);
-            fprintf('  RMSE = %.2f\n', RMSE);
-            fprintf('  MAE = %.2f\n', MAE);
-            fprintf('  Erro percentual médio = %.2f%%\n', erro_percentual_medio);
-            
-        catch ME
-            fprintf('  ERRO na otimização: %s\n', ME.message);
-            fprintf('  Usando modelo linear como fallback.\n');
-            
-            % Fallback para modelo linear
-            a = beta_init(1);
-            b = beta_init(2);
-            c = beta_init(3);
-            d = beta_init(4);
-            P_modelo = X_linear * beta_init;
-            
-            R2 = calcular_r2(Y, P_modelo);
-            RMSE = sqrt(mean((Y - P_modelo).^2));
-            MAE = mean(abs(Y - P_modelo));
-            erro_percentual_medio = mean(abs((Y - P_modelo) ./ Y)) * 100;
-            
-            resultados.(cor).modelo = 'linear';
-            resultados.(cor).a = a;
-            resultados.(cor).b = b;
-            resultados.(cor).c = c;
-            resultados.(cor).d = d;
-            resultados.(cor).A = NaN;
-            resultados.(cor).B = NaN;
-            resultados.(cor).R2 = R2;
-            resultados.(cor).RMSE = RMSE;
-            resultados.(cor).MAE = MAE;
-            resultados.(cor).erro_perc = erro_percentual_medio;
-            resultados.(cor).P_thorlabs = Y;
-            resultados.(cor).P_modelo = P_modelo;
-            resultados.(cor).exitflag = -999;
-            
-            fprintf('\nModelo Final: Linear (fallback)\n');
-            fprintf('  P(λ) = %.4f·Pr + %.4f·Pg + %.4f·Pb + %.4f\n', a, b, c, d);
-            fprintf('Métricas:\n');
-            fprintf('  R² = %.6f\n', R2);
-            fprintf('  RMSE = %.2f\n', RMSE);
-            fprintf('  MAE = %.2f\n', MAE);
-            fprintf('  Erro percentual médio = %.2f%%\n', erro_percentual_medio);
-        end
-        
-    else
-        %% Modelo LINEAR para VERDE e AZUL
-        % Montar matriz de design [Pr, Pg, Pb, 1]
-        X = [Pr, Pg, Pb, ones(size(Pr))];
-        
-        % Resolver sistema usando mínimos quadrados
-        beta = (X' * X) \ (X' * Y);
-        
-        a = beta(1);
-        b = beta(2);
-        c = beta(3);
-        d = beta(4);
-        
-        % Calcular P(λ) usando o modelo linear
-        P_modelo = X * beta;
-        
-        % Calcular métricas de erro
-        R2 = calcular_r2(Y, P_modelo);
-        RMSE = sqrt(mean((Y - P_modelo).^2));
-        MAE = mean(abs(Y - P_modelo));
-        erro_percentual_medio = mean(abs((Y - P_modelo) ./ Y)) * 100;
-        
-        % Armazenar resultados
-        resultados.(cor).modelo = 'linear';
-        resultados.(cor).a = a;
-        resultados.(cor).b = b;
-        resultados.(cor).c = c;
-        resultados.(cor).d = d;
-        resultados.(cor).A = NaN;
-        resultados.(cor).B = NaN;
-        resultados.(cor).R2 = R2;
-        resultados.(cor).RMSE = RMSE;
-        resultados.(cor).MAE = MAE;
-        resultados.(cor).erro_perc = erro_percentual_medio;
-        resultados.(cor).P_thorlabs = Y;
-        resultados.(cor).P_modelo = P_modelo;
-        
-        % Exibir resultados
-        fprintf('Modelo: P(λ) = %.4f·Pr + %.4f·Pg + %.4f·Pb + %.4f\n', a, b, c, d);
-        fprintf('Métricas:\n');
-        fprintf('  R² = %.6f\n', R2);
-        fprintf('  RMSE = %.2f\n', RMSE);
-        fprintf('  MAE = %.2f\n', MAE);
-        fprintf('  Erro percentual médio = %.2f%%\n', erro_percentual_medio);
-    end
+    %% Modelo LINEAR para TODAS as cores (Verde, Vermelho, Azul)
+    % Montar matriz de design [Pr, Pg, Pb, 1]
+    X = [Pr, Pg, Pb, ones(size(Pr))];
+    
+    % Resolver sistema usando mínimos quadrados
+    beta = (X' * X) \ (X' * Y);
+    
+    a = beta(1);
+    b = beta(2);
+    c = beta(3);
+    d = beta(4);
+    
+    % Calcular P(λ) usando o modelo linear
+    P_modelo = X * beta;
+    
+    % Calcular métricas de erro
+    R2 = calcular_r2(Y, P_modelo);
+    RMSE = sqrt(mean((Y - P_modelo).^2));
+    MAE = mean(abs(Y - P_modelo));
+    erro_percentual_medio = mean(abs((Y - P_modelo) ./ Y)) * 100;
+    
+    % Armazenar resultados
+    resultados.(cor).modelo = 'linear';
+    resultados.(cor).a = a;
+    resultados.(cor).b = b;
+    resultados.(cor).c = c;
+    resultados.(cor).d = d;
+    resultados.(cor).A = NaN;
+    resultados.(cor).B = NaN;
+    resultados.(cor).R2 = R2;
+    resultados.(cor).RMSE = RMSE;
+    resultados.(cor).MAE = MAE;
+    resultados.(cor).erro_perc = erro_percentual_medio;
+    resultados.(cor).P_thorlabs = Y;
+    resultados.(cor).P_modelo = P_modelo;
+    
+    % Exibir resultados
+    fprintf('Modelo: P(λ) = %.4f·Pr + %.4f·Pg + %.4f·Pb + %.4f\n', a, b, c, d);
+    fprintf('Métricas:\n');
+    fprintf('  R² = %.6f\n', R2);
+    fprintf('  RMSE = %.2f\n', RMSE);
+    fprintf('  MAE = %.2f\n', MAE);
+    fprintf('  Erro percentual médio = %.2f%%\n', erro_percentual_medio);
 end
 
 %% Plotar resultados comparativos
@@ -403,12 +209,8 @@ for cor_idx = 1:length(cores)
     xlabel('ThorLabs (Referência)', 'FontSize', 11, 'FontWeight', 'bold');
     ylabel('OSA Visível (Modelo)', 'FontSize', 11, 'FontWeight', 'bold');
     
-    % Título com tipo de modelo
-    if strcmp(resultados.(cor).modelo, 'saturacao')
-        title_str = sprintf('LED %s (Saturação)', cor_nome);
-    else
-        title_str = sprintf('LED %s (Linear)', cor_nome);
-    end
+    % Título
+    title_str = sprintf('LED %s', cor_nome);
     title(title_str, 'FontSize', 12, 'FontWeight', 'bold');
     
     % Adicionar caixa de texto com métricas
@@ -426,16 +228,10 @@ for cor_idx = 1:length(cores)
     hold off;
 end
 
-% Título adaptativo baseado no modelo escolhido para vermelho
-if strcmp(resultados.red.modelo, 'saturacao')
-    titulo_geral = 'Modelo com Saturação (Vermelho) e Linear (Verde/Azul)';
-else
-    titulo_geral = 'Modelo Linear para Todas as Cores (Saturação não melhorou vermelho)';
-end
-sgtitle(titulo_geral, 'FontSize', 14, 'FontWeight', 'bold');
+sgtitle('Modelo Linear: ThorLabs vs OSA Visível', 'FontSize', 14, 'FontWeight', 'bold');
 
 % Salvar figura
-output_file = 'Modelo_Saturacao_Comparacao.png';
+output_file = 'Modelo_Linear_Comparacao.png';
 print(output_file, '-dpng', '-r300');
 fprintf('Gráfico salvo em: %s\n', output_file);
 
@@ -465,12 +261,8 @@ for cor_idx = 1:length(cores)
     xlabel('ThorLabs (Referência)', 'FontSize', 11, 'FontWeight', 'bold');
     ylabel('Resíduo (ThorLabs - Modelo)', 'FontSize', 11, 'FontWeight', 'bold');
     
-    % Título com tipo de modelo
-    if strcmp(resultados.(cor).modelo, 'saturacao')
-        title_str = sprintf('LED %s (Saturação)', cor_nome);
-    else
-        title_str = sprintf('LED %s (Linear)', cor_nome);
-    end
+    % Título
+    title_str = sprintf('LED %s', cor_nome);
     title(title_str, 'FontSize', 12, 'FontWeight', 'bold');
     
     grid on;
@@ -478,62 +270,33 @@ for cor_idx = 1:length(cores)
     hold off;
 end
 
-% Título adaptativo para resíduos
-if strcmp(resultados.red.modelo, 'saturacao')
-    titulo_residuos = 'Análise de Resíduos - Modelo com Saturação (Vermelho)';
-else
-    titulo_residuos = 'Análise de Resíduos - Modelo Linear';
-end
-sgtitle(titulo_residuos, 'FontSize', 14, 'FontWeight', 'bold');
+sgtitle('Análise de Resíduos - Modelo Linear', 'FontSize', 14, 'FontWeight', 'bold');
 
 % Salvar figura
-output_file = 'Modelo_Saturacao_Residuos.png';
+output_file = 'Modelo_Linear_Residuos.png';
 print(output_file, '-dpng', '-r300');
 fprintf('Gráfico salvo em: %s\n', output_file);
 
-%% Comparação com modelo linear anterior (para vermelho)
-fprintf('\n=== Resumo Final: LED Vermelho ===\n');
-
-% Calcular modelo linear para vermelho
-Y_red = dados_cor.red.P_thorlabs;
-Pr_red = dados_cor.red.Pr_osa;
-Pg_red = dados_cor.red.Pg_osa;
-Pb_red = dados_cor.red.Pb_osa;
-
-X_red = [Pr_red, Pg_red, Pb_red, ones(size(Pr_red))];
-beta_red_linear = (X_red' * X_red) \ (X_red' * Y_red);
-P_red_linear = X_red * beta_red_linear;
-R2_red_linear = calcular_r2(Y_red, P_red_linear);
-RMSE_red_linear = sqrt(mean((Y_red - P_red_linear).^2));
-
-fprintf('Modelo Linear puro:\n');
-fprintf('  R² = %.6f, RMSE = %.2f\n', R2_red_linear, RMSE_red_linear);
-
-fprintf('\nModelo escolhido: %s\n', upper(resultados.red.modelo));
-fprintf('  R² = %.6f, RMSE = %.2f\n', resultados.red.R2, resultados.red.RMSE);
-
-if strcmp(resultados.red.modelo, 'saturacao')
-    fprintf('\n✓ Modelo de saturação oferece melhoria!\n');
-    fprintf('  ΔR² = %.6f (%.2f%% melhor)\n', resultados.red.R2 - R2_red_linear, ...
-        (resultados.red.R2 - R2_red_linear) / R2_red_linear * 100);
-    fprintf('  ΔRMSE = %.2f (%.2f%% redução)\n', RMSE_red_linear - resultados.red.RMSE, ...
-        (RMSE_red_linear - resultados.red.RMSE) / RMSE_red_linear * 100);
-else
-    fprintf('\n⚠️  Modelo linear foi mantido (saturação não melhorou)\n');
-end
+%% Resumo final
+fprintf('\n=== Resumo dos Modelos Lineares ===\n');
+fprintf('Verde:    R² = %.6f, RMSE = %.2f, Erro = %.2f%%\n', ...
+    resultados.green.R2, resultados.green.RMSE, resultados.green.erro_perc);
+fprintf('Vermelho: R² = %.6f, RMSE = %.2f, Erro = %.2f%%\n', ...
+    resultados.red.R2, resultados.red.RMSE, resultados.red.erro_perc);
+fprintf('Azul:     R² = %.6f, RMSE = %.2f, Erro = %.2f%%\n', ...
+    resultados.blue.R2, resultados.blue.RMSE, resultados.blue.erro_perc);
 
 %% Salvar resultados
 fprintf('\n=== Salvando resultados ===\n');
 
 % Salvar em arquivo MAT
-save('resultados_modelagem_saturacao.mat', 'resultados', 'dados_cor');
-fprintf('Resultados salvos em: resultados_modelagem_saturacao.mat\n');
+save('resultados_modelagem_linear.mat', 'resultados', 'dados_cor');
+fprintf('Resultados salvos em: resultados_modelagem_linear.mat\n');
 
 % Salvar parâmetros em arquivo de texto
-fid = fopen('parametros_modelo_saturacao.txt', 'w');
-fprintf(fid, 'Modelos Calibrados:\n');
-fprintf(fid, '- Verde e Azul: Linear P(lambda) = a*Pr + b*Pg + c*Pb + d\n');
-fprintf(fid, '- Vermelho: Saturacao P(lambda) = A*x/(B+x), x = a*Pr + b*Pg + c*Pb + d\n\n');
+fid = fopen('parametros_modelo_linear.txt', 'w');
+fprintf(fid, 'Modelo Linear Calibrado: P(lambda) = a*Pr + b*Pg + c*Pb + d\n');
+fprintf(fid, 'Aplicado para todas as cores (Verde, Vermelho, Azul)\n\n');
 
 fprintf(fid, 'Parâmetros:\n\n');
 
@@ -542,17 +305,10 @@ for cor_idx = 1:length(cores)
     cor_nome = cor_nomes{cor_idx};
     
     fprintf(fid, '--- %s ---\n', cor_nome);
-    fprintf(fid, 'Modelo: %s\n', resultados.(cor).modelo);
     fprintf(fid, '  a (ganho Pr) = %.6f\n', resultados.(cor).a);
     fprintf(fid, '  b (ganho Pg) = %.6f\n', resultados.(cor).b);
     fprintf(fid, '  c (ganho Pb) = %.6f\n', resultados.(cor).c);
     fprintf(fid, '  d (offset)   = %.6f\n', resultados.(cor).d);
-    
-    if strcmp(resultados.(cor).modelo, 'saturacao')
-        fprintf(fid, '  A (plato)    = %.2f\n', resultados.(cor).A);
-        fprintf(fid, '  B (K_m)      = %.2f\n', resultados.(cor).B);
-    end
-    
     fprintf(fid, 'Metricas:\n');
     fprintf(fid, '  R²   = %.6f\n', resultados.(cor).R2);
     fprintf(fid, '  RMSE = %.2f\n', resultados.(cor).RMSE);
@@ -561,26 +317,11 @@ for cor_idx = 1:length(cores)
 end
 
 fclose(fid);
-fprintf('Parâmetros salvos em: parametros_modelo_saturacao.txt\n');
+fprintf('Parâmetros salvos em: parametros_modelo_linear.txt\n');
 
-fprintf('\n=== Modelagem concluída! ===\n');
+fprintf('\n=== Modelagem LINEAR concluída! ===\n');
 
-%% Funções auxiliares
-
-function P = modelo_saturacao(params, Pr, Pg, Pb)
-    % Modelo de saturação: P(λ) = A * x / (B + x)
-    % onde x = a·Pr + b·Pg + c·Pb + d
-    
-    a = params(1);
-    b = params(2);
-    c = params(3);
-    d = params(4);
-    A = params(5);
-    B = params(6);
-    
-    x = a * Pr + b * Pg + c * Pb + d;
-    P = A * x ./ (B + x);
-end
+%% Função auxiliar
 
 function R2 = calcular_r2(y_obs, y_pred)
     % Calcula o coeficiente de determinação R²

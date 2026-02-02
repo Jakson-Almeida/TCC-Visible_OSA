@@ -1,11 +1,9 @@
-Modelos Calibrados:
-- Verde e Azul: Linear P(lambda) = a*Pr + b*Pg + c*Pb + d
-- Vermelho: Saturacao P(lambda) = A*x/(B+x), x = a*Pr + b*Pg + c*Pb + d
+Modelo Linear Calibrado: P(lambda) = a*Pr + b*Pg + c*Pb + d
+Aplicado para todas as cores (Verde, Vermelho, Azul)
 
 Parâmetros:
 
 --- Verde ---
-Modelo: linear
   a (ganho Pr) = -101.049362
   b (ganho Pg) = 11.829692
   c (ganho Pb) = 91.503236
@@ -17,7 +15,6 @@ Metricas:
   Erro = 3.17%
 
 --- Vermelho ---
-Modelo: linear
   a (ganho Pr) = 102.561708
   b (ganho Pg) = 1633.738187
   c (ganho Pb) = 282.841660
@@ -29,7 +26,6 @@ Metricas:
   Erro = 20.70%
 
 --- Azul ---
-Modelo: linear
   a (ganho Pr) = 33.352562
   b (ganho Pg) = 123.100387
   c (ganho Pb) = 0.026086
