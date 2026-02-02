@@ -1,0 +1,24 @@
+=== MODELAGEM ESPECTRAL COMPLETA - RESUMO ===
+
+Data: 02-Feb-2026 17:01:03
+Faixa espectral: 372.7 - 681.0 nm
+Comprimentos de onda amostrados: 100
+
+
+--- Verde ---
+R² médio: 0.6717
+R² mínimo: 0.0095
+R² máximo: 0.9999
+RMSE médio: 9.23
+
+--- Vermelho ---
+R² médio: 0.4507
+R² mínimo: 0.0073
+R² máximo: 1.0000
+RMSE médio: 11.71
+
+--- Azul ---
+R² médio: 0.5255
+R² mínimo: 0.0006
+R² máximo: 0.9997
+RMSE médio: 9.83
