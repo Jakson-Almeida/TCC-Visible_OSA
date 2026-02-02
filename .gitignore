@@ -23,3 +23,5 @@ Experimentos/ThorLabs/Temporal/
 # Manter no git:
 # - TCC_Documento/modelo.pdf (mantido no git)
 # - OSAs_ Aplicações e Princípios de Funcionamento.md (mantido no git)
+/Experimentos/scripts/modelagem/ThorLabs
+/Experimentos/scripts/modelagem/Visible_OSA
