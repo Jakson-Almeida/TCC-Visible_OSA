@@ -38,23 +38,47 @@ Pb_osa = [];           % Intensidade canal B (OSA)
 fonte_labels = {};     % Label da fonte (verde, vermelho, azul)
 duty_cycle = [];       % Duty cycle [%]
 
-% Iterar sobre os dados do ThorLabs (referência)
-tomadas = fieldnames(dados.data.thorlabs);
-for t_idx = 1:length(tomadas)
-    tomada = tomadas{t_idx};
+% Iterar sobre as fontes (green, red, blue)
+fontes = {'green', 'red', 'blue'};
+
+% Contador de debug
+n_amostras_por_fonte = struct('green', 0, 'red', 0, 'blue', 0);
+
+% Debug: verificar estrutura do JSON
+fprintf('  Debug - Estrutura do JSON:\n');
+fprintf('    Campos em dados.data: %s\n', strjoin(fieldnames(dados.data), ', '));
+if isfield(dados.data, 'thorlabs')
+    fprintf('    Campos em thorlabs: %s\n', strjoin(fieldnames(dados.data.thorlabs), ', '));
+end
+if isfield(dados.data, 'osa_visivel')
+    fprintf('    Campos em osa_visivel: %s\n', strjoin(fieldnames(dados.data.osa_visivel), ', '));
+end
+
+% Iterar sobre as tomadas (1-5)
+% NOTA: MATLAB converte campos numéricos "1", "2", etc. para "x1", "x2", etc.
+for t_idx = 1:5
+    tomada = ['x', num2str(t_idx)];  % x1, x2, x3, x4, x5
+    
+    % Verificar se tomada existe
+    if ~isfield(dados.data.thorlabs, tomada)
+        fprintf('  Debug - Tomada %s NÃO encontrada em thorlabs\n', tomada);
+        continue;
+    end
     
     % Iterar sobre duty cycles (1-10)
-    duty_cycles_campos = fieldnames(dados.data.thorlabs.(tomada));
-    for dc_idx = 1:length(duty_cycles_campos)
-        dc_campo = duty_cycles_campos{dc_idx};
-        dc_valor = str2double(dc_campo);
+    for dc_valor = 1:10
+        dc_campo = ['x', num2str(dc_valor)];  % x1, x2, ..., x10
         
-        % Iterar sobre as fontes (green, red, blue)
-        fontes = {'green', 'red', 'blue'};
+        % Verificar se duty cycle existe no ThorLabs
+        if ~isfield(dados.data.thorlabs.(tomada), dc_campo)
+            continue;
+        end
+        
+        % Iterar sobre as fontes
         for fonte_idx = 1:length(fontes)
             fonte = fontes{fonte_idx};
             
-            % Verificar se dados existem no ThorLabs
+            % Verificar se fonte existe no ThorLabs
             if ~isfield(dados.data.thorlabs.(tomada).(dc_campo), fonte)
                 continue;
             end
@@ -76,68 +100,53 @@ for t_idx = 1:length(tomadas)
                 continue;
             end
             
-            % Buscar dados correspondentes do OSA Visível (canal RGB)
+            % Buscar dados correspondentes do OSA Visível
             if ~isfield(dados.data.osa_visivel, tomada)
                 continue;
             end
             if ~isfield(dados.data.osa_visivel.(tomada), dc_campo)
                 continue;
             end
-            if ~isfield(dados.data.osa_visivel.(tomada).(dc_campo), '1')
-                continue;  % Canal 1 = RGB
+            
+            % Buscar lambda do OSA (do canal RGB - canal "x1")
+            lambda_osa_val = NaN;
+            if isfield(dados.data.osa_visivel.(tomada).(dc_campo), 'x1')
+                if isfield(dados.data.osa_visivel.(tomada).(dc_campo).x1, fonte)
+                    osa_rgb = dados.data.osa_visivel.(tomada).(dc_campo).x1.(fonte);
+                    if isfield(osa_rgb, 'peak_nm') && ~isempty(osa_rgb.peak_nm)
+                        lambda_osa_val = str2double(osa_rgb.peak_nm);
+                    end
+                end
             end
             
-            osa_data = dados.data.osa_visivel.(tomada).(dc_campo).('1');
-            
-            if ~isfield(osa_data, fonte)
-                continue;
-            end
-            
-            osa_fonte = osa_data.(fonte);
-            
-            % Verificar se todos os campos existem
-            if ~isfield(osa_fonte, 'peak_nm') || ~isfield(osa_fonte, 'intensity')
-                continue;
-            end
-            if isempty(osa_fonte.peak_nm) || isempty(osa_fonte.intensity)
-                continue;
-            end
-            
-            lambda_osa_val = str2double(osa_fonte.peak_nm);
-            P_osa_val = str2double(osa_fonte.intensity);
-            
-            if isnan(lambda_osa_val) || isnan(P_osa_val)
-                continue;
-            end
-            
-            % Buscar intensidades dos outros canais (R, G, B separados)
-            % Canal R (x2)
+            % Buscar intensidades dos canais R, G, B separados
+            % Canal R (canal "x2")
             Pr_val = NaN;
-            if isfield(dados.data.osa_visivel.(tomada).(dc_campo), '2')
-                if isfield(dados.data.osa_visivel.(tomada).(dc_campo).('2'), fonte)
-                    r_data = dados.data.osa_visivel.(tomada).(dc_campo).('2').(fonte);
+            if isfield(dados.data.osa_visivel.(tomada).(dc_campo), 'x2')
+                if isfield(dados.data.osa_visivel.(tomada).(dc_campo).x2, fonte)
+                    r_data = dados.data.osa_visivel.(tomada).(dc_campo).x2.(fonte);
                     if isfield(r_data, 'intensity') && ~isempty(r_data.intensity)
                         Pr_val = str2double(r_data.intensity);
                     end
                 end
             end
             
-            % Canal G (x3)
+            % Canal G (canal "x3")
             Pg_val = NaN;
-            if isfield(dados.data.osa_visivel.(tomada).(dc_campo), '3')
-                if isfield(dados.data.osa_visivel.(tomada).(dc_campo).('3'), fonte)
-                    g_data = dados.data.osa_visivel.(tomada).(dc_campo).('3').(fonte);
+            if isfield(dados.data.osa_visivel.(tomada).(dc_campo), 'x3')
+                if isfield(dados.data.osa_visivel.(tomada).(dc_campo).x3, fonte)
+                    g_data = dados.data.osa_visivel.(tomada).(dc_campo).x3.(fonte);
                     if isfield(g_data, 'intensity') && ~isempty(g_data.intensity)
                         Pg_val = str2double(g_data.intensity);
                     end
                 end
             end
             
-            % Canal B (x4)
+            % Canal B (canal "x4")
             Pb_val = NaN;
-            if isfield(dados.data.osa_visivel.(tomada).(dc_campo), '4')
-                if isfield(dados.data.osa_visivel.(tomada).(dc_campo).('4'), fonte)
-                    b_data = dados.data.osa_visivel.(tomada).(dc_campo).('4').(fonte);
+            if isfield(dados.data.osa_visivel.(tomada).(dc_campo), 'x4')
+                if isfield(dados.data.osa_visivel.(tomada).(dc_campo).x4, fonte)
+                    b_data = dados.data.osa_visivel.(tomada).(dc_campo).x4.(fonte);
                     if isfield(b_data, 'intensity') && ~isempty(b_data.intensity)
                         Pb_val = str2double(b_data.intensity);
                     end
@@ -145,7 +154,7 @@ for t_idx = 1:length(tomadas)
             end
             
             % Apenas adicionar se todos os valores existem
-            if ~isnan(Pr_val) && ~isnan(Pg_val) && ~isnan(Pb_val)
+            if ~isnan(lambda_osa_val) && ~isnan(Pr_val) && ~isnan(Pg_val) && ~isnan(Pb_val)
                 lambda_thorlabs = [lambda_thorlabs; lambda_th];
                 P_thorlabs = [P_thorlabs; P_th];
                 lambda_osa = [lambda_osa; lambda_osa_val];
@@ -154,12 +163,25 @@ for t_idx = 1:length(tomadas)
                 Pb_osa = [Pb_osa; Pb_val];
                 fonte_labels = [fonte_labels; fonte];
                 duty_cycle = [duty_cycle; dc_valor];
+                n_amostras_por_fonte.(fonte) = n_amostras_por_fonte.(fonte) + 1;
             end
         end
     end
 end
 
+% Debug: mostrar quantas amostras foram coletadas por fonte
+fprintf('  Debug - Amostras por fonte:\n');
+fprintf('    Verde: %d\n', n_amostras_por_fonte.green);
+fprintf('    Vermelho: %d\n', n_amostras_por_fonte.red);
+fprintf('    Azul: %d\n', n_amostras_por_fonte.blue);
+
 fprintf('  Total de amostras coletadas: %d\n', length(P_thorlabs));
+
+% Verificar se há dados suficientes
+if length(P_thorlabs) < 10
+    error('Dados insuficientes! Apenas %d amostras coletadas. Verifique a estrutura do JSON.', length(P_thorlabs));
+end
+
 fprintf('  Faixa de λ (ThorLabs): [%.2f - %.2f] nm\n', min(lambda_thorlabs), max(lambda_thorlabs));
 fprintf('  Faixa de λ (OSA): [%.2f - %.2f] nm\n', min(lambda_osa), max(lambda_osa));
 
@@ -169,6 +191,11 @@ fprintf('\nNormalizando dados...\n');
 % Normalizar comprimento de onda para [0, 1]
 lambda_min = min(lambda_thorlabs);
 lambda_max = max(lambda_thorlabs);
+
+if lambda_max == lambda_min
+    error('Todos os comprimentos de onda são iguais! Verifique os dados.');
+end
+
 lambda_norm = (lambda_thorlabs - lambda_min) / (lambda_max - lambda_min);
 
 % Estatísticas dos dados

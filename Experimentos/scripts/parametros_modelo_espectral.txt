@@ -1,0 +1,35 @@
+Modelos Espectrais Calibrados
+=============================
+
+--- Modelo 1: Linear Simples ---
+P(λ) = a·Pr + b·Pg + c·Pb + d + e·λ
+  a (Pr)     = 20.230908
+  b (Pg)     = -11.189089
+  c (Pb)     = -9.517444
+  d (offset) = 2091.193972
+  e (λ)      = 8122.728065
+Métricas: R² = 0.563381, RMSE = 2978.39, MAE = 2228.51
+
+--- Modelo 2: Coeficientes Lineares em λ ---
+P(λ) = (a₀+a₁·λ)·Pr + (b₀+b₁·λ)·Pg + (c₀+c₁·λ)·Pb + (d₀+d₁·λ)
+  Pr: a₀ = -28.792777, a₁ = 637.279463
+  Pg: b₀ = -490.428656, b₁ = 601.635905
+  Pb: c₀ = 433.688840, c₁ = -917.503098
+  Offset: d₀ = 550.079012, d₁ = 10464.151801
+Métricas: R² = 0.665679, RMSE = 2606.23, MAE = 1876.74
+
+--- Modelo 3: Coeficientes Quadráticos em λ ---
+P(λ) = (a₀+a₁·λ+a₂·λ²)·Pr + ... (similar)
+  Pr: a₀ = 46.249967, a₁ = -2147.173334, a₂ = 2421.758503
+  Pg: b₀ = -143.326399, b₁ = -256.095301, b₂ = 474.199198
+  Pb: c₀ = 103.972109, c₁ = 1197.410549, c₂ = -1585.704771
+  Offset: d₀ = 1755.069105, d₁ = 3998.538677, d₂ = 6107.151664
+Métricas: R² = 0.704853, RMSE = 2448.78, MAE = 1523.99
+
+
+Normalização:
+  λ normalizado = (λ - 456.62) / (628.02 - 456.62)
+
+Dados:
+  Total de amostras: 60
+  Faixa de λ: [456.62 - 628.02] nm
