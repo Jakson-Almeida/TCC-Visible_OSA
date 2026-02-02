@@ -514,7 +514,7 @@ def main():
     ttk.Button(fr_btn, text="Carregar arquivo(s)...", command=carregar_arquivos).pack(side=tk.LEFT, padx=(0, 8))
     ttk.Button(fr_btn, text="< Anterior", command=anterior).pack(side=tk.LEFT, padx=2)
     ttk.Button(fr_btn, text="Próximo >", command=proximo).pack(side=tk.LEFT, padx=2)
-    tk.Label(fr_btn, text="Navegação: ← →  |  < >  |  − +  |  Page Up/Down", fg="gray").pack(side=tk.LEFT, padx=12)
+    #tk.Label(fr_btn, text="Navegação: ← →  |  < >  |  − +  |  Page Up/Down", fg="gray").pack(side=tk.LEFT, padx=12)
 
     # Exibir picos (por padrão desligado)
     def toggle_peaks():
