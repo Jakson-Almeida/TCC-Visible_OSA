@@ -1,0 +1,60 @@
+Modelo de Combinação Linear dos Canais R, G, B
+==============================================
+
+Para cada fonte: P_ThorLabs = α₁·f_R(x) + α₂·f_G(x) + α₃·f_B(x)
+onde f_i(x) = a_i·x² + b_i·x + c_i (polinômios grau 2)
+
+
+--- Fonte: Verde ---
+
+Polinômios dos canais:
+  Canal R: y = -0.2220x² + 4.5066x + 5.9948
+  Canal G: y = -0.5657x² + 21.5916x + -5.5176
+  Canal B: y = -0.3299x² + 16.3579x + 0.4265
+
+Coeficientes da combinação linear:
+  α₁ (Canal R) = -77.6072
+  α₂ (Canal G) = -113.1282
+  α₃ (Canal B) = 238.9134
+
+Métricas do modelo:
+  R² = 0.9999
+  RMSE = 28.28
+  MAE = 21.76
+  Erro percentual médio = 0.37%
+
+--- Fonte: Vermelho ---
+
+Polinômios dos canais:
+  Canal R: y = -2.5772x² + 50.1763x + 11.1799
+  Canal G: y = -0.0177x² + 0.6803x + 2.9531
+  Canal B: y = -0.2424x² + 5.4884x + 5.3515
+
+Coeficientes da combinação linear:
+  α₁ (Canal R) = -1297.8351
+  α₂ (Canal G) = -23167.5469
+  α₃ (Canal B) = 15493.2330
+
+Métricas do modelo:
+  R² = 0.9999
+  RMSE = 95.56
+  MAE = 78.49
+  Erro percentual médio = 0.46%
+
+--- Fonte: Azul ---
+
+Polinômios dos canais:
+  Canal R: y = -0.0039x² + 2.3873x + -0.1283
+  Canal G: y = -0.0809x² + 8.3573x + -3.0672
+  Canal B: y = -2.5120x² + 51.1094x + -3.5562
+
+Coeficientes da combinação linear:
+  α₁ (Canal R) = 640.4175
+  α₂ (Canal G) = -69.6728
+  α₃ (Canal B) = 1.0567
+
+Métricas do modelo:
+  R² = 0.9999
+  RMSE = 28.64
+  MAE = 23.07
+  Erro percentual médio = 0.46%
