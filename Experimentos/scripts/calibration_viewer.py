@@ -29,9 +29,21 @@ def ler_espectro(caminho):
         return None, None
 
 
+def carregar_modelo_geral():
+    """
+    Carrega o modelo GERAL (independente de duty e fonte).
+    Retorna DataFrame com colunas: lambda_nm, beta_1, beta_2, beta_3, R2, RMSE
+    ou None se o arquivo não existir.
+    """
+    arquivo = "modelo_geral_parametros.csv"
+    if not os.path.exists(arquivo):
+        return None
+    return pd.read_csv(arquivo)
+
+
 def carregar_modelo(fonte):
     """
-    Carrega parâmetros do modelo para a fonte especificada.
+    Carrega parâmetros do modelo por fonte (depende de duty cycle).
     Retorna DataFrame com colunas: lambda_nm, a_R, b_R, c_R, ..., alpha_1, alpha_2, alpha_3
     """
     arquivo_modelo = f"modelo_{fonte.lower()}_parametros.csv"
@@ -41,6 +53,21 @@ def carregar_modelo(fonte):
     
     df = pd.read_csv(arquivo_modelo)
     return df
+
+
+def aplicar_modelo_geral(wl_nm, Pr, Pg, Pb, df_modelo):
+    """
+    Aplica o modelo GERAL: P_ThorLabs(λ) = β₁·Pr(λ) + β₂·Pg(λ) + β₃·Pb(λ).
+    Não depende de duty cycle nem de fonte de luz.
+    """
+    P_calibrado = np.zeros_like(wl_nm)
+    for i, lambda_i in enumerate(wl_nm):
+        idx = (df_modelo['lambda_nm'] - lambda_i).abs().idxmin()
+        b1 = df_modelo.loc[idx, 'beta_1']
+        b2 = df_modelo.loc[idx, 'beta_2']
+        b3 = df_modelo.loc[idx, 'beta_3']
+        P_calibrado[i] = b1 * Pr[i] + b2 * Pg[i] + b3 * Pb[i]
+    return P_calibrado
 
 
 def aplicar_modelo(wl_nm, Pr, Pg, Pb, duty_cycle, df_modelo):
@@ -285,23 +312,28 @@ def main():
         _, Pg = dados['G']
         _, Pb = dados['B']
         
-        # Carregar modelo
-        status_var.set(f"Carregando modelo para fonte {fonte_atual.get()}...")
-        root.update()
+        # Prioridade: modelo GERAL (independente de duty e fonte)
+        df_geral = carregar_modelo_geral()
+        usar_modelo_geral = df_geral is not None
         
-        try:
-            df_modelo = carregar_modelo(fonte_atual.get())
-        except FileNotFoundError as e:
-            messagebox.showerror("Erro", str(e))
-            status_var.set("Erro: arquivo de modelo não encontrado.")
-            return
-        
-        # Aplicar modelo
-        status_var.set("Aplicando modelo de calibração...")
-        root.update()
-        
-        duty = duty_cycle.get()
-        P_calibrado = aplicar_modelo(wl_nm, Pr, Pg, Pb, duty, df_modelo)
+        if usar_modelo_geral:
+            status_var.set("Carregando modelo geral (espectros quaisquer)...")
+            root.update()
+            P_calibrado = aplicar_modelo_geral(wl_nm, Pr, Pg, Pb, df_geral)
+            duty = None  # não usado no modelo geral
+        else:
+            status_var.set(f"Carregando modelo para fonte {fonte_atual.get()}...")
+            root.update()
+            try:
+                df_modelo = carregar_modelo(fonte_atual.get())
+            except FileNotFoundError as e:
+                messagebox.showerror("Erro", str(e))
+                status_var.set("Erro: arquivo de modelo não encontrado.")
+                return
+            status_var.set("Aplicando modelo de calibração...")
+            root.update()
+            duty = duty_cycle.get()
+            P_calibrado = aplicar_modelo(wl_nm, Pr, Pg, Pb, duty, df_modelo)
         
         # Carregar espectro de referência (se houver)
         P_referencia = None
@@ -326,13 +358,13 @@ def main():
         ax1.plot(wl_nm, Pb, 'b-', label='Canal B', linewidth=1.5, alpha=0.8)
         ax1.set_xlabel("Comprimento de onda (nm)")
         ax1.set_ylabel("Intensidade OSA (u.a.)")
-        ax1.set_title(f"Canais RGB do OSA Visível - Duty {duty:.1f}%")
+        titulo1 = "Canais RGB do OSA Visível" + (f" - Duty {duty:.1f}%" if duty is not None else " (modelo geral)")
+        ax1.set_title(titulo1)
         ax1.legend(loc='best')
         ax1.grid(True, alpha=0.3)
         ax1.set_xlim(wl_nm.min(), wl_nm.max())
         
         # Plot 2: Espectro calibrado (e referência se houver)
-        # Preencher área com gradiente espectral
         for j in range(len(wl_nm) - 1):
             wl_mid = (wl_nm[j] + wl_nm[j + 1]) / 2
             color = wavelength_to_rgb(wl_mid)
@@ -343,13 +375,17 @@ def main():
         
         ax2.plot(wl_nm, P_calibrado, 'k-', linewidth=2, alpha=0.7, label='Calibrado (OSA→ThorLabs)')
         
-        # Plotar referência sobreposto
         if P_referencia is not None:
             ax2.plot(wl_nm, P_referencia, '--', color='orangered', linewidth=2, alpha=0.9, label='Referência (ThorLabs)')
         
         ax2.set_xlabel("Comprimento de onda (nm)")
         ax2.set_ylabel("Intensidade (u.a.)")
-        ax2.set_title(f"Calibrado vs Referência - Fonte {fonte_atual.get()} - Duty {duty:.1f}%")
+        titulo2 = "Calibrado vs Referência"
+        if usar_modelo_geral:
+            titulo2 += " (modelo geral: espectros quaisquer)"
+        else:
+            titulo2 += f" - Fonte {fonte_atual.get()} - Duty {duty:.1f}%"
+        ax2.set_title(titulo2)
         ax2.legend(loc='best')
         ax2.grid(True, alpha=0.3)
         ax2.set_xlim(wl_nm.min(), wl_nm.max())
@@ -363,7 +399,10 @@ def main():
         idx_max = P_calibrado.argmax()
         lambda_max = wl_nm[idx_max]
         
-        msg_status = f"✓ Processado! Pico calibrado: λ={lambda_max:.2f} nm, I={max_calib:.2f}"
+        msg_status = f"✓ Processado!"
+        if usar_modelo_geral:
+            msg_status += " [Modelo geral]"
+        msg_status += f" Pico calibrado: λ={lambda_max:.2f} nm, I={max_calib:.2f}"
         if P_referencia is not None:
             # Métricas de comparação na faixa comum
             valid = np.isfinite(P_referencia) & np.isfinite(P_calibrado) & (P_referencia > 0)

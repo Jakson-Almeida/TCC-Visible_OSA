@@ -2,6 +2,16 @@
 
 Script Python para visualizar e aplicar o modelo de calibração espectral do OSA Visível.
 
+## 📌 Modelo geral (recomendado)
+
+Se existir **`modelo_geral_parametros.csv`** (gerado por `modelagem_espectral_geral.m`), o visualizador usa automaticamente o **modelo geral**:
+
+- **Fórmula:** P_ThorLabs(λ) = β₁(λ)·Pr(λ) + β₂(λ)·Pg(λ) + β₃(λ)·Pb(λ)
+- **Independente de duty cycle e fonte de luz** — válido para **espectros quaisquer** (faixa não saturada).
+- Basta carregar os 3 canais RGB do OSA; não é necessário informar duty nem LED.
+
+Se o arquivo não existir, o visualizador usa o modelo por fonte (Verde/Vermelho/Azul) com duty cycle.
+
 ## 🎯 Funcionalidades
 
 1. **Seleção de Arquivos**: Carregue 3 arquivos de espectros (canais R, G, B do OSA)

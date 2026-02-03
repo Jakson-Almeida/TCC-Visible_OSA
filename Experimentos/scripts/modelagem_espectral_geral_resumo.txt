@@ -1,0 +1,9 @@
+=== MODELAGEM ESPECTRAL GERAL ===
+
+Data: 02-Feb-2026 21:19:53
+Modelo: P_ThorLabs(λ) = β₁(λ)·Pr(λ) + β₂(λ)·Pg(λ) + β₃(λ)·Pb(λ)
+Independente de duty cycle e fonte. Uso: espectros quaisquer.
+
+Faixa: 372.7 - 681.0 nm
+R² médio: 0.6575
+RMSE médio: 111.92
