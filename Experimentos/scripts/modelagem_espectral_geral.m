@@ -243,21 +243,26 @@ fid = fopen('modelagem_espectral_geral_resumo.txt', 'w');
 fprintf(fid, '=== MODELAGEM ESPECTRAL GERAL ===\n\n');
 fprintf(fid, 'Data: %s\n', datestr(now));
 fprintf(fid, 'Modelo: P_ThorLabs(λ) = β₁(λ)·Pr(λ) + β₂(λ)·Pg(λ) + β₃(λ)·Pb(λ)\n');
-fprintf(fid, 'Independente de duty cycle e fonte. Uso: espectros quaisquer.\n\n');
+fprintf(fid, 'β₁, β₂, β₃ = polinômios grau 8 em λ (interpolação dos 100 w_n). Sinal contínuo.\n');
 fprintf(fid, 'Faixa: %.1f - %.1f nm\n', lambda_min*1e9, lambda_max*1e9);
 fprintf(fid, 'R² médio: %.4f\n', mean(resultados.R2, 'omitnan'));
 fprintf(fid, 'RMSE médio: %.2f\n', mean(resultados.RMSE, 'omitnan'));
 fclose(fid);
 fprintf('Salvo: modelagem_espectral_geral_resumo.txt\n');
 
-% Figura: beta e R² por lambda
+% Figura: beta discreto + polinômios (contínuo) e R²
 figure('Position', [100, 100, 1200, 600]);
 subplot(2,1,1);
-plot(resultados.lambda*1e9, resultados.beta(:,1), 'r-', 'LineWidth', 1.5); hold on;
-plot(resultados.lambda*1e9, resultados.beta(:,2), 'g-', 'LineWidth', 1.5);
-plot(resultados.lambda*1e9, resultados.beta(:,3), 'b-', 'LineWidth', 1.5);
+wl_cont = linspace(lambda_nm_min, lambda_nm_max, 500);
+plot(resultados.lambda*1e9, resultados.beta(:,1), 'r.', 'MarkerSize', 8); hold on;
+plot(resultados.lambda*1e9, resultados.beta(:,2), 'g.', 'MarkerSize', 8);
+plot(resultados.lambda*1e9, resultados.beta(:,3), 'b.', 'MarkerSize', 8);
+plot(wl_cont, polyval(p_beta1, wl_cont), 'r-', 'LineWidth', 2);
+plot(wl_cont, polyval(p_beta2, wl_cont), 'g-', 'LineWidth', 2);
+plot(wl_cont, polyval(p_beta3, wl_cont), 'b-', 'LineWidth', 2);
 xlabel('Comprimento de onda (nm)'); ylabel('β');
-legend('β₁ (R)', 'β₂ (G)', 'β₃ (B)'); grid on; title('Coeficientes do modelo geral');
+legend('β₁ (pontos)', 'β₂ (pontos)', 'β₃ (pontos)', 'β₁(λ) poly8', 'β₂(λ) poly8', 'β₃(λ) poly8', 'Location', 'best');
+grid on; title('Coeficientes: 100 w_n (discreto) + polinômios grau 8 (contínuo)');
 subplot(2,1,2);
 plot(resultados.lambda*1e9, resultados.R2, 'k-', 'LineWidth', 1.5);
 xlabel('Comprimento de onda (nm)'); ylabel('R²'); grid on; title('Qualidade do ajuste');
