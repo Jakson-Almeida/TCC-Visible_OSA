@@ -225,21 +225,31 @@ def main():
     ttk.Button(frame_controles, text="Limpar ref.", command=limpar_referencia).grid(row=6, column=0, sticky=tk.W, padx=5, pady=2)
     ttk.Checkbutton(frame_controles, text="Mostrar referência", variable=mostrar_referencia).grid(row=6, column=1, sticky=tk.W, padx=5, pady=2)
     
-    # Seleção de fonte
-    ttk.Label(frame_controles, text="Fonte LED:", font=("Arial", 10, "bold")).grid(row=0, column=2, sticky=tk.W, padx=20, pady=5)
+    # Frame para Fonte LED e Duty Cycle (oculto quando modelo geral está ativo)
+    frame_fonte_duty = ttk.LabelFrame(frame_controles, text="Modelo por fonte (fallback)", padding=5)
+    frame_fonte_duty.grid(row=0, column=2, rowspan=4, columnspan=2, sticky=tk.W, padx=20, pady=5)
+    ttk.Label(frame_fonte_duty, text="Fonte LED:", font=("Arial", 9, "bold")).grid(row=0, column=0, sticky=tk.W, pady=2)
     for i, fonte in enumerate(['Verde', 'Vermelho', 'Azul']):
-        ttk.Radiobutton(frame_controles, text=fonte, variable=fonte_atual, value=fonte).grid(row=1+i, column=2, sticky=tk.W, padx=20, pady=2)
-    
-    # Duty cycle
-    ttk.Label(frame_controles, text="Duty Cycle (%):", font=("Arial", 10, "bold")).grid(row=0, column=3, sticky=tk.W, padx=20, pady=5)
-    ttk.Scale(frame_controles, from_=1, to=10, variable=duty_cycle, orient=tk.HORIZONTAL, length=150).grid(row=1, column=3, sticky=tk.W, padx=20, pady=2)
-    label_duty = ttk.Label(frame_controles, text=f"{duty_cycle.get():.1f}%")
-    label_duty.grid(row=2, column=3, sticky=tk.W, padx=20)
+        ttk.Radiobutton(frame_fonte_duty, text=fonte, variable=fonte_atual, value=fonte).grid(row=1+i, column=0, sticky=tk.W, padx=5, pady=1)
+    ttk.Label(frame_fonte_duty, text="Duty Cycle (%):", font=("Arial", 9, "bold")).grid(row=0, column=1, sticky=tk.W, padx=15, pady=2)
+    ttk.Scale(frame_fonte_duty, from_=1, to=10, variable=duty_cycle, orient=tk.HORIZONTAL, length=120).grid(row=1, column=1, sticky=tk.W, padx=15, pady=2)
+    label_duty = ttk.Label(frame_fonte_duty, text=f"{duty_cycle.get():.1f}%")
+    label_duty.grid(row=2, column=1, sticky=tk.W, padx=15)
     
     def atualizar_label_duty(*args):
         label_duty.config(text=f"{duty_cycle.get():.1f}%")
     
     duty_cycle.trace('w', atualizar_label_duty)
+    
+    # Indicação quando modelo geral está ativo (sem duty/fonte)
+    label_modelo_geral = ttk.Label(frame_controles, text="Modelo geral ativo\n(espectros quaisquer)\nSem duty/fonte", font=("Arial", 9), foreground="green")
+    label_modelo_geral.grid(row=0, column=2, rowspan=4, columnspan=2, sticky=tk.W, padx=20, pady=5)
+    label_modelo_geral.grid_remove()  # oculto por padrão
+    
+    # Se modelo geral existir, ocultar Fonte/Duty e mostrar indicação
+    if os.path.exists("modelo_geral_parametros.csv"):
+        frame_fonte_duty.grid_remove()
+        label_modelo_geral.grid()
     
     # Botão de processar
     btn_processar = ttk.Button(frame_controles, text="▶ Processar e Visualizar", command=lambda: processar())
