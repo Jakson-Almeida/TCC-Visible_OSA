@@ -190,6 +190,17 @@ end
 fprintf('  Concluído. R² médio = %.4f, RMSE médio = %.2f\n', ...
     mean(resultados.R2, 'omitnan'), mean(resultados.RMSE, 'omitnan'));
 
+%% PASSO 5b: AJUSTE POLINOMIAL GRAU 8 PARA β(λ) - SINAL CONTÍNUO
+fprintf('\nPASSO 5b: Ajustando polinômios de grau 8 para β₁(λ), β₂(λ), β₃(λ)...\n');
+grau_poly = 8;
+lambda_nm_vec = resultados.lambda * 1e9;  % nm (melhor condicionamento)
+p_beta1 = polyfit(lambda_nm_vec, resultados.beta(:, 1), grau_poly);
+p_beta2 = polyfit(lambda_nm_vec, resultados.beta(:, 2), grau_poly);
+p_beta3 = polyfit(lambda_nm_vec, resultados.beta(:, 3), grau_poly);
+lambda_nm_min = min(lambda_nm_vec);
+lambda_nm_max = max(lambda_nm_vec);
+fprintf('  β₁(λ), β₂(λ), β₃(λ) = polinômios grau %d em λ (nm). Faixa: %.2f - %.2f nm\n', grau_poly, lambda_nm_min, lambda_nm_max);
+
 %% PASSO 6: IMPRIMIR MODELO E EXPORTAR
 fprintf('\n=== MODELO FINAL ===\n\n');
 fprintf('P_ThorLabs(λ) = β₁(λ)·Pr(λ) + β₂(λ)·Pg(λ) + β₃(λ)·Pb(λ)\n');
