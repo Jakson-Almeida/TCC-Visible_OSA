@@ -29,9 +29,39 @@ def ler_espectro(caminho):
         return None, None
 
 
+def carregar_modelo_geral_polinomios():
+    """
+    Carrega o modelo GERAL em forma de polinômios (β contínuos, grau 8).
+    Retorna dict com lambda_min_nm, lambda_max_nm, p_beta1, p_beta2, p_beta3
+    (cada p_beta* é array de 9 coeficientes, ordem np.polyval: maior grau primeiro),
+    ou None se o arquivo não existir.
+    """
+    arquivo = "modelo_geral_polinomios.csv"
+    if not os.path.exists(arquivo):
+        return None
+    with open(arquivo, 'r', encoding='utf-8') as f:
+        lines = [line.strip() for line in f.readlines() if line.strip()]
+    if len(lines) < 4:
+        return None
+    # Linha 0: lambda_min, lambda_max
+    parts0 = [float(x) for x in lines[0].split(',')]
+    lambda_min_nm, lambda_max_nm = parts0[0], parts0[1]
+    # Linhas 1-3: 9 coeficientes cada (grau 8: c8, c7, ..., c0)
+    p_beta1 = np.array([float(x) for x in lines[1].split(',')])
+    p_beta2 = np.array([float(x) for x in lines[2].split(',')])
+    p_beta3 = np.array([float(x) for x in lines[3].split(',')])
+    return {
+        'lambda_min_nm': lambda_min_nm,
+        'lambda_max_nm': lambda_max_nm,
+        'p_beta1': p_beta1,
+        'p_beta2': p_beta2,
+        'p_beta3': p_beta3,
+    }
+
+
 def carregar_modelo_geral():
     """
-    Carrega o modelo GERAL (independente de duty e fonte).
+    Carrega o modelo GERAL discreto (100 w_n).
     Retorna DataFrame com colunas: lambda_nm, beta_1, beta_2, beta_3, R2, RMSE
     ou None se o arquivo não existir.
     """
@@ -55,10 +85,23 @@ def carregar_modelo(fonte):
     return df
 
 
+def aplicar_modelo_geral_polinomios(wl_nm, Pr, Pg, Pb, poly_data):
+    """
+    Aplica o modelo GERAL com β(λ) contínuos (polinômios grau 8).
+    P_ThorLabs(λ) = β₁(λ)·Pr(λ) + β₂(λ)·Pg(λ) + β₃(λ)·Pb(λ).
+    Sinal reconstituído com aparência contínua.
+    """
+    p1, p2, p3 = poly_data['p_beta1'], poly_data['p_beta2'], poly_data['p_beta3']
+    beta1 = np.polyval(p1, wl_nm)
+    beta2 = np.polyval(p2, wl_nm)
+    beta3 = np.polyval(p3, wl_nm)
+    return beta1 * Pr + beta2 * Pg + beta3 * Pb
+
+
 def aplicar_modelo_geral(wl_nm, Pr, Pg, Pb, df_modelo):
     """
-    Aplica o modelo GERAL: P_ThorLabs(λ) = β₁·Pr(λ) + β₂·Pg(λ) + β₃·Pb(λ).
-    Não depende de duty cycle nem de fonte de luz.
+    Aplica o modelo GERAL discreto (100 w_n): P_ThorLabs(λ) = β₁·Pr(λ) + β₂·Pg(λ) + β₃·Pb(λ).
+    Usa vizinho mais próximo para β.
     """
     P_calibrado = np.zeros_like(wl_nm)
     for i, lambda_i in enumerate(wl_nm):
@@ -322,28 +365,36 @@ def main():
         _, Pg = dados['G']
         _, Pb = dados['B']
         
-        # Prioridade: modelo GERAL (independente de duty e fonte)
-        df_geral = carregar_modelo_geral()
-        usar_modelo_geral = df_geral is not None
-        
+        # Prioridade 1: modelo GERAL polinomial (β contínuos, grau 8)
+        poly_data = carregar_modelo_geral_polinomios()
+        usar_modelo_geral = poly_data is not None
         if usar_modelo_geral:
-            status_var.set("Carregando modelo geral (espectros quaisquer)...")
+            status_var.set("Carregando modelo geral (β contínuos, grau 8)...")
             root.update()
-            P_calibrado = aplicar_modelo_geral(wl_nm, Pr, Pg, Pb, df_geral)
-            duty = None  # não usado no modelo geral
+            P_calibrado = aplicar_modelo_geral_polinomios(wl_nm, Pr, Pg, Pb, poly_data)
+            duty = None
         else:
-            status_var.set(f"Carregando modelo para fonte {fonte_atual.get()}...")
-            root.update()
-            try:
-                df_modelo = carregar_modelo(fonte_atual.get())
-            except FileNotFoundError as e:
-                messagebox.showerror("Erro", str(e))
-                status_var.set("Erro: arquivo de modelo não encontrado.")
-                return
-            status_var.set("Aplicando modelo de calibração...")
-            root.update()
-            duty = duty_cycle.get()
-            P_calibrado = aplicar_modelo(wl_nm, Pr, Pg, Pb, duty, df_modelo)
+            # Prioridade 2: modelo GERAL discreto (100 w_n)
+            df_geral = carregar_modelo_geral()
+            usar_modelo_geral = df_geral is not None
+            if usar_modelo_geral:
+                status_var.set("Carregando modelo geral (discreto)...")
+                root.update()
+                P_calibrado = aplicar_modelo_geral(wl_nm, Pr, Pg, Pb, df_geral)
+                duty = None
+            else:
+                status_var.set(f"Carregando modelo para fonte {fonte_atual.get()}...")
+                root.update()
+                try:
+                    df_modelo = carregar_modelo(fonte_atual.get())
+                except FileNotFoundError as e:
+                    messagebox.showerror("Erro", str(e))
+                    status_var.set("Erro: arquivo de modelo não encontrado.")
+                    return
+                status_var.set("Aplicando modelo de calibração...")
+                root.update()
+                duty = duty_cycle.get()
+                P_calibrado = aplicar_modelo(wl_nm, Pr, Pg, Pb, duty, df_modelo)
         
         # Carregar espectro de referência (se houver)
         P_referencia = None
