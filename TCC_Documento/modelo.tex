@@ -224,7 +224,7 @@ Keywords: optical spectrum analyzer; automated calibration; computer vision; vis
 %% Lista de abreviaturas e siglas. OPCIONAL. Nao deve haver sinal grafico entre as siglas e abreviaturas e o significado. 
 
 \begin{siglas} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
-%  \item[BBL] Beer-Bouguer-Lambert (Lei de Beer-Bouguer-Lambert)
+  \item[ADC] Analog-to-Digital Converter (Conversor Analógico-Digital)
   \item[CMOS] Complementary Metal-Oxide-Semiconductor (Semicondutor de Óxido Metálico Complementar)
   \item[COTS] Commercial Off-The-Shelf (Componentes Comerciais Prontos para Uso)
   \item[CRI] Color Rendering Index (Índice de Reprodução de Cor)
@@ -234,12 +234,15 @@ Keywords: optical spectrum analyzer; automated calibration; computer vision; vis
   \item[IEC] International Electrotechnical Commission (Comissão Eletrotécnica Internacional)
   \item[LITel] Laboratório de Instrumentação e Telemetria
   \item[LPG] Long-Period Grating (Rede de Longo Período)
+  \item[MAE] Mean Absolute Error (Erro Absoluto Médio)
   \item[OSA] Optical Spectrum Analyzer (Analisador de Espectro Óptico)
   \item[OSNR] Optical Signal-to-Noise Ratio (Relação Sinal-Ruído Óptico)
   \item[POC] Point-of-Care (Ponto de Cuidado)
+  \item[PWM] Pulse Width Modulation (Modulação por Largura de Pulso)
   \item[RGB] Red, Green, Blue (Vermelho, Verde, Azul)
-  \item[ROI] Region of Interest (Região de Interesse)
   \item[RMS] Root Mean Square (Raiz Quadrada da Média dos Quadrados)
+  \item[RMSE] Root Mean Square Error (Erro Quadrático Médio)
+  \item[ROI] Region of Interest (Região de Interesse)
   \item[SNR] Signal-to-Noise Ratio (Relação Sinal-Ruído)
   \item[UFJF] Universidade Federal de Juiz de Fora
   \item[USD] United States Dollar (Dólar Americano)
@@ -318,11 +321,11 @@ Os objetivos específicos incluem:
     \item Alcançar precisão de calibração de $\pm$2 nm na faixa visível, garantindo que a resolução de comprimento de onda eficaz seja comparável à de um OSA comercial.
 \end{itemize}
 
-A metodologia adotada compreende o desenvolvimento de hardware baseado em impressão 3D, implementação de algoritmos de visão computacional em Python, calibração híbrida com luz branca e lasers de referência, e validação experimental com fontes de luz controladas. Os métodos de calibração por visão geralmente envolvem: (i) localização geométrica, utilizando algoritmos de processamento de imagem para identificar e isolar a linha de difração na imagem \cite{smartphone_spectroscopy}; (ii) mapeamento espectral, utilizando fontes de calibração de referência (lâmpadas de vapor ou LEDs de pico estreito com comprimentos de onda conhecidos) para criar uma função de mapeamento entre a coordenada do pixel e o comprimento de onda conhecido; e (iii) processamento de dados, convertendo digitalmente a imagem e extraindo a curva quantitativa de intensidade vs. comprimento de onda \cite{smartphone_spectroscopy}.
+A metodologia adotada compreende o desenvolvimento de hardware baseado em impressão 3D, implementação de algoritmos de visão computacional em Python, calibração híbrida com luz branca e lasers de referência, e validação experimental em duas frentes distintas: (i) comparação do comprimento de onda medido pelo OSA Visível com o espectrômetro ThorLabs (CCT11), utilizando uma fonte RGB; e (ii) caracterização da resposta de intensidade frente a uma fonte com controle PWM, permitindo modelar a relação entre os canais RGB do OSA Visível e as medições do equipamento de referência. Os métodos de calibração por visão envolvem: localização geométrica da linha de difração na imagem \cite{smartphone_spectroscopy}; mapeamento espectral com fontes de referência (lâmpadas de vapor ou LEDs de pico estreito); e processamento de dados para extrair a curva intensidade vs. comprimento de onda \cite{smartphone_spectroscopy}.
 
 A importância dos OSAs transcende o laboratório de pesquisa, estendendo-se a setores de alta tecnologia, saúde e manufatura. Nas telecomunicações, o OSA monitora a precisão do comprimento de onda para garantir que os canais estejam corretamente separados em redes DWDM \cite{viavi_osa}. Na caracterização de sensores de fibra óptica, como FBGs e LPGs, o OSA permite quantificar a sensibilidade com precisões da ordem de $0.037$ nm/kPa \cite{fbg_sensor}. Em aplicações biomédicas, como a oximetria de pulso, a precisão na faixa visível (especialmente em $660$ nm) é crítica para diagnósticos precisos \cite{smartphone_spectroscopy}. O desenvolvimento de um método de calibração por visão computacional habilita diretamente a transição industrial para dispositivos \textit{Point-of-Care} (POC) em ambientes com recursos limitados.
 
-Este trabalho está organizado da seguinte forma: o Capítulo 2 apresenta a fundamentação teórica sobre espectroscopia óptica e analisadores de espectro; o Capítulo 3 detalha a metodologia de desenvolvimento do hardware e software, incluindo os algoritmos de visão computacional; o Capítulo 4 descreve os resultados experimentais e validação do sistema, comparando com padrões metrológicos estabelecidos; e o Capítulo 5 apresenta as conclusões e trabalhos futuros, destacando as contribuições para a metrologia de baixo custo.
+Este trabalho está organizado da seguinte forma: o Capítulo 2 apresenta a fundamentação teórica sobre espectroscopia óptica e analisadores de espectro; o Capítulo 3 detalha a metodologia de desenvolvimento do hardware e software, incluindo os algoritmos de visão computacional e a descrição dos experimentos de validação; o Capítulo 4 descreve os resultados experimentais, abrangendo repetibilidade temporal, comparação com o espectrômetro ThorLabs em comprimento de onda e em intensidade; e o Capítulo 5 apresenta as conclusões e trabalhos futuros.
 
 \chapter{FUNDAMENTAÇÃO TEÓRICA}
 
@@ -1010,7 +1013,7 @@ Esta seção descreve a metodologia adotada para o experimento de caracterizaç�
 
 A fonte de luz utilizada consistiu em três LEDs de cores verde, vermelho e azul, permitindo o acionamento individual de cada cor. A intensidade de cada LED foi controlada mediante modulação por largura de pulso (PWM), com a possibilidade de salvar espectros para cada LED separadamente.
 
-Em experimentos preliminares com duty cycle de até 100\% (variando de 5\% em 5\%), todos os canais RGB da câmera do OSA Visível saturaram, ao passo que o espectrômetro ThorLabs manteve resposta linear. Diante disso, optou-se por restringir o experimento à faixa de 1\% a 10\% do duty cycle total da fonte, com variação de 1\% em 1\%.
+A saturação do sensor CMOS ocorre quando o sinal excede a capacidade do conversor analógico-digital (ADC), causando achatamento dos picos e perda de linearidade entre irradiância e intensidade registrada \cite{evident_dynamic_range}. Em experimentos preliminares com duty cycle de até 100\% (variando de 5\% em 5\%), todos os canais RGB da câmera do OSA Visível saturaram, ao passo que o espectrômetro ThorLabs manteve resposta linear. Diante disso, optou-se por restringir o experimento à faixa de 1\% a 10\% do duty cycle total da fonte, com variação de 1\% em 1\%.
 
 \subsection{Setup Experimental}
 
@@ -1053,12 +1056,12 @@ A coleta com o OSA Visível foi feita pela interface OSA Visível, calibrada com
 
 \subsection{Extração de Picos e Registro de Dados}
 
-A determinação do comprimento de onda e da intensidade de cada pico foi realizada com o auxílio do software \textit{Peaks Viewer} (\texttt{peaks\_viewer.py}), desenvolvido em Python. O usuário seleciona manualmente a região de interesse no espectro; em seguida, é ajustada uma curva Lorentziana (ou Gaussiana) nessa faixa, e o pico é identificado pelo melhor ajuste. Os valores de $\lambda$ e intensidade são obtidos a partir desse ajuste e registrados.
+Perfis espectrais são tipicamente modelados por curvas Lorentzianas (alargamento homogêneo) ou Gaussianas (alargamento inhomogêneo) \cite{spectral_line_shape}. A determinação do comprimento de onda e da intensidade de cada pico foi realizada com o auxílio do software \textit{Peaks Viewer} (\texttt{peaks\_viewer.py}), desenvolvido em Python. O usuário seleciona manualmente a região de interesse no espectro; o refinamento dos parâmetros (posição, largura, amplitude) é feito por ajuste de mínimos quadrados não lineares \cite{peak_spectroscopy}. Em testes preliminares, a curva Gaussiana foi descartada por apresentar ajuste inferior ao Lorentziano nos espectros obtidos; optou-se, portanto, exclusivamente pelo modelo Lorentziano. Os valores de $\lambda$ e intensidade são obtidos a partir desse ajuste e registrados.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{../images/peaks_viewer.png}
-\caption{Interface do \textit{Peaks Viewer}: visualização do espectro, seleção de região para ajuste de curva Lorentziana/Gaussiana e extração de $\lambda$ e intensidade do pico.}
+\caption{Interface do \textit{Peaks Viewer}: visualização do espectro, seleção de região para ajuste de curva Lorentziana e extração de $\lambda$ e intensidade do pico.}
 \label{fig:peaks_viewer}
 \fonte{Elaborada pelo autor (2025).}
 \end{figure}
@@ -1551,6 +1554,18 @@ Acesso em: 10 nov. 2025.
 https://standards.iteh.ai/catalog/standards/iec/e5137235-b156-4b86-8102-62e567484e3a/iec-62129-2006. 
 Acesso em: 10 nov. 2025.
 
+\bibitem{spectral_line_shape} Spectral line shape. \textbf{Wikipedia}. Disponível em: 
+https://en.wikipedia.org/wiki/Spectral\_line\_shape. 
+Acesso em: 3 fev. 2026.
+
+\bibitem{evident_dynamic_range} Dynamic Range. \textbf{Evident Scientific}. Disponível em: 
+https://evidentscientific.com/en/microscope-resource/knowledge-hub/digital-imaging/concepts/dynamicrange. 
+Acesso em: 3 fev. 2026.
+
+\bibitem{peak_spectroscopy} Peak Spectroscopy Software Peak Fitting. \textbf{Peak Spectroscopy}. Disponível em: 
+https://www.peakspectroscopy.com/peakFitting.html. 
+Acesso em: 3 fev. 2026.
+
 \bibitem{terra_calibration} TERRA, Osama; HUSSEIN, Hatem. Calibration of grating based optical spectrum analyzers. \textbf{ResearchGate}. Disponível em: 
 https://www.researchgate.net/profile/Osama-Terra/publication/282900283\_Calibration\_of\_grating\_based\_optical\_spectrum\_analyzers/links/5a1a44aaa6fdcc50adeaee96/Calibration-of-grating-based-optical-spectrum-analyzers.pdf. 
 Acesso em: 10 nov. 2025.
@@ -1602,28 +1617,28 @@ Acesso em: 10 mar. 2025.
 
 %% Apendices
 
-\begin{apendices}
+% \begin{apendices}
 
-\chapter{\apendseq T\'itulo} 
-%%Digita-se o titulo do apendice mantendo-se, antes, o comando \apendseq, como indicado.
+% \chapter{\apendseq T\'itulo} 
+% %%Digita-se o titulo do apendice mantendo-se, antes, o comando \apendseq, como indicado.
 
-Este elemento \'e opcional. Apresenta um texto ou documento elaborado pelo autor com o objetivo de complementar sua argumenta\c{c}\~ao, 
-sem preju\'izo da unidade nuclear do trabalho.
+% Este elemento \'e opcional. Apresenta um texto ou documento elaborado pelo autor com o objetivo de complementar sua argumenta\c{c}\~ao, 
+% sem preju\'izo da unidade nuclear do trabalho.
 
-\end{apendices}
+% \end{apendices}
 
-%% Anexos
+% %% Anexos
 
-\begin{anexos}
+% \begin{anexos}
 
-\chapter{\anexoseq T\'itulo} 
-%%Digita-se o titulo do anexo mantendo-se, antes, o comando \anexoseq, como indicado.
+% \chapter{\anexoseq T\'itulo} 
+% %%Digita-se o titulo do anexo mantendo-se, antes, o comando \anexoseq, como indicado.
 
-Este elemento \'e opcional. Apresenta um texto ou documento \textbf{n\~ao} elaborado pelo autor com o objetivo de complementar ou comprovar sua 
-argumenta\c{c}\~ao. 
+% Este elemento \'e opcional. Apresenta um texto ou documento \textbf{n\~ao} elaborado pelo autor com o objetivo de complementar ou comprovar sua 
+% argumenta\c{c}\~ao. 
 
   
-\end{anexos}
+% \end{anexos}
 
 
 %%% ---
