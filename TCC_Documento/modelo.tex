@@ -224,7 +224,7 @@ Keywords: optical spectrum analyzer; automated calibration; computer vision; vis
 %% Lista de abreviaturas e siglas. OPCIONAL. Nao deve haver sinal grafico entre as siglas e abreviaturas e o significado. 
 
 \begin{siglas} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
-  \item[BBL] Beer-Bouguer-Lambert (Lei de Beer-Bouguer-Lambert)
+%  \item[BBL] Beer-Bouguer-Lambert (Lei de Beer-Bouguer-Lambert)
   \item[CMOS] Complementary Metal-Oxide-Semiconductor (Semicondutor de Óxido Metálico Complementar)
   \item[COTS] Commercial Off-The-Shelf (Componentes Comerciais Prontos para Uso)
   \item[CRI] Color Rendering Index (Índice de Reprodução de Cor)
@@ -326,44 +326,44 @@ Este trabalho está organizado da seguinte forma: o Capítulo 2 apresenta a fund
 
 \chapter{FUNDAMENTAÇÃO TEÓRICA}
 
-Este capítulo apresenta a fundamentação teórica necessária para o desenvolvimento do Analisador de Espectro Óptico de baixo custo. Inicialmente, são abordados os fundamentos da espectroscopia óptica, incluindo a interação luz-matéria e a Lei de Beer-Lambert. Em seguida, são apresentados os princípios de difração e dispersão, fundamentais para o funcionamento do espectrômetro. Posteriormente, são discutidos os Analisadores de Espectro Óptico, suas arquiteturas e métodos de calibração, com ênfase nas técnicas modernas e na calibração por visão computacional. Por fim, é apresentado o processo híbrido de calibração desenvolvido neste trabalho.
+Este capítulo apresenta a fundamentação teórica necessária para o desenvolvimento do Analisador de Espectro Óptico de baixo custo. Inicialmente, são apresentados os princípios de difração e dispersão, fundamentais para o funcionamento do espectrômetro. Posteriormente, são discutidos os Analisadores de Espectro Óptico, suas arquiteturas e métodos de calibração, com ênfase nas técnicas modernas e na calibração por visão computacional. Por fim, é apresentado o processo híbrido de calibração desenvolvido neste trabalho.
 
 \section{FUNDAMENTOS DA ESPECTROSCOPIA ÓPTICA}
 
 A espectroscopia óptica constitui o pilar fundamental para a caracterização da matéria, explorando a interação entre a radiação eletromagnética e as propriedades atômicas e moleculares de uma amostra. O Analisador de Espectro Óptico (OSA) de baixo custo, denominado OSA Visível (espectrômetro e interface), é projetado para operar na faixa de luz visível (VIS, 380-750 nm). Neste intervalo, a absorção de energia luminosa tipicamente desencadeia transições eletrônicas em moléculas ou íons, permitindo a identificação e quantificação de compostos químicos através de seus espectros característicos.
 
-\subsection{\textbf{Interação Luz-Matéria: Transmissão e Absorção}}
-
-Quando a luz incide sobre uma amostra, ela pode ser transmitida, refletida ou absorvida. Em espectrofotometria, a análise primária foca na absorção. A luz branca, composta por todos os comprimentos de onda do espectro visível, tem sua intensidade reduzida de forma seletiva quando atravessa uma substância, resultando na cor percebida. Por exemplo, uma solução que absorve intensamente a luz verde parecerá vermelha ao observador. O objetivo do OSA é medir essa absorção seletiva em função do comprimento de onda.
-
-A transmitância ($T$) é definida como a razão entre a intensidade da radiação transmitida ($I$) e a intensidade da radiação incidente ($I_0$), frequentemente expressa como porcentagem:
-
-\begin{equation}
-T = \frac{I}{I_0} \quad \textrm{ou} \quad \%T = \frac{I}{I_0} \times 100
-\label{eq:transmitancia}
-\end{equation}
-
-A absorbância ($A$) é o parâmetro preferido para a quantificação, pois se relaciona linearmente com a concentração e o caminho óptico:
-
-\begin{equation}
-A = -\log T
-\label{eq:absorbancia}
-\end{equation}
-
-\subsection{\textbf{Lei de Beer-Lambert: Base Quantitativa da Espectrometria de Absorção}}
-
-A Lei de Beer-Lambert (também conhecida como Lei de Beer-Bouguer-Lambert, ou BBL) é a relação empírica que governa a atenuação da intensidade da radiação ao passar por um meio homogêneo \cite{beer_lambert_wiki}. Ela estabelece uma relação direta e linear entre a absorbância de uma solução e a concentração da substância absorvente, bem como o caminho óptico percorrido pela luz \cite{beer_lambert_edinst}.
-
-A lei é expressa matematicamente como:
-
-\begin{equation}
-A = \epsilon \cdot c \cdot l
-\label{eq:beer_lambert}
-\end{equation}
-
-onde $A$ representa a absorbância (adimensional), $\epsilon$ é a absortividade molar (uma constante característica da substância em um dado comprimento de onda), $c$ é a concentração da substância em solução, e $l$ é o comprimento do caminho óptico.
-
-Para que a Lei de Beer-Lambert seja válida, várias premissas devem ser satisfeitas \cite{beer_lambert_wiki}. Estas incluem a necessidade de radiação monocromática, a ausência de interações entre as moléculas do soluto (o que geralmente requer baixas concentrações) e um meio macroscopicamente homogêneo. A alta correlação ($R^2 \geq 0.93$) observada durante os experimentos de validação do OSA Visível com a diluição de glicerina confirma que o sistema de baixo custo, quando devidamente calibrado, opera com a precisão necessária para manter a linearidade exigida pelo Beer-Lambert, tornando-o funcionalmente viável para aplicações quantitativas na faixa visível.
+%\subsection{\textbf{Interação Luz-Matéria: Transmissão e Absorção}}
+%
+%Quando a luz incide sobre uma amostra, ela pode ser transmitida, refletida ou absorvida. Em espectrofotometria, a análise primária foca na absorção. A luz branca, composta por todos os comprimentos de onda do espectro visível, tem sua intensidade reduzida de forma seletiva quando atravessa uma substância, resultando na cor percebida. Por exemplo, uma solução que absorve intensamente a luz verde parecerá vermelha ao observador. O objetivo do OSA é medir essa absorção seletiva em função do comprimento de onda.
+%
+%A transmitância ($T$) é definida como a razão entre a intensidade da radiação transmitida ($I$) e a intensidade da radiação incidente ($I_0$), frequentemente expressa como porcentagem:
+%
+%\begin{equation}
+%T = \frac{I}{I_0} \quad \textrm{ou} \quad \%T = \frac{I}{I_0} \times 100
+%\label{eq:transmitancia}
+%\end{equation}
+%
+%A absorbância ($A$) é o parâmetro preferido para a quantificação, pois se relaciona linearmente com a concentração e o caminho óptico:
+%
+%\begin{equation}
+%A = -\log T
+%\label{eq:absorbancia}
+%\end{equation}
+%
+%\subsection{\textbf{Lei de Beer-Lambert: Base Quantitativa da Espectrometria de Absorção}}
+%
+%A Lei de Beer-Lambert (também conhecida como Lei de Beer-Bouguer-Lambert, ou BBL) é a relação empírica que governa a atenuação da intensidade da radiação ao passar por um meio homogêneo \cite{beer_lambert_wiki}. Ela estabelece uma relação direta e linear entre a absorbância de uma solução e a concentração da substância absorvente, bem como o caminho óptico percorrido pela luz \cite{beer_lambert_edinst}.
+%
+%A lei é expressa matematicamente como:
+%
+%\begin{equation}
+%A = \epsilon \cdot c \cdot l
+%\label{eq:beer_lambert}
+%\end{equation}
+%
+%onde $A$ representa a absorbância (adimensional), $\epsilon$ é a absortividade molar (uma constante característica da substância em um dado comprimento de onda), $c$ é a concentração da substância em solução, e $l$ é o comprimento do caminho óptico.
+%
+%Para que a Lei de Beer-Lambert seja válida, várias premissas devem ser satisfeitas \cite{beer_lambert_wiki}. Estas incluem a necessidade de radiação monocromática, a ausência de interações entre as moléculas do soluto (o que geralmente requer baixas concentrações) e um meio macroscopicamente homogêneo. A alta correlação ($R^2 \geq 0.93$) observada durante os experimentos de validação do OSA Visível com a diluição de glicerina confirma que o sistema de baixo custo, quando devidamente calibrado, opera com a precisão necessária para manter a linearidade exigida pelo Beer-Lambert, tornando-o funcionalmente viável para aplicações quantitativas na faixa visível.
 
 \subsection{\textbf{O Princípio da Difração de Fraunhofer e Grades Ópticas}}
 
@@ -430,6 +430,7 @@ A Tabela \ref{tab:comparativo_osa} apresenta um comparativo entre OSAs comerciai
 Modelo (Referência) & Faixa Espectral (nm) & Custo Estimado (USD) & Acurácia Típica & Método de Calibração \\
 \hline
 OSA201C \cite{thorlabs_osa20xc} & 350-1100 & > \$30.000 & Sub-nm & Interno, Rastreado a Padrões \\
+CCT11 \cite{thorlabs_cct11} & 350-700 & \$3.000-6.000 & $<$ 0,5 nm & Referência nos experimentos \\
 AQ6380 \cite{yokogawa_aq6374} & 350-1750 & \$100.000-200.000 & Sub-pm & Padrões de Gás/Wavemeter \cite{terra_calibration} \\
 \textbf{espectrômetro OSA Visível} & \textbf{380-750} & \textbf{< \$200} & \textbf{$\pm 1.8$ nm (RMS)} & \textbf{Híbrido (Visão Computacional + Laser)} \\
 \hline
@@ -1001,6 +1002,84 @@ O fluxo de calibração automatizada inclui:
     \end{itemize}
 \end{enumerate}
 
+\section{EXPERIMENTO DE CARACTERIZAÇÃO DE FONTE E RELAÇÃO OSA VISÍVEL--THORLABS}
+
+Esta seção descreve a metodologia adotada para o experimento de caracterização de uma fonte de luz controlada e para a obtenção da relação entre os espectros medidos pelo OSA Visível e pelo espectrômetro ThorLabs. O objetivo é caracterizar a resposta de ambos os equipamentos a uma fonte com LEDs vermelho, verde e azul, cuja intensidade pode ser variada via PWM, e modelar a combinação dos canais RGB do OSA Visível para aproximar as medições do espectrômetro ThorLabs.
+
+\subsection{Fonte de Luz e Configuração do PWM}
+
+A fonte de luz utilizada consistiu em três LEDs de cores verde, vermelho e azul, permitindo o acionamento individual de cada cor. A intensidade de cada LED foi controlada mediante modulação por largura de pulso (PWM), com a possibilidade de salvar espectros para cada LED separadamente.
+
+Em experimentos preliminares com duty cycle de até 100\% (variando de 5\% em 5\%), todos os canais RGB da câmera do OSA Visível saturaram, ao passo que o espectrômetro ThorLabs manteve resposta linear. Diante disso, optou-se por restringir o experimento à faixa de 1\% a 10\% do duty cycle total da fonte, com variação de 1\% em 1\%.
+
+\subsection{Setup Experimental}
+
+\begin{figure}[ht]
+\centering
+% TODO: Inserir imagem em figuras/setup_experimento_caracterizacao.png (fonte de luz, espectrômetro OSA Visível, espectrômetro ThorLabs)
+\fbox{\parbox{0.85\textwidth}{\centering\vspace{4cm}[Imagem a ser inserida: Setup do experimento com fonte de luz, espectrômetro OSA Visível e espectrômetro ThorLabs]\vspace{4cm}}}
+\caption{Setup do experimento de caracterização: (1) Fonte de luz com LEDs verde, vermelho e azul e controle PWM; (2) Espectrômetro OSA Visível; (3) Espectrômetro compacto ThorLabs (modelo CCT11, 350--700 nm, resolução $<$ 0,5 nm).}
+\label{fig:setup_caracterizacao}
+\fonte{A ser elaborada pelo autor.}
+\end{figure}
+
+\subsection{Coleta de Dados}
+
+\subsubsection{Espectrômetro ThorLabs (CCT11)}
+
+Foram realizadas 5 tomadas (replicatas experimentais). Em cada tomada, foram salvos espectros para cada LED (verde, vermelho e azul) em 10 níveis de PWM (1\%, 2\%, \ldots, 10\%), totalizando 30 espectros por tomada. O conjunto completo resultou em 150 espectros. As configurações do software do espectrômetro ThorLabs incluíram \textit{Integration Time} de 10 ms.
+
+O eixo Y (intensidade) do espectrômetro ThorLabs está em contagens (\textit{counts}): valor de saída do conversor analógico-digital (ADC). Cada fóton incidente no sensor gera elétrons convertidos em voltagem e, em seguida, em valor numérico. Em sensores típicos de 16 bits, a escala varia de 0 a 65.535 contagens.
+
+\subsubsection{OSA Visível}
+
+A coleta com o OSA Visível foi feita pela interface OSA Visível, calibrada com lasers (532 nm e 650 nm). A diferença em relação ao espectrômetro ThorLabs reside na segmentação por visão computacional: além do espectro combinado (RGB), foram gravados espectros separados para os canais R, G e B da câmera. Com isso, a quantidade de espectros foi 4 vezes maior (combinado + R + G + B), totalizando 600 espectros para análise.
+
+\subsection{Extração de Picos e Registro de Dados}
+
+A determinação do comprimento de onda e da intensidade de cada pico foi realizada com o auxílio do software \textit{Peaks Viewer} (\texttt{peaks\_viewer.py}), desenvolvido em Python. O usuário seleciona manualmente a região de interesse no espectro; em seguida, é ajustada uma curva Lorentziana (ou Gaussiana) nessa faixa, e o pico é identificado pelo melhor ajuste. Os valores de $\lambda$ e intensidade são obtidos a partir desse ajuste e registrados.
+
+\begin{figure}[ht]
+\centering
+% TODO: Inserir imagem em figuras/peaks_viewer_interface.png (screenshot do Peaks Viewer)
+\fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}[Imagem a ser inserida: Interface do Peaks Viewer]\vspace{3cm}}}
+\caption{Interface do \textit{Peaks Viewer}: visualização do espectro, seleção de região para ajuste de curva Lorentziana/Gaussiana e extração de $\lambda$ e intensidade do pico.}
+\label{fig:peaks_viewer}
+\fonte{A ser elaborada pelo autor.}
+\end{figure}
+
+Todos os dados (duty cycle, $\lambda$ de pico e intensidade para cada LED e equipamento) foram registrados em uma aplicação web (\texttt{Experimentos/app/index.html}), que permite preencher tabelas por equipamento (OSA Visível e espectrômetro ThorLabs), tomada, tipo de espectro (no OSA Visível: combinado, canal R, canal G, canal B) e duty cycle (1--10\%).
+
+\begin{figure}[ht]
+\centering
+% TODO: Inserir imagem em figuras/app_cadastro_dados_interface.png (screenshot da aplicação web de cadastro)
+\fbox{\parbox{0.9\textwidth}{\centering\vspace{3cm}[Imagem a ser inserida: Interface da aplicação web de cadastro de dados]\vspace{3cm}}}
+\caption{Interface da aplicação web de cadastro de dados: tabelas para duty cycle, $\lambda$ de pico e intensidade por LED (verde, vermelho, azul), com suporte a OSA Visível (por canal) e espectrômetro ThorLabs.}
+\label{fig:app_cadastro}
+\fonte{A ser elaborada pelo autor.}
+\end{figure}
+
+\subsection{Análise de Dados em MATLAB}
+
+A caracterização da fonte e a modelagem da relação entre equipamentos foram realizadas em MATLAB. Dois scripts foram utilizados para a caracterização da resposta intensidade--duty cycle:
+
+\begin{itemize}
+    \item \texttt{analise\_json\_com\_ajuste.m}: ajuste linear (regressão de reta) para espectrômetro ThorLabs e OSA Visível.
+    \item \texttt{analise\_json\_ajuste\_poly2.m}: ajuste linear para espectrômetro ThorLabs e polinômio de grau 2 para o OSA Visível em todos os canais.
+\end{itemize}
+
+Em ambos os casos, utilizam-se as médias das 5 tomadas e o coeficiente de determinação $R^2$ para avaliar a qualidade do ajuste.
+
+\subsection{Modelagem da Combinação de Canais}
+
+O script \texttt{modelagem\_combinacao\_canais.m} modela a relação entre os canais R, G e B do OSA Visível e a intensidade medida pelo espectrômetro ThorLabs. O modelo assume uma combinação linear:
+
+\begin{equation}
+    P_{\text{ThorLabs CCT11}} = \alpha_1 f_R(x) + \alpha_2 f_G(x) + \alpha_3 f_B(x)
+\end{equation}
+
+onde $f_i(x) = a_i x^2 + b_i x + c_i$ são polinômios de grau 2 ajustados para cada canal do OSA Visível em função do duty cycle $x$, e $\alpha_1$, $\alpha_2$, $\alpha_3$ são os coeficientes obtidos por mínimos quadrados. O ajuste é avaliado por $R^2$, RMSE, MAE e erro percentual médio.
+
 \section{CONSIDERAÇÕES METODOLÓGICAS E LIMITAÇÕES}
 
 A metodologia desenvolvida apresenta algumas limitações inerentes à escolha de componentes de baixo custo e à simplificação do modelo de calibração:
@@ -1019,11 +1098,11 @@ Trabalhos futuros devem explorar a incorporação de modelos não lineares (poli
 
 \chapter{RESULTADOS EXPERIMENTAIS E VALIDAÇÃO}
 
-Este capítulo apresenta os resultados experimentais obtidos com o OSA Visível desenvolvido neste trabalho, incluindo análise de repetibilidade temporal, comparação com um OSA comercial (ThorLabs) e validação estatística do sistema. Os experimentos foram conduzidos para avaliar a precisão, estabilidade e confiabilidade do sistema de baixo custo em condições de medição repetidas.
+Este capítulo apresenta os resultados experimentais obtidos com o OSA Visível desenvolvido neste trabalho, incluindo análise de repetibilidade temporal, comparação com o espectrômetro ThorLabs e validação estatística do sistema. Os experimentos foram conduzidos para avaliar a precisão, estabilidade e confiabilidade do sistema de baixo custo em condições de medição repetidas.
 
 \section{DESCRIÇÃO DO SETUP EXPERIMENTAL}
 
-Os experimentos foram realizados utilizando o espectrômetro OSA Visível desenvolvido conforme descrito no Capítulo 3, e um OSA comercial da ThorLabs (modelo OSA20xC) como referência para validação cruzada. % TODO: Adicionar figura do setup experimental (Figura \ref{fig:setup_experimental}) quando a imagem estiver disponível.
+Os experimentos foram realizados utilizando o espectrômetro OSA Visível desenvolvido conforme descrito no Capítulo 3, e o espectrômetro compacto ThorLabs (modelo CCT11, 350--700 nm) como referência para validação cruzada. % TODO: Adicionar figura do setup experimental (Figura \ref{fig:setup_experimental}) quando a imagem estiver disponível.
 
 %\begin{figure}[ht]
 %\centering
@@ -1085,25 +1164,25 @@ O coeficiente de variação (CV) das intensidades foi inferior a 2\% para todos 
 
 \subsection{\textbf{Procedimento Experimental}}
 
-Para validar a acurácia do OSA Visível e compará-lo com padrões metrológicos estabelecidos, foi realizado um experimento comparativo utilizando um OSA comercial da ThorLabs (modelo OSA20xC). O procedimento seguiu os seguintes passos:
+Para validar a acurácia do OSA Visível e compará-lo com padrões metrológicos estabelecidos, foi realizado um experimento comparativo utilizando o espectrômetro compacto ThorLabs (modelo CCT11). O procedimento seguiu os seguintes passos:
 
 \begin{enumerate}
-    \item \textbf{Seleção de Dados:} Foram utilizados dados temporais coletados previamente com o OSA ThorLabs, totalizando mais de 60.000 espectros adquiridos ao longo de aproximadamente 1000 segundos.
+    \item \textbf{Seleção de Dados:} Foram utilizados dados temporais coletados previamente com o espectrômetro ThorLabs, totalizando mais de 60.000 espectros adquiridos ao longo de aproximadamente 1000 segundos.
     
-    \item \textbf{Amostragem Representativa:} Dado que o objetivo era avaliar repetibilidade com 100 amostras espaçadas de 10 segundos (equivalente ao experimento com OSA Visível), foram selecionados 100 espectros do conjunto temporal do ThorLabs, espaçados uniformemente no tempo para garantir representatividade estatística.
+    \item \textbf{Amostragem Representativa:} Dado que o objetivo era avaliar repetibilidade com 100 amostras espaçadas de 10 segundos (equivalente ao experimento com OSA Visível), foram selecionados 100 espectros do conjunto temporal do espectrômetro ThorLabs, espaçados uniformemente no tempo para garantir representatividade estatística.
     
-    \item \textbf{Conversão e Normalização:} Os espectros do ThorLabs foram convertidos para o formato padronizado utilizado pelo OSA Visível (arquivos de texto com colunas: comprimento de onda em metros; intensidade), garantindo que ambas as análises fossem realizadas com os mesmos algoritmos e parâmetros.
+    \item \textbf{Conversão e Normalização:} Os espectros do espectrômetro ThorLabs foram convertidos para o formato padronizado utilizado pelo OSA Visível (arquivos de texto com colunas: comprimento de onda em metros; intensidade), garantindo que ambas as análises fossem realizadas com os mesmos algoritmos e parâmetros.
     
     \item \textbf{Análise Comparativa:} Os espectros foram processados utilizando o mesmo \textit{pipeline} de análise desenvolvido para o OSA Visível, permitindo comparação direta dos resultados.
 \end{enumerate}
 
 \subsection{\textbf{Resultados e Comparação Estatística}}
 
-A análise dos 100 espectros selecionados do ThorLabs OSA também identificou os três picos principais RGB. A Tabela \ref{tab:resultados_thorlabs} apresenta as estatísticas obtidas.
+A análise dos 100 espectros selecionados do espectrômetro ThorLabs também identificou os três picos principais RGB. A Tabela \ref{tab:resultados_thorlabs} apresenta as estatísticas obtidas.
 
 \begin{table}[ht]
 \centering
-\caption{Estatísticas dos 3 picos principais RGB identificados pelo ThorLabs OSA (100 amostras selecionadas)}
+\caption{Estatísticas dos 3 picos principais RGB identificados pelo espectrômetro ThorLabs (100 amostras selecionadas)}
 \label{tab:resultados_thorlabs}
 \begin{tabular}{lcccccc}
 \toprule
@@ -1117,7 +1196,7 @@ RGB-3 (Vermelho) & 639,13 & 1,419 & $\pm$0,140 & 396,0 & 12078,36 & 4,58 \\
 \fonte{Elaborada pelo autor (2025).}
 \end{table}
 
-Observa-se que o ThorLabs OSA apresentou desvios padrão ligeiramente maiores que o OSA Visível para os picos verde e vermelho, possivelmente devido à maior sensibilidade e resolução espectral do equipamento comercial, que detecta variações mais sutis no sinal. As incertezas expandidas do ThorLabs estão na mesma ordem de grandeza das do OSA Visível (entre $\pm$0,137 nm e $\pm$0,150 nm), confirmando que o sistema de baixo custo atinge precisão comparável.
+Observa-se que o espectrômetro ThorLabs apresentou desvios padrão ligeiramente maiores que o OSA Visível para os picos verde e vermelho, possivelmente devido à maior sensibilidade e resolução espectral do equipamento comercial, que detecta variações mais sutis no sinal. As incertezas expandidas do espectrômetro ThorLabs estão na mesma ordem de grandeza das do OSA Visível (entre $\pm$0,137 nm e $\pm$0,150 nm), confirmando que o sistema de baixo custo atinge precisão comparável.
 
 \subsection{\textbf{Análise Comparativa Entre Sistemas}}
 
@@ -1125,11 +1204,11 @@ A comparação direta entre os dois sistemas é apresentada na Tabela \ref{tab:c
 
 \begin{table}[ht]
 \centering
-\caption{Comparação direta: OSA Visível vs. ThorLabs OSA (3 picos principais RGB)}
+\caption{Comparação direta: OSA Visível vs. espectrômetro ThorLabs (3 picos principais RGB)}
 \label{tab:comparacao_sistemas}
 \begin{tabular}{lccc}
 \toprule
-Pico RGB & $\lambda$ OSA Visível (nm) & $\lambda$ ThorLabs (nm) & Diferença absoluta (nm) \\
+Pico RGB & $\lambda$ OSA Visível (nm) & $\lambda$ Esp. ThorLabs (nm) & Diferença absoluta (nm) \\
 \midrule
 Azul & 468,22 & 459,01 & 9,21 \\
 Verde & 516,10 & 519,05 & 2,96 \\
@@ -1141,7 +1220,7 @@ Vermelho & 637,70 & 639,13 & 1,42 \\
 
 Os resultados demonstram boa concordância entre os dois sistemas, especialmente para os picos verde e vermelho, com diferenças inferiores a 3 nm. A diferença de 9,21 nm observada no pico azul pode ser atribuída a diferenças na calibração espectral entre os sistemas ou a características específicas da fonte de luz utilizada. Esta diferença, embora maior, ainda está dentro da precisão de calibração estabelecida ($\pm$2 nm considerando múltiplas fontes de erro) e representa menos de 2\% do comprimento de onda médio.
 
-As diferenças relativas variaram entre 0,22\% (vermelho) e 1,97\% (azul), indicando excelente correlação entre os dois sistemas de medição. As razões entre desvios padrão (ThorLabs/Visible) ficaram próximas de 1 para o pico azul (0,953) e próximas de 2 para verde (2,152) e vermelho (2,024), sugerindo que o OSA Visível apresenta estabilidade comparável ou superior em algumas condições.
+As diferenças relativas variaram entre 0,22\% (vermelho) e 1,97\% (azul), indicando excelente correlação entre os dois sistemas de medição. As razões entre desvios padrão (espectrômetro ThorLabs/OSA Visível) ficaram próximas de 1 para o pico azul (0,953) e próximas de 2 para verde (2,152) e vermelho (2,024), sugerindo que o OSA Visível apresenta estabilidade comparável ou superior em algumas condições.
 
 \section{DISCUSSÃO DOS RESULTADOS E VALIDAÇÃO METROLÓGICA}
 
@@ -1152,12 +1231,12 @@ Os resultados experimentais validam os objetivos estabelecidos no Capítulo 1 de
     
     \item \textbf{Estabilidade Temporal:} A análise de 100 amostras temporais revelou excelente repetibilidade, com coeficientes de variação de intensidade inferiores a 2\% e taxas de detecção superiores a 90\% para todos os picos principais.
     
-    \item \textbf{Validação Cruzada:} A comparação com o OSA comercial ThorLabs demonstrou concordância adequada, com diferenças médias inferiores a 3 nm para dois dos três picos principais, validando a acurácia metrológica do sistema desenvolvido.
+    \item \textbf{Validação Cruzada:} A comparação com o espectrômetro ThorLabs demonstrou concordância adequada, com diferenças médias inferiores a 3 nm para dois dos três picos principais, validando a acurácia metrológica do sistema desenvolvido.
     
     \item \textbf{Economia de Custo:} O sistema desenvolvido, com custo inferior a \$200 USD, representa uma redução de custo superior a 99\% comparado aos OSAs comerciais (\$30.000+), mantendo precisão adequada para aplicações educacionais e de pesquisa.
 \end{itemize}
 
-As limitações observadas, como a taxa de detecção de 92\% para o pico vermelho no OSA Visível e as diferenças de até 9 nm na comparação com o ThorLabs, são consistentes com as expectativas para um sistema de baixo custo utilizando componentes COTS e impressão 3D. Estas variações não comprometem a funcionalidade do sistema para as aplicações previstas e podem ser mitigadas através de recalibração periódica ou refinamentos no algoritmo de detecção de picos.
+As limitações observadas, como a taxa de detecção de 92\% para o pico vermelho no OSA Visível e as diferenças de até 9 nm na comparação com o espectrômetro ThorLabs, são consistentes com as expectativas para um sistema de baixo custo utilizando componentes COTS e impressão 3D. Estas variações não comprometem a funcionalidade do sistema para as aplicações previstas e podem ser mitigadas através de recalibração periódica ou refinamentos no algoritmo de detecção de picos.
 
 \section{CONCLUSÕES PARCIAIS}
 
@@ -1175,10 +1254,10 @@ Brasileira de Normas T\'ecnicas, 2011, p. 10).}.
 
 %O sistema num\'erico n\~ao deve ser utilizado quando h\'a notas de rodap\'e. (ABNT, 2002).  
 
-\section{SE\c{C}\~AO SECUND\'ARIA} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui.
+% \section{SE\c{C}\~AO SECUND\'ARIA} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui.
 
-Um exemplo de cita\c{c}\~ao de refer\^encia no sistema num\'erico \'e \cite{disp2019}. Outros três exemplos s\~ao: \cite{Bauman99}, \cite{vet18} e 
-\cite{Aguiar2009}.
+% Um exemplo de cita\c{c}\~ao de refer\^encia no sistema num\'erico \'e \cite{disp2019}. Outros três exemplos s\~ao: \cite{Bauman99}, \cite{vet18} e 
+% \cite{Aguiar2009}.
 
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -1203,7 +1282,7 @@ Um exemplo de cita\c{c}\~ao de refer\^encia no sistema num\'erico \'e \cite{disp
 
 
 
-Abaixo, s\~ao apresentados exemplos de ilustra\c{c}\~oes.
+% Abaixo, s\~ao apresentados exemplos de ilustra\c{c}\~oes.
 
 % Qualquer que seja o tipo de ilustra\c{c}\~ao, sua identifica\c{c}\~ao aparece na parte superior, 
 % precedida da palavra designativa (desenho, esquema, fluxograma, fotografia, gr\'afico, mapa, organograma, planta, 
@@ -1270,9 +1349,9 @@ Abaixo, s\~ao apresentados exemplos de ilustra\c{c}\~oes.
 %\end{figure}
 
 
-\subsection{\textbf{Se\c{c}\~ao terci\'aria}} %% O t\'itulo da subse\c{c}\~ao vem em negrito e caixa baixa
+% \subsection{\textbf{Se\c{c}\~ao terci\'aria}} %% O t\'itulo da subse\c{c}\~ao vem em negrito e caixa baixa
 
-Abaixo, s\~ao apresentados exemplos de tabela. 
+% Abaixo, s\~ao apresentados exemplos de tabela. 
 
 %%Exemplo de tabela. Tabelas nao possuem margem lateral. Tabelas apresentam obrigatoriamente dados numericos.
 
@@ -1296,13 +1375,13 @@ Abaixo, s\~ao apresentados exemplos de tabela.
 
 %%Caso a tabela seja elaborada pelo autor, usar \fonte{Elaborada pelo autor. (ano).} substituindo, se necessario, autor por autora.
 
-\subsubsection{\textit{Se\c{c}\~ao quatern\'aria}} %% O t\'itulo da subsubse\c{c}\~ao vem em it\'alico e caixa baixa 
+% \subsubsection{\textit{Se\c{c}\~ao quatern\'aria}} %% O t\'itulo da subsubse\c{c}\~ao vem em it\'alico e caixa baixa 
 
-Se houver se\c{c}\~ao quatern\'aria, incluir texto ...
+% Se houver se\c{c}\~ao quatern\'aria, incluir texto ...
 
-\subsubsubsection{Se\c{c}\~ao quin\'aria}  %% O t\'itulo desta vem em caixa baixa
+% \subsubsubsection{Se\c{c}\~ao quin\'aria}  %% O t\'itulo desta vem em caixa baixa
 
-Se houver se\c{c}\~ao quin\'aria, incluir texto ...
+% Se houver se\c{c}\~ao quin\'aria, incluir texto ...
 
 
 \chapter{CITA\c{C}\~{O}ES} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui.
@@ -1421,6 +1500,10 @@ Acesso em: 3 nov. 2025.
 \bibitem{thorlabs_osa20xc} THORLABS. \textbf{OSA20xC Series Optical Spectrum Analyzers}. Disponível em: 
 https://www.thorlabs.com/newgrouppage9.cfm?objectgroup\_id=5276. 
 Acesso em: 3 mar. 2025.
+
+\bibitem{thorlabs_cct11} THORLABS. \textbf{CCT11 Compact Spectrometer, Visible, 350--700 nm}. Disponível em: 
+https://www.thorlabs.com/item/CCT11. 
+Acesso em: 2 fev. 2025.
 
 \bibitem{beer_lambert_wiki} Beer–Lambert law. \textbf{Wikipedia}. Disponível em: 
 https://en.wikipedia.org/wiki/Beer\%E2\%80\%93Lambert\_law. 
