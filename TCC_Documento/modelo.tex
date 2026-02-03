@@ -22,6 +22,7 @@
 \usepackage{xurl}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{multirow}
 %% -----------------------------------------------------------------------------
 
 %% Obs.: Alguns acentos foram omitidos.
@@ -35,7 +36,7 @@
 \orientador[Orientador:]{Alexandre Bessa dos Santos} %%Se precisar, troque [Orientador:] por [Orientadora:]
 \coorientador[Coorientador:]{Felipe Barino} %% Colocar ``%'' no in\'icio desta linha se n\~ao tiver coorientador. Se precisar, troque por [Cooorientadora:]. 
 \orientadorTitulo{Professor} %%Colocar, dentro de chaves {}, a titula\c{c}\~ao do(a) orientador(a). Por exemplo, Prof. Dr.
-\coorientadorTitulo{Aluno de doutorado} %%Colocar, dentro de chaves {}, a titula\c{c}\~ao do(a) cooorientador(a). 
+\coorientadorTitulo{Doutor} %%Colocar, dentro de chaves {}, a titula\c{c}\~ao do(a) cooorientador(a). 
 \instituicao{Universidade Federal de Juiz de Fora}
 \faculdade{Faculdade de Engenharia El\'etrica} %%Colocar, dentro de chaves {}, o nome da faculdade ou do instituto.
 \programa{Engenharia El\'etrica} %%Colocar, dentro de chaves {}, o nome do curso. Por exemplo: Programa de P\'os\mbox{-Gra}dua\c{c}\~ao em Matem\'atica
@@ -57,6 +58,10 @@ Engenharia Elétrica. %%Trocar Matem\'atica por outro, se precisar.
 %Se for usar o sistema autor-data, colocar % antes de \usepackage acima e retirar % antes de \usepackage abaixo.
 
 %\usepackage{natbib} %para o sistema autor-data
+
+% Numeração de figuras e tabelas em português (documento em PT-BR)
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabela}
 
 % Remove negrito do título na capa e folha de rosto
 \makeatletter
@@ -132,8 +137,8 @@ Aprovada em 6 de fevereiro de 2026 %%Preencher com a data
 \begin{center} BANCA EXAMINADORA \end{center}
 \assinatura{\insereorientadorTitulo~\insereorientador \ - Orientador \\ Universidade Federal de Juiz de Fora}  %%Orientadora
 %\assinatura{Professor Dr. \inserecoorientador \ - Coorientador \\ Universidade Federal de Juiz de Fora}
-\assinatura{Aluno de Doutorado Felipe Barino - Coorientador \\ Universidade Federal de Juiz de Fora}
-\assinatura{Professor André Luiz Marques Marcato \\ Universidade Federal de Juiz de Fora} 
+\assinatura{Doutor Felipe Barino - Banca \\ Universidade Federal de Juiz de Fora}
+\assinatura{Professor André Luiz Marques Marcato - Banca \\ Universidade Federal de Juiz de Fora} 
 %\assinatura{...} %%RETIRE O % E PREENCHA SE PRECISAR
 %  \assinatura{...}
 %  \assinatura{...}
@@ -205,10 +210,10 @@ Keywords: optical spectrum analyzer; automated calibration; computer vision; vis
 \pdfbookmark[0]{\listfigurename}{lof}
 
 %Caso as ilustra\c{c}~oes do trabalho sejam todas do mesmo tipo (por exemplo, todas do tipo organograma), coloque % no in\'icio das duas linhas abaixo. 
-\ilustvaria   %Use este comando somente caso as ilustra\c{c}\~oes n\~ao sejam todas do mesmo tipo. 
-\listilustvaria  %Use este comando somente caso as ilustra\c{c}\~oes n\~ao sejam todas do mesmo tipo e caso queira inserir a lista delas. 
+%\ilustvaria   %Use este comando somente caso as ilustra\c{c}\~oes n\~ao sejam todas do mesmo tipo. 
+%\listilustvaria  %Use este comando somente caso as ilustra\c{c}\~oes n\~ao sejam todas do mesmo tipo e caso queira inserir a lista delas. 
 
-%\listoffigures*  %Use este comando quando todas as ilustra\c{c}\~oes s\~ao do mesmo tipo e caso queira inserir a lista delas. Veja dicas no final deste arquivo.
+\listoffigures*  %Numera\c{c}\~ao ``Figura 1'', ``Figura 2'' etc. nas legendas e na lista.
 
 \cleardoublepage
 \pdfbookmark[0]{\listtablename}{lot}
@@ -230,6 +235,7 @@ Keywords: optical spectrum analyzer; automated calibration; computer vision; vis
   \item[CRI] Color Rendering Index (Índice de Reprodução de Cor)
   \item[DWDM] Dense Wavelength Division Multiplexing (Multiplexação por Divisão de Comprimento de Onda Densa)
   \item[FBG] Fiber Bragg Grating (Rede de Bragg em Fibra)
+  \item[FWHM] Full Width at Half Maximum (Largura Total à Meia Altura)
   \item[HCN] Cianeto de Hidrogênio (Hydrogen Cyanide)
   \item[IEC] International Electrotechnical Commission (Comissão Eletrotécnica Internacional)
   \item[LITel] Laboratório de Instrumentação e Telemetria
@@ -271,6 +277,9 @@ Keywords: optical spectrum analyzer; automated calibration; computer vision; vis
   \item[$ M(x,y) $] Máscara binária após limiarização
   \item[$ x_c, y_c $] Coordenadas do centróide
   \item[$ x_{peak} $] Posição do pico de intensidade
+  \item[$ \gamma $] Parâmetro de largura do perfil Lorentziano (FWHM $= 2\gamma$)
+  \item[$ \lambda_0 $] Posição central do pico espectral
+  \item[$ \sigma $] Desvio padrão do perfil Gaussiano
  \end{simbolos}
 
  
@@ -325,7 +334,7 @@ A metodologia adotada compreende o desenvolvimento de hardware baseado em impres
 
 A importância dos OSAs transcende o laboratório de pesquisa, estendendo-se a setores de alta tecnologia, saúde e manufatura. Nas telecomunicações, o OSA monitora a precisão do comprimento de onda para garantir que os canais estejam corretamente separados em redes DWDM \cite{viavi_osa}. Na caracterização de sensores de fibra óptica, como FBGs e LPGs, o OSA permite quantificar a sensibilidade com precisões da ordem de $0.037$ nm/kPa \cite{fbg_sensor}. Em aplicações biomédicas, como a oximetria de pulso, a precisão na faixa visível (especialmente em $660$ nm) é crítica para diagnósticos precisos \cite{smartphone_spectroscopy}. O desenvolvimento de um método de calibração por visão computacional habilita diretamente a transição industrial para dispositivos \textit{Point-of-Care} (POC) em ambientes com recursos limitados.
 
-Este trabalho está organizado da seguinte forma: o Capítulo 2 apresenta a fundamentação teórica sobre espectroscopia óptica e analisadores de espectro; o Capítulo 3 detalha a metodologia de desenvolvimento do hardware e software, incluindo os algoritmos de visão computacional e a descrição dos experimentos de validação; o Capítulo 4 descreve os resultados experimentais, abrangendo repetibilidade temporal, comparação com o espectrômetro ThorLabs em comprimento de onda e em intensidade; e o Capítulo 5 apresenta as conclusões e trabalhos futuros.
+Este trabalho está organizado da seguinte forma: o Capítulo 2 apresenta a fundamentação teórica sobre espectroscopia óptica e analisadores de espectro; o Capítulo 3 detalha a metodologia de desenvolvimento do hardware e software, incluindo os algoritmos de visão computacional e a descrição dos experimentos de validação; o Capítulo 4 descreve os resultados experimentais, abrangendo repetibilidade temporal, comparação em comprimento de onda, caracterização de intensidade e modelagem por combinação de canais; e o Capítulo 5 apresenta as conclusões e trabalhos futuros.
 
 \chapter{FUNDAMENTAÇÃO TEÓRICA}
 
@@ -1056,11 +1065,17 @@ A coleta com o OSA Visível foi feita pela interface OSA Visível, calibrada com
 
 \subsection{Extração de Picos e Registro de Dados}
 
-Perfis espectrais são tipicamente modelados por curvas Lorentzianas (alargamento homogêneo) ou Gaussianas (alargamento inhomogêneo) \cite{spectral_line_shape}. A determinação do comprimento de onda e da intensidade de cada pico foi realizada com o auxílio do software \textit{Peaks Viewer} (\texttt{peaks\_viewer.py}), desenvolvido em Python. O usuário seleciona manualmente a região de interesse no espectro; o refinamento dos parâmetros (posição, largura, amplitude) é feito por ajuste de mínimos quadrados não lineares \cite{peak_spectroscopy}. Em testes preliminares, a curva Gaussiana foi descartada por apresentar ajuste inferior ao Lorentziano nos espectros obtidos; optou-se, portanto, exclusivamente pelo modelo Lorentziano. Os valores de $\lambda$ e intensidade são obtidos a partir desse ajuste e registrados.
+Perfis espectrais são tipicamente modelados por curvas Lorentzianas (alargamento homogêneo) ou Gaussianas (alargamento inhomogêneo) \cite{spectral_line_shape}. A Lorentziana, associada a processos como tempo de vida finito do estado excitado e colisões, é expressa por
+\begin{equation}
+    I(\lambda) = I_0 \frac{\gamma^2}{(\lambda - \lambda_0)^2 + \gamma^2}
+\end{equation}
+onde $I_0$ é a intensidade máxima, $\lambda_0$ a posição central do pico e $\gamma$ está relacionado à largura à meia altura (FWHM$ = 2\gamma$). A Gaussiana, ligada ao alargamento Doppler e efeitos inhomogêneos, tem a forma $I(\lambda) = I_0 \exp\bigl(-(\lambda - \lambda_0)^2 / (2\sigma^2)\bigr)$, com FWHM $= 2\sigma\sqrt{2\ln 2}$.
+
+A determinação do comprimento de onda e da intensidade de cada pico foi realizada com o auxílio do software \textit{Peaks Viewer} (\texttt{peaks\_viewer.py}), desenvolvido em Python. O usuário seleciona manualmente a região de interesse no espectro; o refinamento dos parâmetros (posição, largura, amplitude) é feito por ajuste de mínimos quadrados não lineares \cite{peak_spectroscopy}. Em testes preliminares, a curva Gaussiana foi descartada por apresentar ajuste inferior ao Lorentziano nos espectros obtidos; optou-se, portanto, exclusivamente pelo modelo Lorentziano. Os valores de $\lambda$ e intensidade são obtidos a partir desse ajuste e registrados.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=1\textwidth]{../images/peaks_viewer.png}
+\includegraphics[width=0.85\textwidth]{../images/peaks_viewer.png}
 \caption{Interface do \textit{Peaks Viewer}: visualização do espectro, seleção de região para ajuste de curva Lorentziana e extração de $\lambda$ e intensidade do pico.}
 \label{fig:peaks_viewer}
 \fonte{Elaborada pelo autor (2025).}
@@ -1093,6 +1108,7 @@ O script \texttt{modelagem\_combinacao\_canais.m} modela a relação entre os ca
 
 \begin{equation}
     P_{\text{ThorLabs CCT11}} = \alpha_1 f_R(x) + \alpha_2 f_G(x) + \alpha_3 f_B(x)
+\label{eq:combinacao_canais}
 \end{equation}
 
 onde $f_i(x) = a_i x^2 + b_i x + c_i$ são polinômios de grau 2 ajustados para cada canal do OSA Visível em função do duty cycle $x$, e $\alpha_1$, $\alpha_2$, $\alpha_3$ são os coeficientes obtidos por mínimos quadrados. O ajuste é avaliado por $R^2$, RMSE, MAE e erro percentual médio.
@@ -1111,7 +1127,7 @@ A metodologia desenvolvida apresenta algumas limitações inerentes à escolha d
     \item \textbf{Resposta Espectral do Sensor}: A matriz de filtros Bayer do sensor CMOS introduz uma resposta espectral não-uniforme que, embora parcialmente compensada pela conversão para escala de cinza, pode afetar a precisão de medições de intensidade absoluta.
 \end{itemize}
 
-Trabalhos futuros devem explorar a incorporação de modelos não lineares (polinômios de ordem superior) para aprimorar a precisão nas extremidades do espectro, bem como técnicas de correção espectral mais sofisticadas para compensar a resposta não-uniforme do sensor.
+Trabalhos futuros devem explorar a incorporação de modelos não lineares (polinômios de ordem superior) para aprimorar a precisão nas extremidades do espectro, bem como técnicas de correção espectral mais sofisticadas para compensar a resposta não-uniforme do sensor. Uma linha de investigação promissora é a modelagem do equacionamento de intensidade para todo o espectro, estendendo a abordagem de combinação de canais utilizada para fontes RGB pontuais a uma descrição contínua da relação entre a resposta do OSA Visível e a intensidade espectral em toda a faixa visível.
 
 \chapter{RESULTADOS EXPERIMENTAIS E VALIDAÇÃO}
 
@@ -1157,15 +1173,18 @@ A análise estatística dos 100 espectros temporais revelou a presença de múlt
 \centering
 \caption{Estatísticas dos 3 picos principais RGB identificados pelo OSA Visível (100 amostras temporais)}
 \label{tab:resultados_visible_osa}
+{\small
 \begin{tabular}{lcccccc}
 \toprule
-Pico RGB & $\lambda$ médio (nm) & $\sigma$ (nm) & Incerteza expandida (nm) & Taxa de detecção (\%) & Intensidade média & CV intensidade (\%) \\
+Pico RGB & $\lambda$ (nm) & $\sigma$ (nm) & U (nm) & Taxa det. (\%) & Int. média & CV (\%) \\
 \midrule
 RGB-2 (Azul) & 468,22 & 1,469 & $\pm$0,288 & 100,0 & 122,12 & 1,12 \\
 RGB-1 (Verde) & 516,10 & 0,682 & $\pm$0,134 & 100,0 & 177,85 & 0,61 \\
 RGB-3 (Vermelho) & 637,70 & 0,701 & $\pm$0,143 & 92,0 & 84,23 & 0,38 \\
 \bottomrule
 \end{tabular}
+}\\[0.5ex]
+\footnotesize U = incerteza expandida; Taxa det. = taxa de detecção; Int. média = intensidade média; CV = coeficiente de variação.
 \fonte{Elaborada pelo autor (2025).}
 \end{table}
 
@@ -1201,15 +1220,18 @@ A análise dos 100 espectros selecionados do espectrômetro ThorLabs também ide
 \centering
 \caption{Estatísticas dos 3 picos principais RGB identificados pelo espectrômetro ThorLabs (100 amostras selecionadas)}
 \label{tab:resultados_thorlabs}
+{\small
 \begin{tabular}{lcccccc}
 \toprule
-Pico RGB & $\lambda$ médio (nm) & $\sigma$ (nm) & Incerteza expandida (nm) & Taxa de detecção (\%) & Intensidade média & CV intensidade (\%) \\
+Pico RGB & $\lambda$ (nm) & $\sigma$ (nm) & U (nm) & Taxa det. (\%) & Int. média & CV (\%) \\
 \midrule
 RGB-1 (Azul) & 459,01 & 1,400 & $\pm$0,137 & 400,0 & 13915,96 & 3,44 \\
 RGB-2 (Verde) & 519,05 & 1,467 & $\pm$0,150 & 369,0 & 6322,13 & 1,31 \\
 RGB-3 (Vermelho) & 639,13 & 1,419 & $\pm$0,140 & 396,0 & 12078,36 & 4,58 \\
 \bottomrule
 \end{tabular}
+}\\[0.5ex]
+\footnotesize U = incerteza expandida; Taxa det. = taxa de detecção; Int. média = intensidade média; CV = coeficiente de variação.
 \fonte{Elaborada pelo autor (2025).}
 \end{table}
 
@@ -1239,6 +1261,138 @@ Os resultados demonstram boa concordância entre os dois sistemas, especialmente
 
 As diferenças relativas variaram entre 0,22\% (vermelho) e 1,97\% (azul), indicando excelente correlação entre os dois sistemas de medição. As razões entre desvios padrão (espectrômetro ThorLabs/OSA Visível) ficaram próximas de 1 para o pico azul (0,953) e próximas de 2 para verde (2,152) e vermelho (2,024), sugerindo que o OSA Visível apresenta estabilidade comparável ou superior em algumas condições.
 
+\section{EXPERIMENTO 3: CARACTERIZAÇÃO DE INTENSIDADE E MODELAGEM POR COMBINAÇÃO DE CANAIS}
+
+Este experimento utilizou a fonte de luz com controle PWM descrita na Seção 3.5, com duty cycle de 1\% a 10\%, para caracterizar a resposta de intensidade dos equipamentos e modelar a relação entre os canais RGB do OSA Visível e as medições do espectrômetro ThorLabs.
+
+\subsection{Resposta Intensidade--Duty Cycle}
+
+O espectrômetro ThorLabs apresentou comportamento totalmente linear em todos os LEDs (verde, vermelho e azul), conforme esperado pela teoria: sensores de alta resolução e faixa dinâmica ampla mantêm a relação proporcional entre irradiância incidente e contagem digital (ADC) na faixa operacional utilizada. Os ajustes lineares obtidos (y = ax + b) alcançaram $R^2 > 0{,}999$ para as três fontes. A Tabela \ref{tab:thorlabs_linear} apresenta os parâmetros do ajuste linear, e a Figura \ref{fig:thorlabs_intensidade} ilustra a resposta linear para cada LED.
+
+\begin{table}[ht]
+\centering
+\caption{Parâmetros do ajuste linear do espectrômetro ThorLabs: $y = a \cdot x + b$ (intensidade vs. duty cycle \%)}
+\label{tab:thorlabs_linear}
+\begin{tabular}{lccc}
+\toprule
+LED & $a$ (ganho) & $b$ (offset) & $R^2$ \\
+\midrule
+Verde & 1142,21 & 207,96 & 0,9999 \\
+Vermelho & 4132,57 & 27,41 & 0,9999 \\
+Azul & 1005,61 & 117,74 & 0,9999 \\
+\bottomrule
+\end{tabular}
+\fonte{Elaborada pelo autor (2025).}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{../Experimentos/scripts/ThorLabs_JSON_ajuste_linear.png}
+\caption{Resposta de intensidade do espectrômetro ThorLabs em função do duty cycle para os LEDs verde, vermelho e azul. Média de 5 tomadas com ajuste linear.}
+\label{fig:thorlabs_intensidade}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
+
+Quanto ao OSA Visível, a regressão linear não se adequou bem a todos os canais. Em diversos canais e combinações LED--canal, os coeficientes $R^2$ ficaram abaixo de 0,95, indicando desvios sistemáticos em relação à reta. Essa não linearidade é consistente com o comportamento de saturação suave em sensores CMOS de webcams: mesmo antes da saturação abrupta, a resposta pode apresentar compressão de ganho. Diante disso, optou-se pelo ajuste polinomial de segunda ordem ($f_i(x) = a_i x^2 + b_i x + c_i$) para modelar a resposta intensidade--duty cycle em todos os canais do OSA Visível. Os coeficientes quadráticos negativos ($a_i < 0$) observados nos polinômios refletem a concavidade para baixo típica da curva de saturação, onde o ganho diminui à medida que o duty cycle aumenta.
+
+As Figuras \ref{fig:osa_canal_r}--\ref{fig:osa_canal_b} apresentam o ajuste polinomial de grau 2 para os canais R, G e B do OSA Visível, respectivamente. Em cada gráfico, são exibidas as curvas para os três LEDs (verde, vermelho, azul), mostrando como cada canal responde à variação do duty cycle para cada cor da fonte. Os parâmetros dos polinômios $f_i(x) = a_i x^2 + b_i x + c_i$ utilizados na modelagem de combinação são apresentados na Tabela \ref{tab:polinomios_osa}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{../Experimentos/scripts/OSA_Visivel_Canal_R_ajuste_grau2.png}
+\caption{Resposta do canal R do OSA Visível em função do duty cycle para os LEDs verde, vermelho e azul. Ajuste polinomial de grau 2 (média de 5 tomadas).}
+\label{fig:osa_canal_r}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{../Experimentos/scripts/OSA_Visivel_Canal_G_ajuste_grau2.png}
+\caption{Resposta do canal G do OSA Visível em função do duty cycle para os LEDs verde, vermelho e azul. Ajuste polinomial de grau 2 (média de 5 tomadas).}
+\label{fig:osa_canal_g}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{../Experimentos/scripts/OSA_Visivel_Canal_B_ajuste_grau2.png}
+\caption{Resposta do canal B do OSA Visível em função do duty cycle para os LEDs verde, vermelho e azul. Ajuste polinomial de grau 2 (média de 5 tomadas).}
+\label{fig:osa_canal_b}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
+
+\begin{table}[ht]
+\centering
+\caption{Coeficientes dos polinômios $f_i(x) = a_i x^2 + b_i x + c_i$ do OSA Visível por fonte e canal}
+\label{tab:polinomios_osa}
+\begin{tabular}{llccc}
+\toprule
+Fonte & Canal & $a_i$ & $b_i$ & $c_i$ \\
+\midrule
+\multirow{3}{*}{Verde} & R & $-0{,}222$ & 4,51 & 5,99 \\
+ & G & $-0{,}566$ & 21,59 & $-5{,}52$ \\
+ & B & $-0{,}330$ & 16,36 & 0,43 \\
+\midrule
+\multirow{3}{*}{Vermelho} & R & $-2{,}577$ & 50,18 & 11,18 \\
+ & G & $-0{,}018$ & 0,68 & 2,95 \\
+ & B & $-0{,}242$ & 5,49 & 5,35 \\
+\midrule
+\multirow{3}{*}{Azul} & R & $-0{,}004$ & 2,39 & $-0{,}13$ \\
+ & G & $-0{,}081$ & 8,36 & $-3{,}07$ \\
+ & B & $-2{,}512$ & 51,11 & $-3{,}56$ \\
+\bottomrule
+\end{tabular}
+\fonte{Elaborada pelo autor (2025).}
+\end{table}
+
+\subsection{Modelagem por Combinação de Canais}
+
+Para cada fonte (LED verde, vermelho ou azul) independentemente, o modelo de combinação linear dos canais R, G e B do OSA Visível foi ajustado conforme a Equação \ref{eq:combinacao_canais}, utilizando os polinômios de grau 2 da Tabela \ref{tab:polinomios_osa}. Os coeficientes $\alpha_1$, $\alpha_2$, $\alpha_3$ foram obtidos por mínimos quadrados e estão apresentados na Tabela \ref{tab:coef_alpha}.
+
+\begin{table}[ht]
+\centering
+\caption{Coeficientes da combinação linear $\alpha_i$ por fonte}
+\label{tab:coef_alpha}
+\begin{tabular}{lccc}
+\toprule
+Fonte & $\alpha_1$ (Canal R) & $\alpha_2$ (Canal G) & $\alpha_3$ (Canal B) \\
+\midrule
+Verde & $-77{,}61$ & $-113{,}13$ & 238,91 \\
+Vermelho & $-1297{,}84$ & $-23167{,}55$ & 15493,23 \\
+Azul & 640,42 & $-69{,}67$ & 1,06 \\
+\bottomrule
+\end{tabular}
+\fonte{Elaborada pelo autor (2025).}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{Métricas do modelo de combinação de canais por fonte}
+\label{tab:modelo_combinacao}
+\begin{tabular}{lcccc}
+\toprule
+Fonte & $R^2$ & RMSE & MAE & Erro (\%) \\
+\midrule
+Verde & 0,9999 & 28,28 & 21,76 & 0,37 \\
+Vermelho & 0,9999 & 95,56 & 78,49 & 0,46 \\
+Azul & 0,9999 & 28,64 & 23,07 & 0,46 \\
+\bottomrule
+\end{tabular}
+\fonte{Elaborada pelo autor (2025).}
+\end{table}
+
+Para as três fontes, o modelo atingiu $R^2 = 0{,}9999$, com erro percentual médio inferior a 0,5\% (Tabela \ref{tab:modelo_combinacao}). Os coeficientes $\alpha_i$ variam entre as fontes (Tabela \ref{tab:coef_alpha}), refletindo a contribuição relativa de cada canal da matriz Bayer à intensidade medida em cada comprimento de onda dominante. Valores negativos em alguns $\alpha_i$ indicam que a combinação linear subtrai a contribuição daquele canal para compensar o crosstalk espectral inerente ao sensor CMOS. O RMSE maior na fonte vermelha (95,56) em relação às demais (cerca de 28) é consistente com a escala de intensidade mais elevada do LED vermelho no espectrômetro ThorLabs.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{../Experimentos/scripts/Modelo_Combinacao_Canais_Comparacao.png}
+\caption{Comparação entre intensidade medida pelo ThorLabs e predita pelo modelo de combinação de canais (verde, vermelho, azul) em função do duty cycle.}
+\label{fig:modelo_combinacao}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
+
+A Figura \ref{fig:modelo_combinacao} ilustra a concordância entre os dados reais do espectrômetro ThorLabs e as predições do modelo combinado para cada LED. Os resultados validam que, na faixa de duty cycle utilizada (1--10\%), é possível prever com alta precisão a intensidade medida pelo equipamento de referência a partir dos canais individuais do OSA Visível, desde que se utilize o modelo polinomial de grau 2 e a combinação linear específica para cada fonte.
+
 \section{DISCUSSÃO DOS RESULTADOS E VALIDAÇÃO METROLÓGICA}
 
 Os resultados experimentais validam os objetivos estabelecidos no Capítulo 1 deste trabalho. O OSA Visível demonstrou:
@@ -1249,6 +1403,8 @@ Os resultados experimentais validam os objetivos estabelecidos no Capítulo 1 de
     \item \textbf{Estabilidade Temporal:} A análise de 100 amostras temporais revelou excelente repetibilidade, com coeficientes de variação de intensidade inferiores a 2\% e taxas de detecção superiores a 90\% para todos os picos principais.
     
     \item \textbf{Validação Cruzada:} A comparação com o espectrômetro ThorLabs demonstrou concordância adequada, com diferenças médias inferiores a 3 nm para dois dos três picos principais, validando a acurácia metrológica do sistema desenvolvido.
+    
+    \item \textbf{Calibração de Intensidade:} O experimento com fonte PWM mostrou que o espectrômetro ThorLabs apresenta resposta linear, como esperado, enquanto o OSA Visível requer modelo polinomial de grau 2 para capturar o comportamento de saturação. O modelo de combinação de canais alcançou $R^2 = 0{,}9999$ e erro percentual inferior a 0,5\% para cada fonte (verde, vermelho, azul) de forma independente.
     
     \item \textbf{Economia de Custo:} O sistema desenvolvido, com custo inferior a \$200 USD, representa uma redução de custo superior a 99\% comparado aos OSAs comerciais (\$30.000+), mantendo precisão adequada para aplicações educacionais e de pesquisa.
 \end{itemize}
@@ -1261,9 +1417,9 @@ Os experimentos realizados validam empiricamente o OSA Visível desenvolvido nes
 
 Os resultados obtidos fundamentam a aplicação do OSA Visível em contextos educacionais, de pesquisa básica e em ambientes com recursos limitados, onde a precisão de sub-nanômetro dos OSAs comerciais não é necessária, mas a capacidade de análise espectral quantitativa é essencial. 
 
-Apresentamos nesta p\'agina um exemplo de nota \footnote{As notas devem ser digitadas ou datilografadas dentro das margens, ficando separadas do texto
-por um espa\c{c}o simples entre as linhas e por filete de 5 cm a partir da margem esquerda e em fonte menor (um ponto) do corpo do texto. (Associa\c{c}\~ao
-Brasileira de Normas T\'ecnicas, 2011, p. 10).}.
+% Apresentamos nesta p\'agina um exemplo de nota \footnote{As notas devem ser digitadas ou datilografadas dentro das margens, ficando separadas do texto
+% por um espa\c{c}o simples entre as linhas e por filete de 5 cm a partir da margem esquerda e em fonte menor (um ponto) do corpo do texto. (Associa\c{c}\~ao
+% Brasileira de Normas T\'ecnicas, 2011, p. 10).}.
 
 
 %No sistema num\'erico para cita\c{c}\~oes de refer\^encias, as refer\^encias devem ser numeradas de acordo com a ordem sequencial em que aparecem no texto 
@@ -1401,36 +1557,36 @@ Brasileira de Normas T\'ecnicas, 2011, p. 10).}.
 % Se houver se\c{c}\~ao quin\'aria, incluir texto ...
 
 
-\chapter{CITA\c{C}\~{O}ES} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui.
+% \chapter{CITA\c{C}\~{O}ES} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui.
 
-As citações são informa\c{c}\~{o}es extra\'idas de fonte consultada pelo autor da obra em desenvolvimento. Podem ser diretas, indiretas ou citação de citação. Para exemplos, consultar o apêncice D no Manual de Normalização de Trabalhos Acadêmicos disponível no \textit{link} abaixo: \\ 
-\url{https://www2.ufjf.br/biblioteca/servicos/#normalizacao-bibliografica}
+% As citações são informa\c{c}\~{o}es extra\'idas de fonte consultada pelo autor da obra em desenvolvimento. Podem ser diretas, indiretas ou citação de citação. Para exemplos, consultar o apêncice D no Manual de Normalização de Trabalhos Acadêmicos disponível no \textit{link} abaixo: \\ 
+% \url{https://www2.ufjf.br/biblioteca/servicos/#normalizacao-bibliografica}
 
-\section{SISTEMA AUTOR-DATA} %%Nesta linha, dentro de { }, digita-se o nome da se\c{c}\~ao secund\'aria em CAIXA ALTA, como apresentado aqui.
+% \section{SISTEMA AUTOR-DATA} %%Nesta linha, dentro de { }, digita-se o nome da se\c{c}\~ao secund\'aria em CAIXA ALTA, como apresentado aqui.
 
-Para o sistema autor-data, considere: 
-\begin{itemize}
- \item[a)] \textbf{citação direta} \'e caracterizada pela transcri\c{c}\~{a}o textual da parte consultada. Se com at\'e tr\^es linhas, deve estar entre aspas duplas, exatamente como na obra consultada. Se com mais de tr\^es linhas, recomenda-se o recuo de 4 cm da margem esquerda, com letra menor (um ponto), espaçamento simples, sem aspas. Sendo a chamada: (Autor, data e p\'agina) ou na senten\c{c}a Autor (data, p\'agina).
- \item[b)] \textbf{cita\c{c}\~{a}o indireta} \'e aquela em que o texto foi baseado na(s) obra(s) consultada(s). Em caso de mais de tr\^es fontes consultadas, a cita\c{c}\~{a}o deve seguir a ordem alfab\'etica. 
- \item[c)] \textbf{A cita\c{c}\~{a}o de cita\c{c}\~{a}o} \'e baseada em um texto em que n\~ao houve acesso ao original. 
-\end{itemize} 
+% Para o sistema autor-data, considere: 
+% \begin{itemize}
+%  \item[a)] \textbf{citação direta} \'e caracterizada pela transcri\c{c}\~{a}o textual da parte consultada. Se com at\'e tr\^es linhas, deve estar entre aspas duplas, exatamente como na obra consultada. Se com mais de tr\^es linhas, recomenda-se o recuo de 4 cm da margem esquerda, com letra menor (um ponto), espaçamento simples, sem aspas. Sendo a chamada: (Autor, data e p\'agina) ou na senten\c{c}a Autor (data, p\'agina).
+%  \item[b)] \textbf{cita\c{c}\~{a}o indireta} \'e aquela em que o texto foi baseado na(s) obra(s) consultada(s). Em caso de mais de tr\^es fontes consultadas, a cita\c{c}\~{a}o deve seguir a ordem alfab\'etica. 
+%  \item[c)] \textbf{A cita\c{c}\~{a}o de cita\c{c}\~{a}o} \'e baseada em um texto em que n\~ao houve acesso ao original. 
+% \end{itemize} 
 
 
  
-\section{SISTEMA NUM\'ERICO} %%Nesta linha, dentro de { }, digita-se o nome da se\c{c}\~ao secund\'aria em CAIXA ALTA, como apresentado aqui.
+% \section{SISTEMA NUM\'ERICO} %%Nesta linha, dentro de { }, digita-se o nome da se\c{c}\~ao secund\'aria em CAIXA ALTA, como apresentado aqui.
 
-\textbf{Para o sistema num\'erico:} 
+% \textbf{Para o sistema num\'erico:} 
 
-A indica\c{c}\~{a}o da fonte \'e feita por uma numera\c{c}\~{a}o \'unica e consecutiva respeitando a ordem que aparece no texto. Deve-se usar algarismos ar\'abicos remetendo \`a lista de refer\^encias. A indica\c{c}\~{a}o da numera\c{c}\~{a}o \'e apresentada entre par\^enteses no corpo do texto ou como expoente. N\~ao usar colchetes. O autor pode aparecer ou n\~ao no texto. Para separar diversos autores, utiliza-se v\'irgula. N\~{a}o utilizar nota de rodap\'{e} quando utilizar o sistema num\'{e}rico.
-Observe os exemplos no Manual de Normaliza\c{c}\~{a}o de Trabalhos Acad\^emicos dispon\'ivel no \textit{link} abaixo: \\
-\url{https://www2.ufjf.br/biblioteca/servicos/#normalizacao-bibliografica}
+% A indica\c{c}\~{a}o da fonte \'e feita por uma numera\c{c}\~{a}o \'unica e consecutiva respeitando a ordem que aparece no texto. Deve-se usar algarismos ar\'abicos remetendo \`a lista de refer\^encias. A indica\c{c}\~{a}o da numera\c{c}\~{a}o \'e apresentada entre par\^enteses no corpo do texto ou como expoente. N\~ao usar colchetes. O autor pode aparecer ou n\~ao no texto. Para separar diversos autores, utiliza-se v\'irgula. N\~{a}o utilizar nota de rodap\'{e} quando utilizar o sistema num\'{e}rico.
+% Observe os exemplos no Manual de Normaliza\c{c}\~{a}o de Trabalhos Acad\^emicos dispon\'ivel no \textit{link} abaixo: \\
+% \url{https://www2.ufjf.br/biblioteca/servicos/#normalizacao-bibliografica}
 
-Em citação direta, o número da página (precedido por ``p.'') ou localizador, se houver, deve ser indicado após o número da fonte no texto, separado por vírgula e um espaço. O número do localizador, em publicações eletrônicas, deve ser precedido por sua respectiva abreviatura (local.). Exemplos: (1, p. 30), (7, local. 72), (4, Mt 6, 3-6, p. 1730), (6, v.3, p.583), (5, cap. V, art. 49, inc.I), (2, 9 min 41 s).
+% Em citação direta, o número da página (precedido por ``p.'') ou localizador, se houver, deve ser indicado após o número da fonte no texto, separado por vírgula e um espaço. O número do localizador, em publicações eletrônicas, deve ser precedido por sua respectiva abreviatura (local.). Exemplos: (1, p. 30), (7, local. 72), (4, Mt 6, 3-6, p. 1730), (6, v.3, p.583), (5, cap. V, art. 49, inc.I), (2, 9 min 41 s).
 
-\section{NOTAS} %%Nesta linha, dentro de { }, digita-se o nome da se\c{c}\~ao secund\'aria em CAIXA ALTA, como apresentado aqui.
+% \section{NOTAS} %%Nesta linha, dentro de { }, digita-se o nome da se\c{c}\~ao secund\'aria em CAIXA ALTA, como apresentado aqui.
 
-Notas de rodap\'e s\~ao observa\c{c}\~{o}es e/ou aditamentos que o autor precisa incluir no texto \footnote[2]{As notas devem ser alinhadas sendo que na segunda linha da mesma nota, a primeira letra deve estar abaixo da primeira letra da primeira palavra da linha superior, destacando assim o expoente.}. Para a numera\c{c}\~{a}o das notas deve-se utilizar algarismos ar\'abicos. As notas devem ser digitadas dentro das margens, ficando separadas do texto por um espa\c{c}o simples entre as linhas e por filete de 5 cm a partir da margem esquerda e em fonte menor (um ponto) do corpo do texto. As notas de rodap\'e s\'o podem ser usadas no sistema autor-data. Observe os exemplos no Manual de Normaliza\c{c}\~{a}o de Trabalhos Acad\^emicos dispon\'ivel no \textit{link} abaixo: \\
-\url{https://www2.ufjf.br/biblioteca/servicos/#normalizacao-bibliografica}
+% Notas de rodap\'e s\~ao observa\c{c}\~{o}es e/ou aditamentos que o autor precisa incluir no texto \footnote[2]{As notas devem ser alinhadas sendo que na segunda linha da mesma nota, a primeira letra deve estar abaixo da primeira letra da primeira palavra da linha superior, destacando assim o expoente.}. Para a numera\c{c}\~{a}o das notas deve-se utilizar algarismos ar\'abicos. As notas devem ser digitadas dentro das margens, ficando separadas do texto por um espa\c{c}o simples entre as linhas e por filete de 5 cm a partir da margem esquerda e em fonte menor (um ponto) do corpo do texto. As notas de rodap\'e s\'o podem ser usadas no sistema autor-data. Observe os exemplos no Manual de Normaliza\c{c}\~{a}o de Trabalhos Acad\^emicos dispon\'ivel no \textit{link} abaixo: \\
+% \url{https://www2.ufjf.br/biblioteca/servicos/#normalizacao-bibliografica}
 
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
@@ -1471,28 +1627,7 @@ Este elemento \'e obrigat\'orio e \'e a parte final do texto.  Nele, s\~ao apres
 %%O elemento t\'itulo de cada refer\^encia ser\'a destacado pelo uso do recurso tipogr\'afico negrito (\textbf) ou do it\'alico (\textit), sendo que o 
 %recurso tipogr\'afico utilizado deve ser uniforme em todas as refer\^encias do trabalho. Recomendamos o uso do negrito.
 
-%%%1) Exemplos de refer\^encias no sistema num\'erico
-
-%%exemplo de parte de obra em meio eletr\^onico
-\bibitem{disp2019} S\~AO PAULO (Estado). Secretaria do Meio Ambiente. Tratados e organiza\c{c}\~oes ambientais em mat\'eria de meio ambiente. \textit{In}: S\~AO
-PAULO (Estado). Secretaria do Meio Ambiente. \textbf{Entendendo o meio ambiente}. S\~ao Paulo: Secretaria do Meio Ambiente, 1999. v. 1. Disponível em: 
-http://www.bdt.org.br/sma/entendendo/atual.htm. Acesso em: 8 mar. 1999.
-
-
-%%exemplo de livro
-\bibitem{Bauman99} BAUMAN, Zygmunt. \textbf{Globaliza\c{c}\~ao}: as consequ\^encias humanas. Rio de Janeiro: Jorge Zahar, 1999.
-
-
-%%exemplo de artigo de publica\c{c}\~ao peri\'odica
-\bibitem{vet18} DOREA, R. D.; COSTA, J. N.; BATITA, J. M.; FERREIRA, M. M.; MENEZES, R. V.; SOUZA, T. S. Reticuloperitonite traum\'atica associada \`a esplenite 
-e hepatite em bovino: relato de caso. \textbf{Veterin\'aria e Zootecnia}, S\~ao Paulo, v. 18, n. 4, p. 199-202, 2011. Supl. 3.
-
-%%exemplo de trabalho acad\^emico (tese, dissertac\{c}\~ao, etc.)
-
-\bibitem{Aguiar2009} AGUIAR, Andr\'e Andrade de. \textbf{Avalia\c{c}\~ao da microbiota bucal em pacientes sob uso cr\^onico de penicilina e benzatina}. 2009. 
-Tese (Doutorado em Cardiologia) - Faculdade de Medicina, Universidade de S\~ao Paulo, S\~ao Paulo, 2009.
-
-%% Referências adicionadas do relatório técnico sobre OSAs
+%% Referências
 \bibitem{agilent_uvvis} AGILENT. \textbf{The Basics of UV-Vis Spectroscopy}. Disponível em: 
 https://www.agilent.com/cs/library/primers/public/primer-uv-vis-basics-5980-1397en-agilent.pdf. 
 Acesso em: 3 nov. 2025.
