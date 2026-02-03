@@ -204,21 +204,21 @@ fprintf('  β₁(λ), β₂(λ), β₃(λ) = polinômios grau %d em λ (nm). Fai
 %% PASSO 6: IMPRIMIR MODELO E EXPORTAR
 fprintf('\n=== MODELO FINAL ===\n\n');
 fprintf('P_ThorLabs(λ) = β₁(λ)·Pr(λ) + β₂(λ)·Pg(λ) + β₃(λ)·Pb(λ)\n');
-fprintf('Válido para espectros quaisquer (faixa não saturada).\n\n');
+fprintf('β₁, β₂, β₃ = polinômios grau 8 em λ (interpolação dos 100 w_n). Sinal contínuo.\n\n');
 
-% Exemplo em um lambda central
 idx_meio = round(n_wavelengths/2);
 lambda_ex = resultados.lambda(idx_meio)*1e9;
-beta_ex = resultados.beta(idx_meio, :);
 fprintf('Exemplo em λ = %.2f nm:\n', lambda_ex);
-fprintf('  β₁ = %.6f, β₂ = %.6f, β₃ = %.6f\n', beta_ex(1), beta_ex(2), beta_ex(3));
+fprintf('  β₁(λ)=%.6f, β₂(λ)=%.6f, β₃(λ)=%.6f (via polinômios)\n', ...
+    polyval(p_beta1, lambda_ex), polyval(p_beta2, lambda_ex), polyval(p_beta3, lambda_ex));
 fprintf('  R² = %.4f, RMSE = %.2f\n\n', resultados.R2(idx_meio), resultados.RMSE(idx_meio));
 
-% Salvar .mat
-save('modelagem_espectral_geral_resultados.mat', 'resultados', 'lambda_sampled', 'lambda_grid');
+% Salvar .mat (incluir polinômios)
+save('modelagem_espectral_geral_resultados.mat', 'resultados', 'lambda_sampled', 'lambda_grid', ...
+    'p_beta1', 'p_beta2', 'p_beta3', 'lambda_nm_min', 'lambda_nm_max', 'grau_poly');
 fprintf('Salvo: modelagem_espectral_geral_resultados.mat\n');
 
-% CSV para uso externo (calibration_viewer, etc.)
+% CSV discreto (fallback)
 fid = fopen('modelo_geral_parametros.csv', 'w');
 fprintf(fid, 'lambda_nm,beta_1,beta_2,beta_3,R2,RMSE\n');
 for i_wn = 1:n_wavelengths
@@ -227,7 +227,16 @@ for i_wn = 1:n_wavelengths
         resultados.R2(i_wn), resultados.RMSE(i_wn));
 end
 fclose(fid);
-fprintf('Salvo: modelo_geral_parametros.csv\n');
+fprintf('Salvo: modelo_geral_parametros.csv (discreto)\n');
+
+% CSV polinômios para visualizador (β contínuos, grau 8)
+fid_p = fopen('modelo_geral_polinomios.csv', 'w');
+fprintf(fid_p, '%.6f,%.6f\n', lambda_nm_min, lambda_nm_max);
+fprintf(fid_p, '%.10e,%.10e,%.10e,%.10e,%.10e,%.10e,%.10e,%.10e,%.10e\n', p_beta1(1), p_beta1(2), p_beta1(3), p_beta1(4), p_beta1(5), p_beta1(6), p_beta1(7), p_beta1(8), p_beta1(9));
+fprintf(fid_p, '%.10e,%.10e,%.10e,%.10e,%.10e,%.10e,%.10e,%.10e,%.10e\n', p_beta2(1), p_beta2(2), p_beta2(3), p_beta2(4), p_beta2(5), p_beta2(6), p_beta2(7), p_beta2(8), p_beta2(9));
+fprintf(fid_p, '%.10e,%.10e,%.10e,%.10e,%.10e,%.10e,%.10e,%.10e,%.10e\n', p_beta3(1), p_beta3(2), p_beta3(3), p_beta3(4), p_beta3(5), p_beta3(6), p_beta3(7), p_beta3(8), p_beta3(9));
+fclose(fid_p);
+fprintf('Salvo: modelo_geral_polinomios.csv (β contínuos, grau 8)\n');
 
 % Resumo .txt
 fid = fopen('modelagem_espectral_geral_resumo.txt', 'w');
