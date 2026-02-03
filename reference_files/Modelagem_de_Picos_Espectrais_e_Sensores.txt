@@ -1,0 +1,149 @@
+﻿Modelagem de perfis espectrais e caracterização de fenômenos de saturação em sensores ópticos de baixo custo
+A análise espectroscópica contemporânea, especialmente quando aplicada a sistemas desenvolvidos no contexto de projetos de conclusão de curso e pesquisas de baixo orçamento, exige uma compreensão rigorosa da interseção entre a física das radiações, a matemática do processamento de sinais e as limitações intrínsecas da eletrônica de estado sólido.1 A modelagem de sinais em espectros ópticos não é meramente um exercício de ajuste de curvas, mas uma representação da realidade física subjacente, onde cada parâmetro das funções Gaussianas, Lorentzianas ou de Voigt traduz um mecanismo específico de alargamento ou interação atômica.3 No entanto, a fidelidade desses modelos é frequentemente desafiada por imperfeições instrumentais, sendo a saturação dos sensores — particularmente em dispositivos comerciais como webcams — um dos obstáculos mais críticos para a precisão da detecção de picos e a quantificação analítica.5
+Fundamentos teóricos dos perfis de linha espectral
+A forma de uma linha espectral observada é o resultado da convolução de diversos processos físicos que ocorrem tanto na fonte de emissão quanto no meio de propagação e no sistema de detecção.3 Em um cenário ideal, uma transição eletrônica ocorreria em uma frequência infinitamente estreita; contudo, o princípio da incerteza de Heisenberg e as interações termodinâmicas garantem que toda linha espectral possua uma largura finita.3
+A natureza do perfil Lorentziano
+O perfil Lorentziano, derivado da distribuição de Cauchy-Lorentz, está intrinsecamente ligado a processos de alargamento homogêneo, o que significa que o efeito atua da mesma forma sobre todos os átomos ou moléculas da amostra.4 O mecanismo mais fundamental para a origem desta forma é o alargamento natural. Este fenômeno decorre do tempo de vida finito de um estado excitado; de acordo com a mecânica quântica, se um estado possui um tempo de vida   , a incerteza em sua energia    deve satisfazer a relação   .3 Como o decaimento do estado excitado segue uma lei exponencial no tempo, a transformada de Fourier desse decaimento resulta em um perfil de intensidade no domínio da frequência que assume a forma Lorentziana.3
+Matematicamente, a função Lorentziana é expressa pela relação entre a intensidade máxima   , a posição central    e a largura total à meia altura (FWHM), representada por    3:
+  
+
+Além do alargamento natural, o alargamento por pressão (ou colisão) é um colaborador proeminente para o perfil Lorentziano.3 Em gases, as colisões entre átomos interrompem o processo de emissão ou absorção de forma aleatória, o que efetivamente reduz o tempo de vida médio do estado excitado e, por conseguinte, aumenta a largura da linha.3 Este efeito é dependente da densidade do gás e da temperatura, sendo o processo dominante em meios líquidos e sólidos devido à proximidade constante entre as moléculas.3
+O perfil Gaussiano e o alargamento Doppler
+Diferente do perfil Lorentziano, o perfil Gaussiano está associado ao alargamento inhomogêneo, onde a linha observada é a soma de contribuições de diferentes grupos de átomos que experimentam condições ligeiramente distintas.4 O exemplo paradigmático deste fenômeno é o alargamento Doppler. Em uma amostra gasosa em equilíbrio térmico, os átomos movem-se com velocidades que seguem a distribuição de Maxwell-Boltzmann.3 Para um observador estacionário, a frequência da luz emitida por um átomo em movimento sofre um desvio Doppler proporcional à componente de sua velocidade ao longo da linha de visada.3
+A sobreposição desses diversos desvios resulta em uma distribuição Gaussiana de intensidades, cuja largura é uma função direta da temperatura absoluta    e da massa atômica    8:
+  
+
+A relação entre o desvio padrão    e a FWHM (  ) em uma distribuição Gaussiana é dada por   .12 O perfil Gaussiano caracteriza-se por uma queda muito mais rápida nas "asas" da distribuição em comparação com o Lorentziano, concentrando a maior parte de sua área em torno do centro.14
+Perfis de Voigt e complexidade instrumental
+Em condições reais, tanto os efeitos homogêneos quanto os inhomogêneos estão presentes simultaneamente. Um átomo em movimento térmico (Gaussiano) ainda possui um tempo de vida finito e sofre colisões (Lorentziano).4 O perfil resultante é a convolução dessas duas funções, conhecida como perfil de Voigt.3 Este perfil é amplamente utilizado em astrofísica e espectroscopia de alta precisão para extrair parâmetros físicos como temperatura e pressão simultaneamente a partir de uma única linha espectral.16
+É fundamental notar que a própria instrumentação — como a largura da fenda, a qualidade da rede de difração e a resposta dos pixels — introduz um perfil adicional, muitas vezes referido como a Função de Espalhamento de Ponto (PSF) ou Perfil Instrumental.4 Em muitos sistemas de baixo custo, este perfil instrumental é predominantemente Gaussiano devido à soma de múltiplas fontes de erro aleatório, o que pode mascarar a física intrínseca da amostra.3
+Característica
+	Perfil Lorentziano
+	Perfil Gaussiano
+	Causa Física Principal
+	Tempo de vida (Natural), Colisões
+	Efeito Doppler, Desordem estrutural
+	Tipo de Alargamento
+	Homogêneo
+	Inhomogêneo
+	Decaimento das Asas
+	Lento (  )
+	Rápido (  )
+	Domínio Comum
+	RMN, Espectroscopia de emissão em líquidos
+	Espectroscopia de gases a alta temperatura
+	Sensibilidade ao Ruído
+	Alta nas caudas
+	Baixa nas caudas
+	3
+Arquitetura eletrônica de sensores ópticos e webcams
+Para compreender a saturação, é necessário analisar como a luz é convertida em sinais digitais. As webcams modernas utilizam majoritariamente sensores CMOS (Complementary Metal-Oxide-Semiconductor), que diferem dos sensores CCD (Charge-Coupled Device) científicos em sua arquitetura de leitura e gerenciamento de ruído.5
+O processo de fotodetecção em CMOS
+Cada pixel de um sensor CMOS é composto por um fotodiodo e um amplificador de carga local. Quando fótons incidem sobre o silício, pares elétron-lacuna são gerados pelo efeito fotoelétrico. Esses elétrons são coletados em um poço de potencial.5 A capacidade de armazenamento de cada pixel, denominada Full Well Capacity (FWC), determina o número máximo de elétrons que podem ser acumulados antes que o pixel perca a capacidade de distinguir incrementos adicionais de intensidade luminosa.6
+A digitalização desse sinal é realizada por um Conversor Analógico-Digital (ADC). Em webcams comerciais, o ADC é geralmente de 8 bits, o que significa que a voltagem correspondente à carga do pixel é mapeada em apenas 256 níveis discretos (0-255).5 Sensores científicos, por outro lado, utilizam ADCs de 12 a 16 bits para garantir que o ruído eletrônico seja menor que o degrau de quantização, permitindo uma faixa dinâmica muito superior.5
+Fontes de ruído e erro sistemático
+O sinal capturado por uma webcam não é composto apenas por fotoelétrons úteis. Vários componentes de ruído interferem na precisão da modelagem espectral:
+1. Ruído de Leitura (Read Noise): Ruído eletrônico introduzido durante a conversão da carga em voltagem e o processo de digitalização. Em sensores CMOS de baixo custo, este valor pode ser significativo.5
+2. Corrente Escura (Dark Current): Elétrons gerados termicamente no silício mesmo na ausência total de luz. Este fenômeno é extremamente sensível à temperatura, dobrando aproximadamente a cada 8°C de aumento.5
+3. Ruído de Fóton (Shot Noise): Inerente à natureza estatística da luz. Como a chegada de fótons segue uma distribuição de Poisson, a incerteza na medição é igual à raiz quadrada do número de elétrons coletados.6
+Em webcams, a ausência de refrigeração ativa e o uso de componentes eletrônicos não otimizados para ciência resultam em uma relação sinal-ruído (SNR) que degrada rapidamente fora de condições ideais de iluminação.6
+O fenômeno da saturação e não linearidade
+A saturação ocorre quando o fluxo de luz incidente produz mais elétrons do que a FWC do pixel pode suportar ou quando o sinal amplificado excede o limite superior do ADC.5 Este estado manifesta-se visualmente como um "achatamento" do topo dos picos espectrais, transformando perfis Gaussianos ou Lorentzianos em estruturas de topo plano (flat-top).22
+Mecanismos de distorção de pico
+Quando um sensor entra em regime de saturação, a relação linear entre a irradiância incidente e a contagem digital (ADU) é rompida. Inicialmente, o sensor entra em uma fase de "saturação suave", onde a resposta torna-se não linear (compressão de ganho) antes de atingir o corte abrupto.24 Este comportamento é particularmente problemático para a detecção de picos, pois a forma da curva é alterada de maneira que os algoritmos de ajuste de mínimos quadrados não conseguem compensar adequadamente.22
+A saturação afeta os momentos estatísticos da linha espectral de formas distintas:
+* Amplitude: É limitada ao valor máximo do ADC (ex: 255), impossibilitando a medição da intensidade real da fonte.7
+* Largura (FWHM): O achatamento do topo e a expansão das asas (devido ao transbordamento de carga ou blooming para pixels vizinhos) fazem com que a largura calculada seja artificialmente maior que a real.19
+* Centroide (Posição): Se o pico for ligeiramente assimétrico, a saturação de um lado da curva ocorrerá antes do outro, deslocando o centro de gravidade calculado e gerando erros na calibração do comprimento de onda.22
+Saturação em sensores coloridos (Padrão de Bayer)
+Webcams utilizam um filtro de cor mosaico (Bayer) sobre os pixels. Isso significa que, para uma linha espectral verde intensa, apenas 50% dos pixels (os verdes) podem estar saturados, enquanto os pixels vermelhos e azuis ainda operam no regime linear.2 O processamento interno da câmera (demosaicing) tenta interpolar esses valores para criar uma imagem colorida suave, o que introduz um artefato de mistura de sinais (crosstalk) que distorce completamente a pureza espectral da linha medida.27
+Algoritmos de detecção de picos e ajuste de curvas
+A extração de informações úteis de um espectro requer algoritmos que identifiquem a presença de picos e quantifiquem seus parâmetros fundamentais. O processo geralmente é dividido em três etapas: pré-processamento, localização inicial e ajuste não linear.18
+Pré-processamento e correção de linha de base
+Antes da detecção de picos, é crucial remover o ruído de alta frequência e a linha de base (fundo). Em webcams, o fundo é composto pela corrente escura e por luz difusa dentro do invólucro do espectrômetro.1 O algoritmo SNIP (Statistics-Sensitive Non-linear Iterative Peak-clipping) é a ferramenta de excelência para esta tarefa em espectroscopia.31 Ele opera através de um processo iterativo que "grampeia" os picos e suaviza o fundo, permitindo uma subtração eficaz que preserva a integridade da área sob a curva.33
+Localização via derivadas de segunda ordem
+Para picos bem definidos, a busca por máximos locais é suficiente. No entanto, para picos sobrepostos ou de baixa intensidade, utiliza-se a segunda derivada do espectro. Um pico em um sinal original corresponde a um mínimo local acentuado em sua segunda derivada.3 Esta técnica é altamente sensível e permite identificar "picos enterrados" que não são visíveis a olho nu.29 No entanto, a derivação amplifica o ruído, tornando obrigatória a aplicação de filtros de suavização como o de Savitzky-Golay antes da operação.33
+Ajuste não linear de Levenberg-Marquardt
+O refinamento dos parâmetros (posição, largura, altura) é feito através de algoritmos de ajuste de curvas, sendo o de Levenberg-Marquardt o mais robusto para problemas de mínimos quadrados não lineares.25 O algoritmo tenta minimizar o erro chi-quadrado (  ) entre o modelo teórico (Gaussiano ou Lorentziano) e os dados experimentais.29
+A precisão do ajuste é limitada pelo ruído estatístico. O limite inferior de Cramér-Rao estabelece a variância mínima teórica que qualquer estimador pode alcançar.10 Estudos indicam que, para uma mesma relação sinal-ruído, perfis Gaussianos permitem uma localização de centroide mais precisa devido à sua maior inclinação em torno do ponto de inflexão, enquanto Lorentzianos oferecem melhor precisão na estimativa da área total devido à extensão de suas caudas.10
+Impactos da saturação no processamento analítico
+A saturação de sensores em webcams impõe limitações severas que devem ser endereçadas no desenvolvimento de um TCC. Quando o sinal ultrapassa a faixa linear, os resultados quantitativos tornam-se suspeitos.
+Erros de quantificação e perda de resolução
+Em espectroscopia de absorção, a saturação impede a aplicação correta da Lei de Beer-Lambert. Se o pico de absorção estiver saturado em termos de falta de luz no detector, a transmitância registrada será zero (ou próxima ao ruído de fundo), o que resulta em uma absorbância infinita ou indeterminada.25 Em sistemas de emissão, a saturação oculta a estrutura fina. Linhas duplas ou picos satélites próximos a um pico principal intenso fundem-se em um único patamar retangular, reduzindo a resolução espectral efetiva do sistema.37
+Deslocamento de centroide e calibração
+A calibração de um espectrômetro caseiro depende da identificação de linhas conhecidas (como as de uma lâmpada fluorescente ou LED).2 Se essas linhas de calibração forem capturadas em estado de saturação, o centroide calculado sofrerá um erro sistemático. Em webcams, o processamento de ganho automático (AGC) pode exacerbar este problema ao variar o tempo de exposição dinamicamente, o que faz com que picos de diferentes intensidades sejam saturados de formas distintas em cada frame.7
+Parâmetro Afetado
+	Efeito da Saturação Moderada
+	Efeito da Saturação Severa
+	Posição do Pico
+	Desvio sistemático de sub-pixel
+	Erro de vários pixels no centroide
+	Largura (FWHM)
+	Aumento aparente (alargamento)
+	Perda total da definição de largura
+	Área (Intensidade)
+	Subestimativa da concentração
+	Relação não linear total com a fonte
+	Relação Sinal-Ruído
+	Melhora aparente no topo
+	Degradação por ruído de quantização
+	7
+Metodologias de mitigação e boas práticas
+Para mitigar os efeitos da saturação e garantir a validade dos modelos Gaussianos e Lorentzianos em espectroscopia de baixo custo, diversas estratégias podem ser implementadas.
+Ajustes experimentais de hardware
+A solução mais eficaz para a saturação é a prevenção física. O ajuste do fluxo luminoso pode ser feito através de:
+* Controle Manual de Exposição: Utilizar softwares que permitam desativar o controle automático da webcam e fixar o tempo de exposição e o ganho em valores onde o pico mais intenso não ultrapasse 80-85% da escala máxima (cerca de 200-220 ADU para 8 bits).7
+* Filtros de Densidade Neutra (ND): Colocar filtros que atenuem igualmente todos os comprimentos de onda antes da entrada na fenda.23
+* Ajuste de Distância: Aumentar a distância entre a fonte de luz e a fenda de entrada do espectrômetro reduz a irradiância conforme a lei do inverso do quadrado da distância.30
+Estratégias de processamento de sinal
+Se a saturação for inevitável em certas condições, algoritmos específicos podem ser aplicados:
+* Reconstrução de Perfil: Se apenas o ápice do pico estiver saturado, é possível ajustar uma função Gaussiana ou Lorentziana utilizando apenas os dados das "asas" (região linear), extrapolando o topo para encontrar a amplitude e posição reais.24
+* Uso de Funções Super-Gaussianas: Estas funções possuem um parâmetro adicional que descreve o achatamento do topo, permitindo um ajuste mais preciso de sinais que são naturalmente planos ou que sofreram compressão de hardware.12
+* Normalização em Software: Algoritmos que utilizam o tempo de exposição como fator de escala podem combinar múltiplas capturas (técnica HDR) para estender a faixa dinâmica virtual do sensor.6
+Conclusões e recomendações para o desenvolvimento do TCC
+A modelagem de sinais espectrais através de curvas Gaussianas e Lorentzianas constitui a base para a interpretação física de dados ópticos. Contudo, o sucesso desta modelagem em sistemas que utilizam webcams depende intrinsecamente da gestão da saturação do sensor.
+Conclui-se que o alargamento instrumental em espectrômetros de baixo custo é predominantemente Gaussiano, o que torna esta função a escolha mais adequada para a modelagem da maioria das linhas de emissão capturadas por webcams.3 Por outro lado, o perfil Lorentziano deve ser reservado para casos onde a física da amostra (como em espectroscopia Raman ou RMN) é a fonte dominante de alargamento, ou quando a resolução do sistema é alta o suficiente para revelar a largura natural das linhas.3
+Para a detecção de picos, recomenda-se a utilização de algoritmos de segunda derivada para a identificação inicial, seguidos pelo ajuste de Levenberg-Marquardt.29 A integração do algoritmo SNIP para a remoção da linha de base é mandatória para evitar erros sistemáticos na integração das áreas dos picos.32
+Finalmente, o pesquisador deve estar ciente de que a saturação em webcams de 8 bits é um "ponto de não retorno" para a precisão analítica. A perda de informação no ápice do sinal degrada a acurácia da posição do centroide e infla a largura medida, invalidando análises de temperatura ou pressão baseadas na forma da linha.22 Portanto, a calibração rigorosa do tempo de exposição e a manutenção do sinal dentro do regime linear do CMOS são os pilares que garantem a cientificidade dos resultados obtidos em dispositivos de baixo custo.
+Works cited
+1. Developing a Cost-Effective Spectrometer: A Practical Approach - arXiv, accessed February 3, 2026, https://arxiv.org/html/2510.06703v4
+2. (PDF) Low-Cost Spectrograph Based on a WebCam: A Student Project - ResearchGate, accessed February 3, 2026, https://www.researchgate.net/publication/260057271_Low-Cost_Spectrograph_Based_on_a_WebCam_A_Student_Project
+3. Spectral line shape - Wikipedia, accessed February 3, 2026, https://en.wikipedia.org/wiki/Spectral_line_shape
+4. Lecture 8. Fundamentals of Laser Spectroscopy and Molecular Spectra, accessed February 3, 2026, http://superlidar.colorado.edu/Classes/Lidar2006/Lecture8.pdf
+5. Dynamic Range - Evident Scientific, accessed February 3, 2026, https://evidentscientific.com/en/microscope-resource/knowledge-hub/digital-imaging/concepts/dynamicrange
+6. New Era in Dynamic Range and Linearity for Scientific CMOS Cameras, accessed February 3, 2026, https://www.teledynevisionsolutions.com/learn/learning-center/scientific-imaging/new-era-in-dynamic-range-and-linearity-for-scientific-cmos-cameras/
+7. Spectroradiometer - Wikipedia, accessed February 3, 2026, https://en.wikipedia.org/wiki/Spectroradiometer
+8. NIST: Atomic Spectros. - Spectral Line Shapes, etc., accessed February 3, 2026, https://physics.nist.gov/Pubs/AtSpec/node20.html
+9. 7. Line shapes - Harvard CfA, accessed February 3, 2026, https://lweb.cfa.harvard.edu/~kchance/EPS238-2014/class_notes/07-EPS-238-2014.pdf
+10. Precision in peak parameter estimation for Gaussian ... - ChemRxiv, accessed February 3, 2026, https://chemrxiv.org/engage/api-gateway/chemrxiv/assets/orp/resource/item/67ac78a081d2151a021fc300/original/WA10099.pdf
+11. Saturated Absorption Spectroscopy - Drake Lab, accessed February 3, 2026, https://drakelab.unm.edu/courses/physics-493l/satabs2.pdf
+12. Gaussian function - Wikipedia, accessed February 3, 2026, https://en.wikipedia.org/wiki/Gaussian_function
+13. Gaussian - Mantid, accessed February 3, 2026, https://docs.mantidproject.org/v6.3.0/fitting/fitfunctions/Gaussian.html
+14. Curve Fitting in Raman and IR Spectroscopy: Basic Theory of Line Shapes and Applications - Thermo Fisher Scientific, accessed February 3, 2026, https://documents.thermofisher.com/TFS-Assets/CAD/Application-Notes/AN50733_E.pdf
+15. Peak Shape and Closely Spaced Peak Convolution in Raman Spectra | Spectroscopy Online, accessed February 3, 2026, https://www.spectroscopyonline.com/view/peak-shape-and-closely-spaced-peak-convolution-in-raman-spectra
+16. Power-dependent line-shape corrections for quantitative spectroscopy - UQ eSpace, accessed February 3, 2026, https://espace.library.uq.edu.au/view/UQ:285706/UQ285706.pdf
+17. Simple empirical analytical approximation to the Voigt profile - Optica Publishing Group, accessed February 3, 2026, https://opg.optica.org/abstract.cfm?uri=josab-18-5-666
+18. Rapid Vector-Based Peak Fitting and Resolution Enhancement for Correlation Analyses of Raman Hyperspectra - PubMed Central, accessed February 3, 2026, https://pmc.ncbi.nlm.nih.gov/articles/PMC10543951/
+19. What Dynamic Range Means for Machine Vision Cameras - UnitX, accessed February 3, 2026, https://www.unitxlabs.com/dynamic-range-machine-vision-system-camera-detail-bright-dark/
+20. Dynamic Range | Imatest, accessed February 3, 2026, https://www.imatest.com/imaging/dynamic-range/
+21. Scientific Imaging Camera Performance - Diffraction Limited, accessed February 3, 2026, https://diffractionlimited.com/scientific-imaging-camera-performance/
+22. Investigation of Non-Gaussian Doppler Spectra Observed by Weather Radar in a Tornadic Supercell - AMS Journals, accessed February 3, 2026, https://journals.ametsoc.org/view/journals/atot/26/3/2008jtecha1124_1.pdf
+23. Strategies for avoiding saturation effects in ESI-MS - UVIC, accessed February 3, 2026, https://web.uvic.ca/~mcindoe/127.pdf
+24. A New Non-Linearity Correction Method for NIRCam, accessed February 3, 2026, https://www.stsci.edu/files/live/sites/www/files/home/jwst/documentation/technical-documents/_documents/JWST-STScI-005167.pdf
+25. Beyond Linearity: Identifying and Managing Nonlinear Effects in ..., accessed February 3, 2026, https://www.spectroscopyonline.com/view/beyond-linearity-identifying-and-managing-nonlinear-effects-in-spectroscopic-data
+26. Optimized centroid computing in a Shack-Hartmann sensor - NOIRLab, accessed February 3, 2026, https://noirlab.edu/science/sites/default/files/media/archives/pages/5490-123-1-en.pdf
+27. Analysis and improvement of non-contact SpO2 extraction using an RGB webcam - PMC, accessed February 3, 2026, https://pmc.ncbi.nlm.nih.gov/articles/PMC8407816/
+28. Comprehensive Modeling of Camera Spectral and Color Behavior Royal Society of New Zealand - arXiv, accessed February 3, 2026, https://arxiv.org/html/2507.04617v1
+29. Peak Spectroscopy Software Peak Fitting, accessed February 3, 2026, https://www.peakspectroscopy.com/peakFitting.html
+30. Multifunctional Webcam Spectrophotometer for Performing ..., accessed February 3, 2026, https://pubs.acs.org/doi/10.1021/acs.jchemed.0c01085
+31. New in JMP 19, accessed February 3, 2026, https://www.jmp.com/en/software/new-release/new-in-jmp
+32. IASTEB - OSTI, accessed February 3, 2026, https://www.osti.gov/servlets/purl/10187712
+33. Comparison of Baseline Correction Methods for LIBS Technique for Total Carbon Quantification in Brazilian Soils - arXiv, accessed February 3, 2026, https://arxiv.org/pdf/1805.03695
+34. (PDF) Development of a Macro X-ray Fluorescence (MA-XRF) Scanner System for In Situ Analysis of Paintings That Operates in a Static or Dynamic Method - ResearchGate, accessed February 3, 2026, https://www.researchgate.net/publication/385022961_Development_of_a_Macro_X-ray_Fluorescence_MA-XRF_Scanner_System_for_In_Situ_Analysis_of_Paintings_That_Operates_in_a_Static_or_Dynamic_Method
+35. Surface-Enhanced Raman Spectroscopy for Biomedical Applications: Recent Advances and Future Challenges - PubMed Central, accessed February 3, 2026, https://pmc.ncbi.nlm.nih.gov/articles/PMC12184206/
+36. Gaussian and Lorentzian peak detection for spectroscopy - NI Community, accessed February 3, 2026, https://forums.ni.com/t5/LabVIEW/Gaussian-and-Lorentzian-peak-detection-for-spectroscopy/td-p/36139
+37. Why would I get a peak on the HPLC looking so broad like this? : r/Chempros - Reddit, accessed February 3, 2026, https://www.reddit.com/r/Chempros/comments/1j3oh5a/why_would_i_get_a_peak_on_the_hplc_looking_so/
+38. 4 PEAK FITTING - Owlstone Medical, accessed February 3, 2026, https://www.owlstonemedical.com/media/uploads/files/04PeakFitting.pdf
+39. Saturated absorption spectroscopy - Wikipedia, accessed February 3, 2026, https://en.wikipedia.org/wiki/Saturated_absorption_spectroscopy
+40. How do you determine error on the peak position? - NMR Wiki Q&A Forum, accessed February 3, 2026, https://qa.nmrwiki.org/question/78/how-do-you-determine-error-on-the-peak-position
+41. Width Based Quantitation of Chromatographic Peaks: Principles and Principal Characteristics | Analytical Chemistry - ACS Publications, accessed February 3, 2026, https://pubs.acs.org/doi/10.1021/acs.analchem.6b04857
