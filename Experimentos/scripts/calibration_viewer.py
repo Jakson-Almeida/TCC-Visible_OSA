@@ -374,19 +374,24 @@ def main():
         ax1.grid(True, alpha=0.3)
         ax1.set_xlim(wl_nm.min(), wl_nm.max())
         
-        # Plot 2: Espectro calibrado (e referência se houver)
-        for j in range(len(wl_nm) - 1):
-            wl_mid = (wl_nm[j] + wl_nm[j + 1]) / 2
+        # Plot 2: Espectro calibrado (e referência) em grade mais fina (mais pontos)
+        n_fine = max(1000, 5 * len(wl_nm))
+        wl_fine = np.linspace(wl_nm.min(), wl_nm.max(), n_fine)
+        P_calibrado_fine = np.interp(wl_fine, wl_nm, P_calibrado)
+        P_referencia_fine = np.interp(wl_fine, wl_nm, P_referencia) if P_referencia is not None else None
+        
+        for j in range(len(wl_fine) - 1):
+            wl_mid = (wl_fine[j] + wl_fine[j + 1]) / 2
             color = wavelength_to_rgb(wl_mid)
-            ax2.fill_between([wl_nm[j], wl_nm[j + 1]], 
+            ax2.fill_between([wl_fine[j], wl_fine[j + 1]], 
                             [0, 0], 
-                            [P_calibrado[j], P_calibrado[j + 1]], 
+                            [P_calibrado_fine[j], P_calibrado_fine[j + 1]], 
                             color=color, alpha=0.6, linewidth=0)
         
-        ax2.plot(wl_nm, P_calibrado, 'k-', linewidth=2, alpha=0.7, label='Calibrado (OSA→ThorLabs)')
+        ax2.plot(wl_fine, P_calibrado_fine, 'k-', linewidth=2, alpha=0.7, label='Calibrado (OSA→ThorLabs)')
         
-        if P_referencia is not None:
-            ax2.plot(wl_nm, P_referencia, '--', color='orangered', linewidth=2, alpha=0.9, label='Referência (ThorLabs)')
+        if P_referencia_fine is not None:
+            ax2.plot(wl_fine, P_referencia_fine, '--', color='orangered', linewidth=2, alpha=0.9, label='Referência (ThorLabs)')
         
         ax2.set_xlabel("Comprimento de onda (nm)")
         ax2.set_ylabel("Intensidade (u.a.)")
