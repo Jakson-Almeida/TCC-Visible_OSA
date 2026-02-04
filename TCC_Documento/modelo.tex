@@ -1340,34 +1340,6 @@ Para as três fontes, o modelo atingiu $R^2 = 0{,}9999$, com erro percentual mé
 
 A Figura \ref{fig:modelo_combinacao} ilustra a concordância entre os dados reais do espectrômetro ThorLabs e as predições do modelo combinado para cada LED. Os resultados validam que, na faixa de duty cycle utilizada (1--10\%), é possível prever com alta precisão a intensidade medida pelo equipamento de referência a partir dos canais individuais do OSA Visível, desde que se utilize o modelo polinomial de grau 2 e a combinação linear específica para cada fonte.
 
-\section{DISCUSSÃO DOS RESULTADOS E VALIDAÇÃO METROLÓGICA}
-
-Os resultados experimentais validam os objetivos estabelecidos no Capítulo 1 deste trabalho. O OSA Visível demonstrou:
-
-\begin{itemize}
-    \item \textbf{Precisão de Calibração:} As incertezas expandidas dos comprimentos de onda médios variaram entre $\pm$0,134 nm e $\pm$0,288 nm, superando o objetivo inicial de $\pm$2 nm. Esta precisão é suficiente para aplicações quantitativas de análise espectral, conforme demonstrado pela taxa de detecção consistente dos picos espectrais.
-    
-    \item \textbf{Estabilidade Temporal:} A análise de 100 amostras temporais revelou excelente repetibilidade, com coeficientes de variação de intensidade inferiores a 2\% e taxas de detecção superiores a 90\% para todos os picos principais.
-    
-    \item \textbf{Validação Cruzada:} A comparação com o espectrômetro ThorLabs demonstrou concordância adequada, com diferenças médias inferiores a 3 nm para dois dos três picos principais, validando a acurácia metrológica do sistema desenvolvido.
-    
-    \item \textbf{Calibração de Intensidade:} O experimento com fonte PWM mostrou que o espectrômetro ThorLabs apresenta resposta linear, como esperado, enquanto o OSA Visível requer modelo polinomial de grau 2 para capturar o comportamento de saturação. O modelo de combinação de canais alcançou $R^2 = 0{,}9999$ e erro percentual inferior a 0,5\% para cada fonte (verde, vermelho, azul) de forma independente.
-    
-    \item \textbf{Economia de Custo:} O sistema desenvolvido, com custo inferior a \$200 USD, representa uma redução de custo superior a 99\% comparado aos OSAs comerciais (\$30.000+), mantendo precisão adequada para aplicações educacionais e de pesquisa.
-\end{itemize}
-
-As limitações observadas, como a taxa de detecção de 92\% para o pico vermelho no OSA Visível e as diferenças de até 9 nm na comparação com o espectrômetro ThorLabs, são consistentes com as expectativas para um sistema de baixo custo utilizando componentes COTS e impressão 3D. Estas variações não comprometem a funcionalidade do sistema para as aplicações previstas e podem ser mitigadas através de recalibração periódica ou refinamentos no algoritmo de detecção de picos.
-
-\section{CONCLUSÕES PARCIAIS}
-
-Os experimentos realizados validam empiricamente o OSA Visível desenvolvido neste trabalho, confirmando que o processo de calibração automatizada via visão computacional permite atingir precisão metrológica adequada a um custo drasticamente reduzido. A excelente repetibilidade temporal e a concordância com padrões comerciais estabelecem o sistema como uma solução viável para democratizar o acesso à análise espectral na faixa visível.
-
-Os resultados obtidos fundamentam a aplicação do OSA Visível em contextos educacionais, de pesquisa básica e em ambientes com recursos limitados, onde a precisão de sub-nanômetro dos OSAs comerciais não é necessária, mas a capacidade de análise espectral quantitativa é essencial.
-
-\subsection{Trabalhos Futuros}
-
-Trabalhos futuros devem explorar a incorporação de modelos não lineares (polinômios de ordem superior) para aprimorar a precisão nas extremidades do espectro, bem como técnicas de correção espectral mais sofisticadas para compensar a resposta não-uniforme do sensor. Uma linha de investigação promissora é a modelagem do equacionamento de intensidade para todo o espectro, estendendo a abordagem de combinação de canais utilizada para fontes RGB pontuais a uma descrição contínua da relação entre a resposta do OSA Visível e a intensidade espectral em toda a faixa visível. A expansão da faixa espectral para o infravermelho próximo (750--1100 nm) exigiria a adaptação do sensor CMOS e uma nova reavaliação dos parâmetros metrológicos e algorítmicos.
-
 % Apresentamos nesta p\'agina um exemplo de nota \footnote{As notas devem ser digitadas ou datilografadas dentro das margens, ficando separadas do texto
 % por um espa\c{c}o simples entre as linhas e por filete de 5 cm a partir da margem esquerda e em fonte menor (um ponto) do corpo do texto. (Associa\c{c}\~ao
 % Brasileira de Normas T\'ecnicas, 2011, p. 10).}.
@@ -1553,11 +1525,21 @@ Trabalhos futuros devem explorar a incorporação de modelos não lineares (poli
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
 
-\chapter{CONCLUS\~AO} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui.
+\chapter{CONCLUSÃO} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui.
 
-Este elemento \'e obrigat\'orio e \'e a parte final do texto.  Nele, s\~ao apresentadas as conclus\~oes identificadas a partir do desenvolvimento da pesquisa.
+Os experimentos realizados validam empiricamente o OSA Visível desenvolvido neste trabalho, confirmando que o processo de calibração automatizada via visão computacional permite atingir precisão metrológica adequada a um custo drasticamente reduzido. Os objetivos propostos no Capítulo 1 foram atendidos.
 
-%Todo trabalho deve conter apenas um elemento conclusivo.
+A calibração do eixo de comprimento de onda apresentou incertezas expandidas entre $\pm$0,134 nm e $\pm$0,288 nm (100 amostras temporais), superando o objetivo de $\pm$2 nm. A análise de repetibilidade revelou coeficientes de variação de intensidade inferiores a 2\% e taxas de detecção superiores a 90\% para todos os picos principais. A comparação com o espectrômetro ThorLabs evidenciou concordância adequada para os picos verde (diferença de 2,96 nm) e vermelho (1,42 nm). Por melhor que sejam esses resultados, houve sim uma diferença no pico azul: 9,21 nm entre o OSA Visível e o ThorLabs. Para as demais frequências (LEDs verde e vermelho), os valores ficaram muito próximos entre os dois equipamentos.
+
+Quanto à calibração de intensidade, o espectrômetro ThorLabs apresentou resposta linear, como esperado, enquanto o OSA Visível exigiu modelo polinomial de grau 2 para capturar o comportamento de saturação. O modelo de combinação de canais alcançou $R^2 = 0{,}9999$ e erro percentual inferior a 0,5\% para cada fonte. Ressalta-se que, apesar do mesmo duty cycle PWM aplicado aos diferentes LEDs da fonte do Experimento 2, o LED vermelho apresentou maior intensidade no ThorLabs. Isso explica por que o canal R do OSA Visível saturou tanto em relação aos demais canais. O ideal seria uma fonte onde cada LED emitisse a mesma potência luminosa para o mesmo valor de PWM, permitindo comparação mais equitativa entre canais.
+
+É importante enfatizar que o conjunto espectrômetro e software OSA Visível não substitui, e nem tem como objetivo substituir, um OSA profissional. O sistema introduz e democratiza o estudo em espectroscopia para a faixa visível, tornando-o acessível a contextos educacionais, de pesquisa básica e ambientes com recursos limitados. Pesquisas que exijam alta precisão, faixas dinâmicas amplas de potência sem saturação ou resolução espectral de sub-nanômetro requerem equipamento profissional. Por outro lado, os resultados obtidos são satisfatórios para um equipamento de tão baixo custo (inferior a \$200 USD, redução superior a 99\% em relação aos OSAs comerciais), permitindo análise espectral quantitativa onde a precisão metrológica extrema não é necessária.
+
+As limitações observadas, como a taxa de detecção de 92\% para o pico vermelho e a diferença de 9 nm no azul, são consistentes com as expectativas para um sistema de baixo custo utilizando componentes COTS e impressão 3D. Essas variações não comprometem a funcionalidade para as aplicações previstas e podem ser mitigadas por recalibração periódica ou refinamentos no algoritmo de detecção de picos.
+
+\section{Trabalhos Futuros}
+
+Trabalhos futuros devem explorar a incorporação de modelos não lineares (polinômios de ordem superior) para aprimorar a precisão nas extremidades do espectro, bem como técnicas de correção espectral mais sofisticadas para compensar a resposta não uniforme do sensor. Uma linha de investigação promissora é a modelagem do equacionamento de intensidade para todo o espectro, estendendo a abordagem de combinação de canais utilizada para fontes RGB pontuais a uma descrição contínua da relação entre a resposta do OSA Visível e a intensidade espectral em toda a faixa visível. A expansão da faixa espectral para o infravermelho próximo (750--1100 nm) exigiria a adaptação do sensor CMOS e uma nova reavaliação dos parâmetros metrológicos e algorítmicos.
 
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
