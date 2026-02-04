@@ -362,7 +362,8 @@ def calcular_estatisticas_picos(grupos_picos, num_amostras_total):
         int_max = np.max(intensity_values)
         
         # Taxa de detecção (quantas amostras têm este pico)
-        taxa_deteccao = (len(picos) / num_amostras_total) * 100
+        num_amostras_com_pico = len(set([p['amostra_idx'] for p in picos]))
+        taxa_deteccao = (num_amostras_com_pico / num_amostras_total) * 100
         
         # Informações de cor e se é principal
         nome_cor = grupo_data.get('nome_cor', 'N/A')
