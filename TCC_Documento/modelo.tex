@@ -1036,7 +1036,17 @@ Esta seção descreve a metodologia adotada para o experimento de caracterizaç�
 
 A fonte de luz utilizada consistiu em três LEDs de cores verde, vermelho e azul, permitindo o acionamento individual de cada cor. A intensidade de cada LED foi controlada mediante modulação por largura de pulso (PWM), com a possibilidade de salvar espectros para cada LED separadamente.
 
-Conforme a fundamentação sobre saturação (Seção 2.7), em experimentos preliminares com duty cycle de até 100\% (variando de 5\% em 5\%), todos os canais RGB da câmera do OSA Visível saturaram, ao passo que o espectrômetro ThorLabs manteve resposta linear. Diante disso, optou-se por restringir o experimento à faixa de 1\% a 10\% do duty cycle total da fonte, com variação de 1\% em 1\%.
+Conforme a fundamentação sobre saturação (Seção 2.7), em experimentos preliminares com duty cycle de até 100\% (variando de 5\% em 5\%), todos os canais RGB da câmera do OSA Visível saturaram, ao passo que o espectrômetro ThorLabs manteve resposta linear. A Figura \ref{fig:saturacao_osa_visible} ilustra esse fenômeno para o LED vermelho: o espectro combinado (todos os canais) do OSA Visível mantém formato esperado em 5\% de PWM (topo), enquanto em 50\% e 100\% (centro e base) o espectro se distorce. A saturação do canal R leva os demais canais (G e B) a reconstruir o sinal, gerando artefatos visíveis. Esse comportamento justifica a necessidade da calibração de intensidade não apenas para o vermelho, mas para todas as fontes e canais do OSA Visível. Diante disso, optou-se por restringir o experimento à faixa de 1\% a 10\% do duty cycle total da fonte, com variação de 1\% em 1\%, garantindo regime não saturado para a modelagem.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\textwidth]{../images/vermelho_pwm_5_não_saturado.png}\\[0.5em]
+\includegraphics[width=0.7\textwidth]{../images/vermelho_pwm_50_saturado.png}\\[0.5em]
+\includegraphics[width=0.7\textwidth]{../images/vermelho_pwm_100_saturado.png}
+\caption{Espectro do OSA Visível (interface) para LED vermelho em diferentes níveis de PWM, \textit{antes} da calibração de intensidade: 5\% (formato esperado), 50\% e 100\% (espectro distorcido por saturação do canal R e reconstrução pelos demais canais).}
+\label{fig:saturacao_osa_visible}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
 
 \subsection{Setup Experimental}
 
@@ -1141,17 +1151,17 @@ Este capítulo apresenta os resultados experimentais obtidos com o OSA Visível 
 
 \section{DESCRIÇÃO DO SETUP EXPERIMENTAL}
 
-Os experimentos foram realizados utilizando o espectrômetro OSA Visível desenvolvido conforme descrito no Capítulo 3, e o espectrômetro compacto ThorLabs (modelo CCT11, 350--700 nm) como referência para validação cruzada. % TODO: Adicionar figura do setup experimental (Figura \ref{fig:setup_experimental}) quando a imagem estiver disponível.
+Os experimentos foram realizados utilizando o espectrômetro OSA Visível desenvolvido conforme descrito no Capítulo 3, e o espectrômetro compacto ThorLabs (modelo CCT11, 350--700 nm) como referência para validação cruzada.
 
-%\begin{figure}[ht]
-%\centering
-%\includegraphics[width=0.8\textwidth]{setup_experimental.png}
-%\caption{Configuração experimental: (1) Espectrômetro OSA Visível, (2) Fonte de luz com picos RGB característicos, (3) Sistema de acoplamento óptico, (4) Computador para aquisição e processamento de dados.}
-%\label{fig:setup_experimental}
-%\fonte{Elaborado pelo autor (2025).}
-%\end{figure}
+O setup experimental foi configurado em um ambiente controlado, minimizando variações de temperatura e iluminação ambiente. A fonte de luz utilizada consistiu em uma fonte de LED RGB com picos espectrais característicos nas faixas do azul (aproximadamente 460 nm), verde (aproximadamente 520 nm) e vermelho (aproximadamente 640 nm). O acoplamento óptico foi mantido constante durante todas as medições para garantir reprodutibilidade. A Figura \ref{fig:setup_rgb_thorlabs} ilustra o arranjo experimental da fonte RGB (distinta da fonte com controle PWM utilizada no Experimento 3) conectada via fibra óptica ao espectrômetro ThorLabs CCT11, utilizado para os experimentos de repetibilidade temporal e validação cruzada de comprimento de onda.
 
-O setup experimental foi configurado em um ambiente controlado, minimizando variações de temperatura e iluminação ambiente. A fonte de luz utilizada consistiu em uma fonte de LED RGB com picos espectrais característicos nas faixas do azul (aproximadamente 460 nm), verde (aproximadamente 520 nm) e vermelho (aproximadamente 640 nm). O acoplamento óptico foi mantido constante durante todas as medições para garantir reprodutibilidade.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{../images/setup_fonte_rgb_thorlabs.jpg}
+\caption{Setup experimental do Experimento 1: fonte de luz RGB conectada via fibra óptica ao espectrômetro ThorLabs CCT11 para caracterização de comprimento de onda.}
+\label{fig:setup_rgb_thorlabs}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
 
 Para os experimentos temporais, a fonte de luz foi mantida em operação contínua e estável, enquanto o espectrômetro realizava aquisições sequenciais de espectros. O intervalo de tempo entre aquisições foi configurado para 10 segundos, permitindo capturar possíveis variações temporais no sistema enquanto mantinha a fonte de luz em regime estacionário.
 
@@ -1622,7 +1632,11 @@ A Figura \ref{fig:modelo_combinacao} ilustra a concordância entre os dados reai
 
 \chapter{CONCLUSÃO} %%Nesta linha, dentro de { }, digita-se em CAIXA ALTA, como apresentado aqui.
 
-Os experimentos realizados validam empiricamente o OSA Visível desenvolvido neste trabalho, confirmando que o processo de calibração automatizada via visão computacional permite atingir precisão metrológica adequada a um custo drasticamente reduzido. Os objetivos propostos no Capítulo 1 foram atendidos.
+Este trabalho \textbf{prova} que é possível obter precisão metrológica compatível com aplicações educacionais e de pesquisa básica em espectroscopia visível utilizando hardware de baixo custo (impressão 3D, webcam, grade de difração) e calibração automatizada via visão computacional. Os experimentos validam empiricamente o OSA Visível, demonstrando que o processo híbrido de calibração (luz branca + lasers de referência) permite atingir incertezas expandidas inferiores a $\pm$0,3 nm e que o modelo de combinação de canais reproduz a intensidade do espectrômetro ThorLabs com $R^2 = 0{,}9999$ na faixa calibrada. Os objetivos propostos no Capítulo 1 foram atendidos.
+
+\textbf{Onde o OSA Visível pode ser usado:} ensino de espectroscopia em instituições com orçamento limitado; caracterização preliminar de fontes de luz em laboratórios de óptica; projetos de pesquisa que não exijam precisão sub-nanômetro; ambientes de monitoramento onde o custo e a portabilidade são prioritários.
+
+\textbf{O que este trabalho entrega que antes não existia (ou existia de forma muito mais cara):} um conjunto hardware--software integrado (espectrômetro impresso em 3D + interface OSA Visível) que realiza análise espectral quantitativa na faixa 380--750 nm com calibração automatizada, acessível por menos de \$200 USD --- em contraste com os mais de \$30.000 dos OSAs comerciais. A inovação reside na migração da garantia de precisão da engenharia óptica de alto custo para algoritmos de visão computacional, mantendo resultados satisfatórios para a faixa visível.
 
 A calibração do eixo de comprimento de onda apresentou incertezas expandidas entre $\pm$0,134 nm e $\pm$0,288 nm (100 amostras temporais), superando o objetivo de $\pm$2 nm. A análise de repetibilidade revelou coeficientes de variação de intensidade inferiores a 2\% e taxas de detecção superiores a 90\% para todos os picos principais. A comparação com o espectrômetro ThorLabs evidenciou concordância adequada para os picos verde (diferença de 2,96 nm) e vermelho (1,42 nm). Por melhor que sejam esses resultados, houve sim uma diferença no pico azul: 9,21 nm entre o OSA Visível e o ThorLabs. Para as demais frequências (LEDs verde e vermelho), os valores ficaram muito próximos entre os dois equipamentos.
 
@@ -1630,11 +1644,31 @@ Quanto à calibração de intensidade, o espectrômetro ThorLabs apresentou resp
 
 É importante enfatizar que o conjunto espectrômetro e software OSA Visível não substitui, e nem tem como objetivo substituir, um OSA profissional. O sistema introduz e democratiza o estudo em espectroscopia para a faixa visível, tornando-o acessível a contextos educacionais, de pesquisa básica e ambientes com recursos limitados. Pesquisas que exijam alta precisão, faixas dinâmicas amplas de potência sem saturação ou resolução espectral de sub-nanômetro requerem equipamento profissional. Por outro lado, os resultados obtidos são satisfatórios para um equipamento de tão baixo custo (inferior a \$200 USD, redução superior a 99\% em relação aos OSAs comerciais), permitindo análise espectral quantitativa onde a precisão metrológica extrema não é necessária.
 
-As limitações observadas, como a taxa de detecção de 92\% para o pico vermelho e a diferença de 9 nm no azul, são consistentes com as expectativas para um sistema de baixo custo utilizando componentes COTS e impressão 3D. Essas variações não comprometem a funcionalidade para as aplicações previstas e podem ser mitigadas por recalibração periódica ou refinamentos no algoritmo de detecção de picos.
+As limitações observadas incluem a taxa de detecção de 92\% para o pico vermelho e a diferença de 9 nm no azul. Três fatores adicionais merecem destaque. \textbf{(i) Linearização:} a relação $\lambda(x)$ é modelada por regressão linear, justificada pela aproximação de pequenos ângulos na equação de Fraunhofer (Seção 2.2). Em primeira ordem, o OSA Visível aproxima a distribuição real de comprimento de onda, mas não a representa com perfeição, especialmente nos extremos do espectro (abaixo de 400 nm e acima de 700 nm), onde a não linearidade da grade se manifesta. \textbf{(ii) Recalibração periódica:} a calibração com lasers foi realizada há mais de seis meses; tratando-se de um espectrômetro impresso em 3D, cujas dimensões físicas (posicionamento da grade, fenda, sensor) são críticas, é difícil garantir que o equipamento se comporte de forma idêntica ao longo do tempo sem recalibrar. A recomendação é recalibrar periodicamente ou antes de medições de maior exigência. \textbf{(iii) Método de extração de picos:} no Experimento 1 não se utilizou a mesma abordagem do Experimento 3 (ajuste Lorentziano via Peaks Viewer); a detecção foi feita diretamente com \texttt{scipy.signal.find\_peaks}. A adoção de ajuste de curva nos experimentos de comprimento de onda poderia refinar ainda mais as estimativas de $\lambda$.
 
 \section{Trabalhos Futuros}
 
-Trabalhos futuros devem explorar a incorporação de modelos não lineares (polinômios de ordem superior) para aprimorar a precisão nas extremidades do espectro, bem como técnicas de correção espectral mais sofisticadas para compensar a resposta não uniforme do sensor. Uma linha de investigação promissora é a modelagem do equacionamento de intensidade para todo o espectro, estendendo a abordagem de combinação de canais utilizada para fontes RGB pontuais a uma descrição contínua da relação entre a resposta do OSA Visível e a intensidade espectral em toda a faixa visível. A expansão da faixa espectral para o infravermelho próximo (750--1100 nm) exigiria a adaptação do sensor CMOS e uma nova reavaliação dos parâmetros metrológicos e algorítmicos.
+\textbf{Modelagem espectral avançada.} Trabalhos futuros devem explorar modelos não lineares (polinômios de ordem superior) para aprimorar a precisão nas extremidades do espectro, bem como técnicas de correção espectral mais sofisticadas para compensar a resposta não uniforme do sensor. Uma linha promissora é a \textbf{modelagem espectral contínua}: estender a abordagem de combinação de canais ($P_{\text{ThorLabs}}(\lambda) = \beta_1(\lambda) P_R + \beta_2(\lambda) P_G + \beta_3(\lambda) P_B$) a coeficientes $\beta_i$ dependentes do comprimento de onda, permitindo mapear a relação OSA Visível--ThorLabs para espectros arbitrários, não apenas picos pontuais. Explorar interpolação de $\beta_i(\lambda)$ ao longo da faixa visível, modelagem da resposta espectral do sensor (matriz Bayer, crosstalk entre canais) e incorporação explícita de saturação nos modelos matemáticos são direções que podem melhorar a acurácia da intensidade em todo o espectro.
+
+\textbf{MVP de SaaS para o OSA Visível.} Outra linha de evolução é a expansão da interface OSA Visível para uma aplicação \textit{web} (Software as a Service). O MVP de um SaaS permitiria que o espectrômetro deixe de ser exclusivamente uma aplicação local: o usuário poderia acessar o dispositivo remotamente, inclusive pelo celular, e realizar aquisição e análise de espectros em tempo real. Isso é ideal para aplicações de monitoramento remoto, laboratórios distribuídos e equipes que precisam compartilhar dados de forma colaborativa. As Figuras \ref{fig:saas_home} e \ref{fig:saas_dashboard} ilustram conceitos de interface web em desenvolvimento, com armazenamento em nuvem, suporte a múltiplos dispositivos e visualização de espectros ao vivo.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{../images/saas_home.png}
+\caption{Conceito de interface \textit{web} (SaaS) para o OSA Visível: landing page com armazenamento em nuvem, suporte a múltiplos dispositivos e análise em tempo real.}
+\label{fig:saas_home}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{../images/saas_dashboard.png}
+\caption{Conceito de painel \textit{web}: conexão ao host OSA, transmissão da webcam e gráfico de espectro em tempo real.}
+\label{fig:saas_dashboard}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
+
+A expansão da faixa espectral para o infravermelho próximo (750--1100 nm) exigiria a adaptação do sensor CMOS e uma nova reavaliação dos parâmetros metrológicos e algorítmicos.
 
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
