@@ -1,4 +1,4 @@
-\documentclass[oneside, brazil]{abntbibufjf}
+\documentclass[oneside, portuguese, brazil]{abntbibufjf}
 
 
 \usepackage[T1]{fontenc}		
@@ -43,9 +43,13 @@ Engenharia Elétrica.
 
 \usepackage[round, numbers]{natbib}
 
-% Numeração de figuras e tabelas em português (documento em PT-BR)
+% Termos em português (override do babel/english)
 \renewcommand{\figurename}{Figura}
 \renewcommand{\tablename}{Tabela}
+\renewcommand{\contentsname}{\bfseries SUM\'ARIO}
+\renewcommand{\listfigurename}{\bfseries LISTA DE ILUSTRA\c{C}\~{O}ES}
+\renewcommand{\listtablename}{\bfseries LISTA DE TABELAS}
+\renewcommand{\bibname}{\bfseries REFER\^ENCIAS}
 
 % Remove negrito do título na capa e folha de rosto
 \makeatletter

@@ -34,7 +34,7 @@
 %------------------------------------
 
 \RequirePackage{ifthen}
-\RequirePackage[english]{babel}
+\RequirePackage[brazilian]{babel}
 \RequirePackage{enumitem}
 \RequirePackage{calc} 
 
@@ -67,8 +67,8 @@
 \newcommand{\apendicename}{\bfseries AP\^ENDICE}
 \newcommand{\apendicesname}{Ap\^endices}
 
-%% --
-\addto\captionsbrazil{
+%% -- Português (brazilian: UFJF usa LISTA DE ILUSTRAÇÕES, SUMÁRIO, etc.)
+\addto\captionsbrazilian{
   \renewcommand{\contentsname}{\bfseries SUM\'ARIO} 
   \renewcommand{\bibname}{\bfseries REFER\^ENCIAS}
   \renewcommand{\indexname}{\bfseries \'INDICE}
