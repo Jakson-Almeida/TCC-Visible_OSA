@@ -162,12 +162,23 @@ def detectar_picos(intensidade, prominence=5, valley=False):
     return peaks
 
 
-def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=False, show_peaks=False, show_gradient=False, fit_curve=None, fit_data=None, fit_wl=None, selected_range=None):
+def _to_db(intensity, ref=None):
+    """Converte intensidade para dB (ref = max se None). Evita log(0) com piso."""
+    arr = np.asarray(intensity, dtype=float)
+    if ref is None:
+        ref = np.max(arr)
+    if ref <= 0:
+        ref = 1.0
+    return 10 * np.log10(np.maximum(arr / ref, 1e-12))
+
+
+def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=False, show_peaks=False, show_gradient=False, fit_curve=None, fit_data=None, fit_wl=None, selected_range=None, power_db=False):
     """
     Plota espectro em ax. Se show_peaks=True, detecta picos e desenha marcadores.
     Se show_gradient=True, preenche a área sob a curva com gradiente de cores (λ).
     Se fit_curve e fit_data são fornecidos, plota a curva ajustada.
     Se selected_range é fornecido, desenha a região selecionada.
+    Se power_db=True, eixo Y em dB (relativo ao máximo).
     Limpa marcadores antigos em ax (ax.markers e ax.marker).
     """
     ax.clear()
@@ -175,21 +186,25 @@ def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=
     color_bg = "black" if dark else "white"
     ax.set_facecolor(color_bg)
     ax.set_xlabel("Comprimento de onda (nm)", color=color_fg)
-    ax.set_ylabel("Intensidade (u.a.)", color=color_fg)
+    ax.set_ylabel("Potência (dB)" if power_db else "Intensidade (u.a.)", color=color_fg)
     ax.tick_params(colors=color_fg)
     ax.grid(True)
+
+    ref = np.max(spec) if np.max(spec) > 0 else 1.0
+    spec_plot = _to_db(spec, ref) if power_db else spec
+    fit_data_plot = _to_db(fit_data, ref) if (power_db and fit_data is not None) else fit_data
 
     if show_gradient:
         gradient_colors = precompute_gradient(wl_nm, dark=dark)
         verts = [
-            [(wl_nm[j], 0), (wl_nm[j], spec[j]), (wl_nm[j + 1], spec[j + 1]), (wl_nm[j + 1], 0)]
+            [(wl_nm[j], 0), (wl_nm[j], spec_plot[j]), (wl_nm[j + 1], spec_plot[j + 1]), (wl_nm[j + 1], 0)]
             for j in range(len(wl_nm) - 1)
         ]
         poly = PolyCollection(verts, facecolors=gradient_colors, edgecolors="none")
         ax.add_collection(poly)
-        ax.plot(wl_nm, spec, color="white" if dark else "gray", lw=1.5, alpha=0.8, label="Dados")
+        ax.plot(wl_nm, spec_plot, color="white" if dark else "gray", lw=1.5, alpha=0.8, label="Dados")
     else:
-        ax.plot(wl_nm, spec, color="gray" if dark else "steelblue", lw=1.5, alpha=0.9, label="Dados")
+        ax.plot(wl_nm, spec_plot, color="gray" if dark else "steelblue", lw=1.5, alpha=0.9, label="Dados")
 
     # Região selecionada (se houver)
     if selected_range is not None:
@@ -200,8 +215,8 @@ def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=
         ax.axvline(wl_max, color="cyan" if not dark else "yellow", linestyle=":", lw=1, alpha=0.7)
 
     # Curva ajustada (se fornecida)
-    if fit_curve is not None and fit_data is not None and fit_wl is not None:
-        modelo, curva = fit_curve, fit_data
+    if fit_curve is not None and fit_data_plot is not None and fit_wl is not None:
+        modelo, curva = fit_curve, fit_data_plot
         color_fit = "yellow" if dark else "red"
         ax.plot(fit_wl, curva, color=color_fit, lw=2, linestyle="--", alpha=0.85, label=f"Ajuste {modelo}")
         ax.legend(loc="upper right", fontsize=8, framealpha=0.8)
@@ -226,7 +241,7 @@ def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=
         peaks = detectar_picos(spec, prominence=prominence, valley=valley)
         for idx in peaks:
             wl_p = wl_nm[idx]
-            int_p = spec[idx]
+            int_p = spec_plot[idx]
             marker = ax.scatter(
                 wl_p,
                 int_p,
@@ -238,9 +253,12 @@ def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=
             ax.markers.append(marker)
 
     ax.set_xlim(wl_nm.min(), wl_nm.max())
-    ymin, ymax = np.nanmin(spec), np.nanmax(spec)
+    ymin, ymax = np.nanmin(spec_plot), np.nanmax(spec_plot)
     margin = (ymax - ymin) * 0.05 if ymax > ymin else 1.0
-    ax.set_ylim(max(0, ymin - margin), ymax + margin)
+    if power_db:
+        ax.set_ylim(ymin - margin, ymax + margin)
+    else:
+        ax.set_ylim(max(0, ymin - margin), ymax + margin)
 
 
 def main():
