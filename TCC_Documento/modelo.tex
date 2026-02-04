@@ -260,26 +260,31 @@ Keywords: optical spectrum analyzer; automated calibration; computer vision; vis
 
 \begin{simbolos} %%ALTERAR OS EXEMPLOS ABAIXO, CONFORME A NECESSIDADE
   \item[$ \lambda $] Comprimento de onda
-  \item[$ T $] Transmitância
-  \item[$ I $] Intensidade da radiação transmitida
-  \item[$ I_0 $] Intensidade da radiação incidente
-  \item[$ A $] Absorbância
-  \item[$ \epsilon $] Absortividade molar
-  \item[$ c $] Concentração da substância em solução
-  \item[$ l $] Comprimento do caminho óptico
+  \item[$ \lambda_0 $] Posição central do pico espectral
+  \item[$ \lambda(x) $] Relação comprimento de onda--pixel
+  \item[$ T $] Limiar ótimo de limiarização (método de Otsu)
+  \item[$ I $] Intensidade (pixel ou espectral)
+  \item[$ I_0 $] Intensidade máxima do pico (perfil Lorentziano)
+  \item[$ I(x,y) $] Intensidade do pixel na posição (x,y)
+  \item[$ \bar{I}(x,y) $] Intensidade média temporal
+  \item[$ M(x,y) $] Máscara binária após limiarização
   \item[$ R^2 $] Coeficiente de determinação
   \item[$ n $] Ordem de difração
   \item[$ d $] Espaçamento da grade de difração
   \item[$ \theta $] Ângulo de difração
   \item[$ \alpha $] Ângulo de incidência
   \item[$ a, b $] Coeficientes da regressão linear $\lambda(x) = a \cdot x + b$
-  \item[$ I(x,y) $] Intensidade do pixel na posição (x,y)
-  \item[$ M(x,y) $] Máscara binária após limiarização
+  \item[$ m, c $] Inclinação e intercepto da reta espectral ($y = m \cdot x + c$)
   \item[$ x_c, y_c $] Coordenadas do centróide
   \item[$ x_{peak} $] Posição do pico de intensidade
+  \item[$ x $] Posição horizontal (pixel) ou duty cycle (\%)
+  \item[$ N $] Número de quadros na média temporal
+  \item[$ H $] Altura da imagem (pixels)
+  \item[$ k $] Nível de intensidade digital (0--255)
   \item[$ \gamma $] Parâmetro de largura do perfil Lorentziano (FWHM $= 2\gamma$)
-  \item[$ \lambda_0 $] Posição central do pico espectral
   \item[$ \sigma $] Desvio padrão do perfil Gaussiano
+  \item[$ a_i, b_i, c_i $] Coeficientes do polinômio $f_i(x) = a_i x^2 + b_i x + c_i$ por canal
+  \item[$ \alpha_i $] Coeficientes da combinação linear de canais (modelo intensidade)
  \end{simbolos}
 
  
