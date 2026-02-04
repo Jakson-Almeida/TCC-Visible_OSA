@@ -196,8 +196,9 @@ def plotar_espectro_com_picos(ax, wl_nm, spec, prominence=5, valley=False, dark=
 
     if show_gradient:
         gradient_colors = precompute_gradient(wl_nm, dark=dark)
+        floor = np.min(spec_plot) - 10 if power_db else 0
         verts = [
-            [(wl_nm[j], 0), (wl_nm[j], spec_plot[j]), (wl_nm[j + 1], spec_plot[j + 1]), (wl_nm[j + 1], 0)]
+            [(wl_nm[j], floor), (wl_nm[j], spec_plot[j]), (wl_nm[j + 1], spec_plot[j + 1]), (wl_nm[j + 1], floor)]
             for j in range(len(wl_nm) - 1)
         ]
         poly = PolyCollection(verts, facecolors=gradient_colors, edgecolors="none")
@@ -273,6 +274,7 @@ def main():
     prominence = 5.0
     show_peaks = False  # Por padrão picos desabilitados
     show_gradient = False  # Por padrão gradiente desabilitado
+    show_power_db = False  # Por padrão intensidade linear (não dB)
     fit_curve_enabled = False  # Ajuste de curva desabilitado por padrão
     fit_model = "gaussian"  # Modelo padrão: "gaussian" ou "lorentzian"
     dark_theme = False
@@ -384,6 +386,7 @@ def main():
             fit_data=fit_curve_data,
             fit_wl=fit_curve_wl,
             selected_range=selected_range,
+            power_db=show_power_db,
         )
         
         # Ativa/desativa SpanSelector conforme fit_curve_enabled
@@ -563,6 +566,21 @@ def main():
         command=toggle_gradient,
     )
     chk_gradient.pack(side=tk.LEFT, padx=(8, 4))
+
+    # Potência em dB (por padrão False)
+    def toggle_power_db():
+        nonlocal show_power_db
+        show_power_db = var_show_power_db.get()
+        atualizar_grafico()
+
+    var_show_power_db = tk.BooleanVar(value=False)
+    chk_power_db = ttk.Checkbutton(
+        fr_btn,
+        text="Potência (dB)",
+        variable=var_show_power_db,
+        command=toggle_power_db,
+    )
+    chk_power_db.pack(side=tk.LEFT, padx=(8, 4))
 
     # Ajuste de curva gaussiana/lorentziana
     def toggle_fit():

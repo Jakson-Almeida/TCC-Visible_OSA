@@ -1,27 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Converte CSVs do formato ThorLabs OSA (Desktop/OSA) para TXT Visible_OSA.
-Formato de entrada: CSV com header Wavelength(A),Level(A),... e dados em vírgulas.
+Converte CSVs do formato ThorLabs OSA IR (Desktop/OSA) para TXT Visible_OSA.
+Formato de entrada: CSV com header
+  Wavelength(A),Level(A),Wavelength(B),Level(B),...,Wavelength(I),Level(I).
+Cada trace (A, B, C, D, E, I) gera um arquivo TXT separado.
 Formato de saída: wavelength_m;intensity (um par por linha).
 """
 
 import sys
 from pathlib import Path
 
+TRACES = ["A", "B", "C", "D", "E", "I"]
 
-def parse_osa_wavedata_csv(path: str) -> list[tuple[float, float]]:
+
+def parse_osa_wavedata_csv(path: str) -> dict[str, list[tuple[float, float]]]:
     """
-    Lê CSV no formato ThorLabs WaveData (Wavelength(A),Level(A),...).
-    Usa Trace A (primeiras duas colunas) para wavelength e intensity.
+    Lê CSV no formato ThorLabs WaveData (Wavelength(X),Level(X)...).
+    Retorna dict {trace: [(wl_nm, intensity), ...]} para cada trace (A, B, C, D, E, I).
     """
-    data = []
+    traces_data: dict[str, list[tuple[float, float]]] = {t: [] for t in TRACES}
     in_data = False
     with open(path, "r", encoding="utf-8", errors="replace") as f:
         for line in f:
             line = line.strip()
-            # Procura header de dados (Wavelength(A),Level(A),...)
-            if "Wavelength(A)" in line or "Wavelength" in line and "Level" in line:
+            if "Wavelength(A)" in line or ("Wavelength" in line and "Level" in line):
                 in_data = True
                 continue
             if not in_data:
@@ -29,16 +32,22 @@ def parse_osa_wavedata_csv(path: str) -> list[tuple[float, float]]:
             if not line:
                 continue
             parts = [p.strip() for p in line.split(",")]
-            if len(parts) >= 2:
+            # 6 traces × 2 colunas = 12 colunas mínimas
+            if len(parts) < 12:
+                continue
+            for i, trace in enumerate(TRACES):
+                col_wl = 2 * i
+                col_lv = 2 * i + 1
+                if col_lv >= len(parts):
+                    break
                 try:
-                    w_nm = float(parts[0])
-                    intensity = float(parts[1])
-                    # Filtra linhas que parecem metadados
+                    w_nm = float(parts[col_wl])
+                    intensity = float(parts[col_lv])
                     if 200 <= w_nm <= 2000 and abs(intensity) < 1e6:
-                        data.append((w_nm, intensity))
+                        traces_data[trace].append((w_nm, intensity))
                 except ValueError:
                     continue
-    return data
+    return traces_data
 
 
 def write_visible_osa_txt(path: str, data: list[tuple[float, float]]) -> None:
@@ -49,18 +58,24 @@ def write_visible_osa_txt(path: str, data: list[tuple[float, float]]) -> None:
             f.write(f"{w_m:.14e};{intensity:.14e}\n")
 
 
-def convert_one(csv_path: str, out_dir: str) -> str | None:
-    """Converte um CSV para TXT. Retorna caminho do TXT ou None."""
+def convert_one(csv_path: str, out_dir: str) -> list[str]:
+    """
+    Converte um CSV para múltiplos TXT (um por trace).
+    Retorna lista de caminhos dos TXT gerados.
+    """
+    created = []
     try:
-        data = parse_osa_wavedata_csv(csv_path)
-        if not data:
-            return None
+        traces_data = parse_osa_wavedata_csv(csv_path)
         base = Path(csv_path).stem
-        txt_path = Path(out_dir) / (base + ".txt")
-        write_visible_osa_txt(str(txt_path), data)
-        return str(txt_path)
+        for trace, data in traces_data.items():
+            if not data:
+                continue
+            txt_path = Path(out_dir) / (base + "_" + trace + ".txt")
+            write_visible_osa_txt(str(txt_path), data)
+            created.append(str(txt_path))
+        return created
     except Exception:
-        return None
+        return []
 
 
 def main():
@@ -75,15 +90,16 @@ def main():
     if not csvs:
         print(f"Nenhum CSV encontrado em {pasta_csv}")
         sys.exit(1)
-    ok = 0
+    total_ok = 0
     for csv_path in csvs:
-        result = convert_one(str(csv_path), str(pasta_saida))
-        if result:
-            ok += 1
-            print(f"OK: {csv_path.name} -> {Path(result).name}")
+        results = convert_one(str(csv_path), str(pasta_saida))
+        if results:
+            total_ok += len(results)
+            for r in results:
+                print(f"OK: {csv_path.name} -> {Path(r).name}")
         else:
             print(f"FALHA: {csv_path.name}")
-    print(f"\nTotal: {ok}/{len(csvs)} convertidos em {pasta_saida}")
+    print(f"\nTotal: {total_ok} arquivo(s) TXT gerados em {pasta_saida}")
 
 
 if __name__ == "__main__":
