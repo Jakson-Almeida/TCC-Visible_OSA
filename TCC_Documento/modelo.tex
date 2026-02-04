@@ -345,39 +345,6 @@ Este capítulo apresenta a fundamentação teórica necessária para o desenvolv
 
 A espectroscopia óptica constitui o pilar fundamental para a caracterização da matéria, explorando a interação entre a radiação eletromagnética e as propriedades atômicas e moleculares de uma amostra. O Analisador de Espectro Óptico (OSA) de baixo custo, denominado OSA Visível (espectrômetro e interface), é projetado para operar na faixa de luz visível (VIS, 380-750 nm). Neste intervalo, a absorção de energia luminosa tipicamente desencadeia transições eletrônicas em moléculas ou íons, permitindo a identificação e quantificação de compostos químicos através de seus espectros característicos.
 
-%\subsection{\textbf{Interação Luz-Matéria: Transmissão e Absorção}}
-%
-%Quando a luz incide sobre uma amostra, ela pode ser transmitida, refletida ou absorvida. Em espectrofotometria, a análise primária foca na absorção. A luz branca, composta por todos os comprimentos de onda do espectro visível, tem sua intensidade reduzida de forma seletiva quando atravessa uma substância, resultando na cor percebida. Por exemplo, uma solução que absorve intensamente a luz verde parecerá vermelha ao observador. O objetivo do OSA é medir essa absorção seletiva em função do comprimento de onda.
-%
-%A transmitância ($T$) é definida como a razão entre a intensidade da radiação transmitida ($I$) e a intensidade da radiação incidente ($I_0$), frequentemente expressa como porcentagem:
-%
-%\begin{equation}
-%T = \frac{I}{I_0} \quad \textrm{ou} \quad \%T = \frac{I}{I_0} \times 100
-%\label{eq:transmitancia}
-%\end{equation}
-%
-%A absorbância ($A$) é o parâmetro preferido para a quantificação, pois se relaciona linearmente com a concentração e o caminho óptico:
-%
-%\begin{equation}
-%A = -\log T
-%\label{eq:absorbancia}
-%\end{equation}
-%
-%\subsection{\textbf{Lei de Beer-Lambert: Base Quantitativa da Espectrometria de Absorção}}
-%
-%A Lei de Beer-Lambert (também conhecida como Lei de Beer-Bouguer-Lambert, ou BBL) é a relação empírica que governa a atenuação da intensidade da radiação ao passar por um meio homogêneo \cite{beer_lambert_wiki}. Ela estabelece uma relação direta e linear entre a absorbância de uma solução e a concentração da substância absorvente, bem como o caminho óptico percorrido pela luz \cite{beer_lambert_edinst}.
-%
-%A lei é expressa matematicamente como:
-%
-%\begin{equation}
-%A = \epsilon \cdot c \cdot l
-%\label{eq:beer_lambert}
-%\end{equation}
-%
-%onde $A$ representa a absorbância (adimensional), $\epsilon$ é a absortividade molar (uma constante característica da substância em um dado comprimento de onda), $c$ é a concentração da substância em solução, e $l$ é o comprimento do caminho óptico.
-%
-%Para que a Lei de Beer-Lambert seja válida, várias premissas devem ser satisfeitas \cite{beer_lambert_wiki}. Estas incluem a necessidade de radiação monocromática, a ausência de interações entre as moléculas do soluto (o que geralmente requer baixas concentrações) e um meio macroscopicamente homogêneo. A alta correlação ($R^2 \geq 0.93$) observada durante os experimentos de validação do OSA Visível com a diluição de glicerina confirma que o sistema de baixo custo, quando devidamente calibrado, opera com a precisão necessária para manter a linearidade exigida pelo Beer-Lambert, tornando-o funcionalmente viável para aplicações quantitativas na faixa visível.
-
 \subsection{\textbf{O Princípio da Difração de Fraunhofer e Grades Ópticas}}
 
 A separação dos diferentes comprimentos de onda que incidem sobre o detector do OSA é realizada por um elemento dispersor, neste caso, uma grade de difração. A difração de Fraunhofer (também chamada de difração de campo distante) descreve o padrão de difração que ocorre quando as ondas planas incidem sobre o objeto dispersor e o padrão é observado a uma distância suficientemente longa ou no plano focal de uma lente de imagem, que é o arranjo típico de um espectrômetro \cite{fraunhofer_wiki}.
@@ -430,7 +397,7 @@ A calibração de OSAs de alta precisão é regida por normas internacionais, co
     \item \textbf{Modelagem Polinomial Avançada:} Empregando lâmpadas de arco (neon, argônio) para gerar múltiplos picos espectrais conhecidos, ajustados por polinômios de segunda ou terceira ordem para mapear a relação comprimento de onda-pixel. \cite{liu2013} empregam métodos de calibração precisos utilizando parâmetros do sistema para espectrômetros de grade \cite{henriksen_calibration}.
 \end{enumerate}
 
-O custo desses métodos e dos equipamentos comerciais é proibitivo, variando de mais de \$30.000 a mais de \$100.000 para modelos de alta performance. Diante dessa realidade, o sistema OSA Visível representa uma abordagem estratégica para democratizar a análise espectral. A substituição da instrumentação metrológica de ponta pela \textbf{inteligência algorítmica} (visão computacional) permite alcançar uma acurácia funcional ($\pm 1.8$ nm) a um custo total inferior a \$200, justificando a inovação do processo de calibração automatizada.
+O custo desses métodos e dos equipamentos comerciais é proibitivo, variando de mais de \$30.000 a mais de \$100.000 para modelos de alta performance. Diante dessa realidade, o sistema OSA Visível representa uma abordagem estratégica para democratizar a análise espectral. A substituição da instrumentação metrológica de ponta pela \textbf{inteligência algorítmica} (visão computacional) permite alcançar acurácia adequada a um custo total inferior a \$200, justificando a inovação do processo de calibração automatizada.
 
 A Tabela \ref{tab:comparativo_osa} apresenta um comparativo entre OSAs comerciais e o OSA Visível desenvolvido neste trabalho.
 
@@ -445,7 +412,7 @@ Modelo (Referência) & Faixa Espectral (nm) & Custo Estimado (USD) & Acurácia T
 OSA201C \cite{thorlabs_osa20xc} & 350-1100 & > \$30.000 & Sub-nm & Interno, Rastreado a Padrões \\
 CCT11 \cite{thorlabs_cct11} & 350-700 & \$3.000-6.000 & $<$ 0,5 nm & Referência nos experimentos \\
 AQ6380 \cite{yokogawa_aq6374} & 350-1750 & \$100.000-200.000 & Sub-pm & Padrões de Gás/Wavemeter \cite{terra_calibration} \\
-\textbf{espectrômetro OSA Visível} & \textbf{380-750} & \textbf{< \$200} & \textbf{$\pm 1.8$ nm (RMS)} & \textbf{Híbrido (Visão Computacional + Laser)} \\
+\textbf{espectrômetro OSA Visível} & \textbf{380-750} & \textbf{< \$200} & \textbf{Incerteza exp. $<$ 0,3 nm} & \textbf{Híbrido (Visão Computacional + Laser)} \\
 \hline
 \end{tabular}
 \fonte{Elaborada pelo autor (2025).}
@@ -485,9 +452,7 @@ Utilizar dois pontos fixos é fundamental. Um único ponto definiria apenas o \t
 
 A acurácia do mapeamento comprimento de onda-pixel é avaliada utilizando o Erro Quadrático Médio (\textit{Root Mean Square Error} - RMS), uma métrica padrão na metrologia espectral que quantifica a magnitude média do erro entre os valores medidos e os valores de referência \cite{henriksen_calibration}.
 
-O processo híbrido de calibração do OSA Visível demonstrou uma melhoria significativa de precisão: a calibração preliminar baseada em luz branca resultou em um erro RMS de $\pm 2.1$ nm, que foi subsequentemente refinado para \textbf{$\pm 1.8$ nm} após o ajuste absoluto utilizando os lasers de referência.
-
-O erro RMS final de $\pm 1.8$ nm valida a escolha do modelo de primeira ordem para esta aplicação. Embora não atinja a precisão de sub-picômetros de OSAs comerciais sofisticados, esta acurácia é mais do que suficiente para distinguir picos espectrais largos na faixa visível e satisfazer os requisitos de aplicações quantitativas baseadas na Lei de Beer-Lambert, como comprovado pelos altos coeficientes de determinação ($R^2$) nos ensaios com glicerina.
+O processo híbrido de calibração demonstra melhoria de precisão em relação ao ajuste preliminar: a ancoragem com lasers de referência refine os parâmetros e reduz o erro residual. A validação experimental (Capítulo 4) reporta incertezas expandidas e concordância com espectrômetro de referência.
 
 A Tabela \ref{tab:parametros_calibracao} apresenta os parâmetros chave da calibração linear do OSA Visível.
 
@@ -499,9 +464,9 @@ A Tabela \ref{tab:parametros_calibracao} apresenta os parâmetros chave da calib
 \hline
 Parâmetro Metrológico & Ajuste Preliminar (Luz Branca) & Ajuste Final (Lasers 532/650 nm) & Significado Físico \\
 \hline
-Coeficiente $a$ (nm/pixel) & -0.060825 & 1.475 & Taxa de dispersão (nm por pixel) \\
-Coeficiente $b$ (nm) & 203.1368 & 195.7 & Intercepto (Wavelength Offset) \\
-Erro RMS & $\pm 2.1$ nm & $\pm 1.8$ nm & Acurácia final da calibração \\
+Coeficiente $a$ (nm/pixel) & $-0{,}06$ & 1,475 & Taxa de dispersão (nm por pixel) \\
+Coeficiente $b$ (nm) & 203,14 & 195,7 & Intercepto (Wavelength Offset) \\
+Precisão (validação) & — & $\pm$0,13--0,29 nm & Incerteza expandida, Exp. 1 (Cap. 4) \\
 \hline
 \end{tabular}
 \fonte{Elaborada pelo autor (2025).}
@@ -579,44 +544,33 @@ Regressão Linear & Mapeamento $\lambda(x)$ & Converte pixel para nm com precis�
 \fonte{Elaborada pelo autor (2025).}
 \end{table}
 
+\section{MODELAGEM DE PERFIS ESPECTRAIS E DETECÇÃO DE PICOS}
+
+A extração de parâmetros úteis de um espectro (comprimento de onda central, intensidade e largura de pico) requer modelos que descrevam a forma das linhas espectrais. Perfis espectrais são tipicamente modelados por curvas Lorentzianas ou Gaussianas, cada uma associada a diferentes mecanismos físicos de alargamento \cite{spectral_line_shape}.
+
+O perfil Lorentziano está ligado ao alargamento homogêneo: o efeito atua da mesma forma sobre todos os átomos ou moléculas. As causas principais incluem o tempo de vida finito do estado excitado (alargamento natural) e colisões entre átomos (alargamento por pressão). Matematicamente, a Lorentziana é expressa por
+\begin{equation}
+    I(\lambda) = I_0 \frac{\gamma^2}{(\lambda - \lambda_0)^2 + \gamma^2}
+\end{equation}
+onde $I_0$ é a intensidade máxima, $\lambda_0$ a posição central do pico e $\gamma$ está relacionado à largura à meia altura (FWHM $= 2\gamma$). O decaimento das ``asas'' da Lorentziana é lento ($\propto 1/\lambda^2$).
+
+O perfil Gaussiano está associado ao alargamento inhomogêneo, como o efeito Doppler em amostras gasosas. A Gaussiana tem a forma $I(\lambda) = I_0 \exp\bigl(-(\lambda - \lambda_0)^2 / (2\sigma^2)\bigr)$, com FWHM $= 2\sigma\sqrt{2\ln 2}$. Suas asas decaem mais rapidamente que as da Lorentziana. Em condições reais, perfis de Voigt (convolução Gaussiana--Lorentziana) podem ser necessários; em sistemas de baixo custo, a escolha entre Gaussiana e Lorentziana é frequentemente empírica, baseada na qualidade do ajuste aos dados \cite{spectral_line_shape}.
+
+O refinamento dos parâmetros (posição, largura, amplitude) é feito por ajuste de mínimos quadrados não lineares, com algoritmos como Levenberg-Marquardt \cite{peak_spectroscopy}. A precisão do ajuste depende da relação sinal-ruído e da forma do perfil; para uma mesma SNR, Gaussianas permitem localização de centróide mais precisa, enquanto Lorentzianas oferecem melhor estimativa da área total devido à extensão de suas caudas.
+
+\section{SATURAÇÃO EM SENSORES CMOS E MODELAGEM DA RESPOSTA DE INTENSIDADE}
+
+A calibração do eixo de intensidade (potência) em espectrômetros que utilizam webcams exige atenção à saturação do sensor. A saturação ocorre quando o sinal excede a capacidade do conversor analógico-digital (ADC) ou do poço de potencial do pixel, causando achatamento dos picos e perda de linearidade entre irradiância incidente e intensidade registrada \cite{evident_dynamic_range}. Em sensores CMOS de 8 bits, a escala é limitada a 0--255 níveis; o achatamento transforma perfis Gaussianos ou Lorentzianos em estruturas de topo plano.
+
+Antes da saturação abrupta, o sensor pode entrar em regime de ``saturação suave'': a resposta torna-se não linear (compressão de ganho) enquanto a relação irradiância--contagem digital ainda é contínua. Este comportamento é particularmente relevante em webcams com matriz Bayer, onde o crosstalk entre canais RGB e o processamento interno (demosaicing) introduzem artefatos adicionais.
+
+Para modelar a resposta intensidade--duty cycle em uma faixa definida onde a saturação suave predomina, um polinômio de grau 2 ($f(x) = ax^2 + bx + c$) pode capturar a concavidade para baixo típica da compressão de ganho. Os coeficientes quadráticos negativos ($a < 0$) refletem a diminuição do ganho à medida que a irradiância aumenta. É importante notar que o polinômio de segundo grau é adequado apenas para uma região limitada do domínio: se extrapolado, a concavidade para baixo levaria a intensidades que diminuem e eventualmente tornam-se negativas para valores altos de $x$, em vez de atingir um platô como em uma saturação real. Portanto, o modelo polinomial deve ser utilizado estritamente dentro da faixa experimental calibrada.
+
 \section{O PROCESSO HÍBRIDO DE CALIBRAÇÃO DO OSA VISÍVEL}
 
-O processo de calibração da interface OSA Visível é um método híbrido que combina a inteligência da visão computacional com referências metrológicas de comprimento de onda conhecido, garantindo a acurácia dentro do limite de custo estabelecido.
+O processo de calibração da interface OSA Visível combina a visão computacional (Seções 2.4 e 2.5) com referências metrológicas de comprimento de onda conhecido. Consiste em duas etapas: (i) calibração preliminar com luz branca, para obter a orientação espacial do espectro na imagem (centróide, regressão da reta espectral) e os parâmetros iniciais $a$ e $b$; e (ii) calibração absoluta com lasers Verde (532 nm) e Vermelho (650 nm), para ancorar a escala: o software captura 20 quadros com média temporal, determina as posições dos picos ($x_{532}$, $x_{650}$) e calcula os coeficientes finais via \ref{eq:coeficientes}. A precisão metrológica é avaliada experimentalmente conforme descrito no Capítulo 4.
 
-\subsection{\textbf{Etapa 1: Calibração Preliminar com Luz Branca (Ajuste da Orientação Espacial)}}
-
-O primeiro passo utiliza o espectro contínuo de uma fonte de luz branca. O objetivo desta fase é obter um ajuste inicial do espectro na imagem, crucial para compensar a geometria imperfeita da montagem 3D.
-
-O processo envolve as seguintes etapas:
-
-\begin{enumerate}
-    \item O software captura um quadro, converte-o para escala de cinza e aplica o método de Otsu para segmentação.
-    \item É calculado o centróide $(x_c, y_c)$ da nuvem de pixels ativos. A localização do centróide fornece o ponto central do espectro na imagem.
-    \item Uma regressão linear é aplicada à nuvem de pontos ativa para determinar a inclinação da reta espectral ($y = m x + c$). Essa reta define o eixo de dispersão.
-    \item Os parâmetros preliminares $a$ e $b$ da relação $\lambda(x)$ são calculados com base nesta orientação inicial, resultando em um erro RMS de $\pm 2.1$ nm. Esta etapa estabelece uma correlação linear entre a intensidade dos pixels e sua posição na imagem.
-\end{enumerate}
-
-\subsection{\textbf{Etapa 2: Calibração Absoluta com Lasers de Comprimento de Onda Conhecido}}
-
-A Etapa 2 é a fase de ancoragem metrológica. Após a calibração inicial que alinha espacialmente o espectro, os lasers de referência são utilizados para mapear essa reta de dispersão preliminar aos comprimentos de onda absolutos conhecidos.
-
-São utilizados dois lasers, Verde (532 nm) e Vermelho (650 nm). O processo compreende:
-
-\begin{enumerate}
-    \item O software captura 20 quadros e aplica a média temporal para maximizar o SNR e a precisão.
-    \item A posição exata dos picos de intensidade dos lasers ($x_{532}$ e $x_{650}$) é determinada pelo cálculo do Arg Max.
-    \item Utilizando as coordenadas absolutas (pico de pixel, comprimento de onda real), o software calcula os coeficientes finais $a$ e $b$ que definem a relação $\lambda(x) = a x + b$.
-\end{enumerate}
-
-Essa correspondência entre as posições dos picos na reta de calibração e os comprimentos de onda reais garante que a dispersão (nm/pixel) seja corretamente escalada em toda a faixa de operação do OSA, culminando na precisão final de $\pm 1.8$ nm. A utilização de dois pontos fixos é essencial para definir inequivocamente tanto o \textit{offset} quanto a dispersão da reta linear.
-
-\subsection{\textbf{Validação Experimental do Sistema: Ensaio de Beer-Lambert}}
-
-A validação experimental provou que a calibração automatizada é metrologicamente válida para aplicações quantitativas. O ensaio de diluição de glicerina em água (faixa de 10-30\% v/v) demonstrou que o sistema é capaz de medir a absorbância com alta fidelidade.
-
-Os espectros de absorção obtidos mostraram picos característicos em 511 nm (verde) e 620 nm (vermelho). A correlação entre os dados experimentais de absorbância e as concentrações teóricas (aplicando o princípio Beer-Lambert) resultou em coeficientes de determinação ($R^2$) consistentemente altos, variando entre 0.93 e 0.99 para diferentes fontes de luz (LEDs azul, verde e vermelho) e espessuras de amostra. Este resultado valida empiricamente que a acurácia de $\pm 1.8$ nm obtida pela calibração híbrida é suficiente para o propósito de análise espectral de baixo custo.
-
-A principal limitação desse modelo reside na escolha da regressão linear de primeira ordem, que, embora funcional na faixa visível, pode introduzir erros sistemáticos maiores nas extremidades do espectro (abaixo de 400 nm e acima de 700 nm), onde a não-linearidade da Equação de Difração de Fraunhofer se manifesta mais intensamente. Trabalhos futuros devem, portanto, explorar a incorporação de modelos não lineares (polinômios de ordem superior) para aprimorar a precisão nessas regiões. Outras avenidas de desenvolvimento incluem a expansão da faixa espectral para o infravermelho próximo (750-1100 nm), o que exigirá a adaptação do sensor CMOS e uma nova reavaliação dos parâmetros metrológicos e algorítmicos.
+Essa correspondência entre as posições dos picos na reta de calibração e os comprimentos de onda reais garante que a dispersão (nm/pixel) seja corretamente escalada em toda a faixa de operação do OSA. A utilização de dois pontos fixos é essencial para definir inequivocamente tanto o \textit{offset} quanto a dispersão da reta linear.
 
 \chapter{METODOLOGIA DE DESENVOLVIMENTO DO HARDWARE E SOFTWARE}
 
@@ -628,7 +582,7 @@ A calibração de analisadores de espectro óptico (OSA) para a faixa visível t
 
 No contexto de espectrômetros de baixo custo, trabalhos recentes têm demonstrado a viabilidade de utilizar componentes comerciais prontos para uso (COTS) e técnicas de fabricação aditiva. \cite{gaudi_spectrometer} desenvolveram o projeto \textit{Open Fiber Spectrometer}, um espectrômetro de código aberto que fornece modelos 3D e instruções detalhadas para construção, servindo como base para diversos projetos educacionais e de pesquisa.
 
-A metodologia adotada neste trabalho diferencia-se das abordagens existentes por combinar uma estratégia híbrida de calibração: a calibração inicial com luz branca fornece uma relação linear preliminar, enquanto lasers de referência (532 nm e 650 nm) definem a escala absoluta, combinando assim simplicidade e baixo custo — uma lacuna não abordada pelos métodos existentes. Esta abordagem permite alcançar precisão metrológica adequada ($\pm 1.8$ nm) a um custo total inferior a \$200, democratizando o acesso à análise espectral.
+A metodologia adotada neste trabalho diferencia-se das abordagens existentes por combinar uma estratégia híbrida de calibração: a calibração inicial com luz branca fornece uma relação linear preliminar, enquanto lasers de referência (532 nm e 650 nm) definem a escala absoluta, combinando assim simplicidade e baixo custo. Esta abordagem permite alcançar precisão metrológica adequada a um custo total inferior a \$200, democratizando o acesso à análise espectral.
 
 \section{CONSTRUÇÃO DO ESPECTRÔMETRO OSA VISÍVEL}
 
@@ -877,7 +831,7 @@ A regressão linear é obtida via método dos mínimos quadrados, minimizando:
 
 Os coeficientes $m$ (inclinação) e $c$ (intercepto) definem a orientação espacial do espectro. Combinado com o centróide, esta reta estabelece uma relação preliminar entre posição de pixel e comprimento de onda, que será posteriormente ajustada pelos lasers de referência.
 
-Os parâmetros preliminares $a$ e $b$ da relação $\lambda(x) = a \cdot x + b$ são calculados com base nesta orientação inicial, resultando em um erro RMS de $\pm 2.1$ nm. Esta etapa estabelece uma correlação linear entre a intensidade dos pixels e sua posição na imagem, servindo como base para a calibração absoluta subsequente.
+Os parâmetros preliminares $a$ e $b$ da relação $\lambda(x) = a \cdot x + b$ são calculados com base nesta orientação inicial. A calibração com lasers refine os parâmetros; a validação experimental (Cap. 4) demonstrou incertezas expandidas entre $\pm$0,13 nm e $\pm$0,29 nm (Experimento 1, 100 amostras temporais) e concordância com o espectrômetro ThorLabs.
 
 \subsection{Etapa 2: Calibração Absoluta com Lasers de Referência}
 
@@ -962,7 +916,7 @@ A Figura \ref{fig:calib_curve} ilustra a curva de calibração obtida experiment
 
 A acurácia do mapeamento comprimento de onda-pixel é avaliada utilizando o Erro Quadrático Médio (Root Mean Square Error - RMS), uma métrica padrão na metrologia espectral que quantifica a magnitude média do erro entre os valores medidos e os valores de referência \cite{henriksen_calibration}.
 
-O processo híbrido de calibração do OSA Visível demonstrou uma melhoria significativa de precisão: a calibração preliminar baseada em luz branca resultou em um erro RMS de $\pm 2.1$ nm, que foi subsequentemente refinado para \textbf{$\pm 1.8$ nm} após o ajuste absoluto utilizando os lasers de referência.
+O processo híbrido demonstra melhoria de precisão em relação ao ajuste preliminar; a validação experimental (Capítulo 4) reporta incertezas expandidas e concordância com espectrômetro de referência.
 
 A Tabela \ref{tab:calib_params_metodologia} apresenta os parâmetros de calibração obtidos experimentalmente.
 
@@ -974,15 +928,15 @@ A Tabela \ref{tab:calib_params_metodologia} apresenta os parâmetros de calibra�
 \toprule
 Parâmetro & Luz Branca & Lasers (Final) \\
 \midrule
-Coeficiente $a$ (nm/pixel) & -0.0608250474 & 1.475 \\
-Coeficiente $b$ (nm) & 203.136815 & 195.7 \\
-Erro RMS (nm) & $\pm 2.1$ & $\pm 1.8$ \\
+Coeficiente $a$ (nm/pixel) & $-0{,}061$ & 1,475 \\
+Coeficiente $b$ (nm) & 203,14 & 195,7 \\
+Precisão (validação) & — & $\pm$0,13--0,29 nm (Exp. 1, Cap. 4) \\
 \bottomrule
 \end{tabular}
 \fonte{Elaborada pelo autor (2025).}
 \end{table}
 
-O erro RMS final de $\pm 1.8$ nm valida a escolha do modelo de primeira ordem (regressão linear) para esta aplicação. Embora não atinja a precisão de sub-picômetros de OSAs comerciais sofisticados, esta acurácia é mais do que suficiente para distinguir picos espectrais largos na faixa visível e satisfazer os requisitos de aplicações quantitativas baseadas na Lei de Beer-Lambert.
+A escolha do modelo de primeira ordem é validada pelos resultados de repetibilidade temporal e de comparação cruzada apresentados no Capítulo 4.
 
 \subsection{Módulo de Calibração}
 
@@ -1023,7 +977,7 @@ Esta seção descreve a metodologia adotada para o experimento de caracterizaç�
 
 A fonte de luz utilizada consistiu em três LEDs de cores verde, vermelho e azul, permitindo o acionamento individual de cada cor. A intensidade de cada LED foi controlada mediante modulação por largura de pulso (PWM), com a possibilidade de salvar espectros para cada LED separadamente.
 
-A saturação do sensor CMOS ocorre quando o sinal excede a capacidade do conversor analógico-digital (ADC), causando achatamento dos picos e perda de linearidade entre irradiância e intensidade registrada \cite{evident_dynamic_range}. Em experimentos preliminares com duty cycle de até 100\% (variando de 5\% em 5\%), todos os canais RGB da câmera do OSA Visível saturaram, ao passo que o espectrômetro ThorLabs manteve resposta linear. Diante disso, optou-se por restringir o experimento à faixa de 1\% a 10\% do duty cycle total da fonte, com variação de 1\% em 1\%.
+Conforme a fundamentação sobre saturação (Seção 2.7), em experimentos preliminares com duty cycle de até 100\% (variando de 5\% em 5\%), todos os canais RGB da câmera do OSA Visível saturaram, ao passo que o espectrômetro ThorLabs manteve resposta linear. Diante disso, optou-se por restringir o experimento à faixa de 1\% a 10\% do duty cycle total da fonte, com variação de 1\% em 1\%.
 
 \subsection{Setup Experimental}
 
@@ -1066,13 +1020,7 @@ A coleta com o OSA Visível foi feita pela interface OSA Visível, calibrada com
 
 \subsection{Extração de Picos e Registro de Dados}
 
-Perfis espectrais são tipicamente modelados por curvas Lorentzianas (alargamento homogêneo) ou Gaussianas (alargamento inhomogêneo) \cite{spectral_line_shape}. A Lorentziana, associada a processos como tempo de vida finito do estado excitado e colisões, é expressa por
-\begin{equation}
-    I(\lambda) = I_0 \frac{\gamma^2}{(\lambda - \lambda_0)^2 + \gamma^2}
-\end{equation}
-onde $I_0$ é a intensidade máxima, $\lambda_0$ a posição central do pico e $\gamma$ está relacionado à largura à meia altura (FWHM$ = 2\gamma$). A Gaussiana, ligada ao alargamento Doppler e efeitos inhomogêneos, tem a forma $I(\lambda) = I_0 \exp\bigl(-(\lambda - \lambda_0)^2 / (2\sigma^2)\bigr)$, com FWHM $= 2\sigma\sqrt{2\ln 2}$.
-
-A determinação do comprimento de onda e da intensidade de cada pico foi realizada com o auxílio do software \textit{Peaks Viewer} (\texttt{peaks\_viewer.py}), desenvolvido em Python. O usuário seleciona manualmente a região de interesse no espectro; o refinamento dos parâmetros (posição, largura, amplitude) é feito por ajuste de mínimos quadrados não lineares \cite{peak_spectroscopy}. Em testes preliminares, a curva Gaussiana foi descartada por apresentar ajuste inferior ao Lorentziano nos espectros obtidos; optou-se, portanto, exclusivamente pelo modelo Lorentziano. Os valores de $\lambda$ e intensidade são obtidos a partir desse ajuste e registrados.
+Conforme fundamentado na Seção 2.6, a determinação do comprimento de onda e da intensidade de cada pico foi realizada com o auxílio do software \textit{Peaks Viewer} (\texttt{peaks\_viewer.py}), desenvolvido em Python. O usuário seleciona manualmente a região de interesse no espectro; o refinamento dos parâmetros (posição, largura, amplitude) é feito por ajuste de mínimos quadrados não lineares \cite{peak_spectroscopy}. Em testes preliminares, a curva Gaussiana foi descartada por apresentar ajuste inferior ao Lorentziano nos espectros obtidos; optou-se, portanto, exclusivamente pelo modelo Lorentziano. Os valores de $\lambda$ e intensidade são obtidos a partir desse ajuste e registrados.
 
 \begin{figure}[ht]
 \centering
@@ -1127,8 +1075,6 @@ A metodologia desenvolvida apresenta algumas limitações inerentes à escolha d
     
     \item \textbf{Resposta Espectral do Sensor}: A matriz de filtros Bayer do sensor CMOS introduz uma resposta espectral não-uniforme que, embora parcialmente compensada pela conversão para escala de cinza, pode afetar a precisão de medições de intensidade absoluta.
 \end{itemize}
-
-Trabalhos futuros devem explorar a incorporação de modelos não lineares (polinômios de ordem superior) para aprimorar a precisão nas extremidades do espectro, bem como técnicas de correção espectral mais sofisticadas para compensar a resposta não-uniforme do sensor. Uma linha de investigação promissora é a modelagem do equacionamento de intensidade para todo o espectro, estendendo a abordagem de combinação de canais utilizada para fontes RGB pontuais a uma descrição contínua da relação entre a resposta do OSA Visível e a intensidade espectral em toda a faixa visível.
 
 \chapter{RESULTADOS EXPERIMENTAIS E VALIDAÇÃO}
 
@@ -1399,7 +1345,7 @@ A Figura \ref{fig:modelo_combinacao} ilustra a concordância entre os dados reai
 Os resultados experimentais validam os objetivos estabelecidos no Capítulo 1 deste trabalho. O OSA Visível demonstrou:
 
 \begin{itemize}
-    \item \textbf{Precisão de Calibração:} As incertezas expandidas dos comprimentos de onda médios variaram entre $\pm$0,134 nm e $\pm$0,288 nm, superando o objetivo inicial de $\pm$2 nm. Esta precisão é suficiente para aplicações quantitativas baseadas na Lei de Beer-Lambert, conforme demonstrado pela taxa de detecção consistente dos picos espectrais.
+    \item \textbf{Precisão de Calibração:} As incertezas expandidas dos comprimentos de onda médios variaram entre $\pm$0,134 nm e $\pm$0,288 nm, superando o objetivo inicial de $\pm$2 nm. Esta precisão é suficiente para aplicações quantitativas de análise espectral, conforme demonstrado pela taxa de detecção consistente dos picos espectrais.
     
     \item \textbf{Estabilidade Temporal:} A análise de 100 amostras temporais revelou excelente repetibilidade, com coeficientes de variação de intensidade inferiores a 2\% e taxas de detecção superiores a 90\% para todos os picos principais.
     
@@ -1416,7 +1362,11 @@ As limitações observadas, como a taxa de detecção de 92\% para o pico vermel
 
 Os experimentos realizados validam empiricamente o OSA Visível desenvolvido neste trabalho, confirmando que o processo de calibração automatizada via visão computacional permite atingir precisão metrológica adequada a um custo drasticamente reduzido. A excelente repetibilidade temporal e a concordância com padrões comerciais estabelecem o sistema como uma solução viável para democratizar o acesso à análise espectral na faixa visível.
 
-Os resultados obtidos fundamentam a aplicação do OSA Visível em contextos educacionais, de pesquisa básica e em ambientes com recursos limitados, onde a precisão de sub-nanômetro dos OSAs comerciais não é necessária, mas a capacidade de análise espectral quantitativa é essencial. 
+Os resultados obtidos fundamentam a aplicação do OSA Visível em contextos educacionais, de pesquisa básica e em ambientes com recursos limitados, onde a precisão de sub-nanômetro dos OSAs comerciais não é necessária, mas a capacidade de análise espectral quantitativa é essencial.
+
+\subsection{Trabalhos Futuros}
+
+Trabalhos futuros devem explorar a incorporação de modelos não lineares (polinômios de ordem superior) para aprimorar a precisão nas extremidades do espectro, bem como técnicas de correção espectral mais sofisticadas para compensar a resposta não-uniforme do sensor. Uma linha de investigação promissora é a modelagem do equacionamento de intensidade para todo o espectro, estendendo a abordagem de combinação de canais utilizada para fontes RGB pontuais a uma descrição contínua da relação entre a resposta do OSA Visível e a intensidade espectral em toda a faixa visível. A expansão da faixa espectral para o infravermelho próximo (750--1100 nm) exigiria a adaptação do sensor CMOS e uma nova reavaliação dos parâmetros metrológicos e algorítmicos.
 
 % Apresentamos nesta p\'agina um exemplo de nota \footnote{As notas devem ser digitadas ou datilografadas dentro das margens, ficando separadas do texto
 % por um espa\c{c}o simples entre as linhas e por filete de 5 cm a partir da margem esquerda e em fonte menor (um ponto) do corpo do texto. (Associa\c{c}\~ao
@@ -1657,14 +1607,6 @@ Acesso em: 3 mar. 2025.
 \bibitem{thorlabs_cct11} THORLABS. \textbf{CCT11 Compact Spectrometer, Visible, 350--700 nm}. Disponível em: 
 https://www.thorlabs.com/item/CCT11. 
 Acesso em: 2 fev. 2025.
-
-\bibitem{beer_lambert_wiki} Beer–Lambert law. \textbf{Wikipedia}. Disponível em: 
-https://en.wikipedia.org/wiki/Beer\%E2\%80\%93Lambert\_law. 
-Acesso em: 10 nov. 2025.
-
-\bibitem{beer_lambert_edinst} Beer-Lambert Law | Transmittance \& Absorbance. \textbf{Edinburgh Instruments}. Disponível em: 
-https://www.edinst.com/resource/the-beer-lambert-law/. 
-Acesso em: 10 nov. 2025.
 
 \bibitem{fraunhofer_wiki} Fraunhofer diffraction. \textbf{Wikipedia}. Disponível em: 
 https://en.wikipedia.org/wiki/Fraunhofer\_diffraction. 
