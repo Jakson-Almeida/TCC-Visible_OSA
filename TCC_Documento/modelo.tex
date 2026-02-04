@@ -554,13 +554,31 @@ O perfil Lorentziano está ligado ao alargamento homogêneo: o efeito atua da me
 \end{equation}
 onde $I_0$ é a intensidade máxima, $\lambda_0$ a posição central do pico e $\gamma$ está relacionado à largura à meia altura (FWHM $= 2\gamma$). O decaimento das ``asas'' da Lorentziana é lento ($\propto 1/\lambda^2$).
 
-O perfil Gaussiano está associado ao alargamento inhomogêneo, como o efeito Doppler em amostras gasosas. A Gaussiana tem a forma $I(\lambda) = I_0 \exp\bigl(-(\lambda - \lambda_0)^2 / (2\sigma^2)\bigr)$, com FWHM $= 2\sigma\sqrt{2\ln 2}$. Suas asas decaem mais rapidamente que as da Lorentziana. Em condições reais, perfis de Voigt (convolução Gaussiana--Lorentziana) podem ser necessários; em sistemas de baixo custo, a escolha entre Gaussiana e Lorentziana é frequentemente empírica, baseada na qualidade do ajuste aos dados \cite{spectral_line_shape}.
+O perfil Gaussiano está associado ao alargamento inhomogêneo, como o efeito Doppler em amostras gasosas. A Gaussiana tem a forma $I(\lambda) = I_0 \exp\bigl(-(\lambda - \lambda_0)^2 / (2\sigma^2)\bigr)$, com FWHM $= 2\sigma\sqrt{2\ln 2}$. Suas asas decaem mais rapidamente que as da Lorentziana. A Figura \ref{fig:gauss_lorentz} ilustra a comparação visual entre os dois perfis padronizados.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\textwidth]{../images/Gauss_and_Lorentz_lineshapes.png}
+\caption{Comparação entre perfis Gaussiano (vermelho) e Lorentziano (azul) padronizados. O HWHM ($w/2$) é 1.}
+\label{fig:gauss_lorentz}
+\fonte{\cite{spectral_line_shape}.}
+\end{figure}
+
+Em condições reais, perfis de Voigt (convolução Gaussiana--Lorentziana) podem ser necessários; em sistemas de baixo custo, a escolha entre Gaussiana e Lorentziana é frequentemente empírica, baseada na qualidade do ajuste aos dados \cite{spectral_line_shape}.
 
 O refinamento dos parâmetros (posição, largura, amplitude) é feito por ajuste de mínimos quadrados não lineares, com algoritmos como Levenberg-Marquardt \cite{peak_spectroscopy}. A precisão do ajuste depende da relação sinal-ruído e da forma do perfil; para uma mesma SNR, Gaussianas permitem localização de centróide mais precisa, enquanto Lorentzianas oferecem melhor estimativa da área total devido à extensão de suas caudas.
 
 \section{SATURAÇÃO EM SENSORES CMOS E MODELAGEM DA RESPOSTA DE INTENSIDADE}
 
-A calibração do eixo de intensidade (potência) em espectrômetros que utilizam webcams exige atenção à saturação do sensor. A saturação ocorre quando o sinal excede a capacidade do conversor analógico-digital (ADC) ou do poço de potencial do pixel, causando achatamento dos picos e perda de linearidade entre irradiância incidente e intensidade registrada \cite{evident_dynamic_range}. Em sensores CMOS de 8 bits, a escala é limitada a 0--255 níveis; o achatamento transforma perfis Gaussianos ou Lorentzianos em estruturas de topo plano.
+A calibração do eixo de intensidade (potência) em espectrômetros que utilizam webcams exige atenção à saturação do sensor. A saturação ocorre quando o sinal excede a capacidade do conversor analógico-digital (ADC) ou do poço de potencial do pixel, causando achatamento dos picos e perda de linearidade entre irradiância incidente e intensidade registrada \cite{evident_dynamic_range}. Em sensores CMOS de 8 bits, a escala é limitada a 0--255 níveis; o achatamento transforma perfis Gaussianos ou Lorentzianos em estruturas de topo plano. A Figura \ref{fig:saturado} ilustra um caso real: no software ThorSpectra do espectrômetro ThorLabs CCT11, o \textit{Integration Time} foi de propósito aumentado com a fonte de PWM em 100\% de potência; em consequência, o sinal saturou. No ThorLabs, a intensidade é expressa em $2^{16}$ bits (0--65535); o topo plano do pico verde indica que o limite foi excedido.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{../images/saturado.png}
+\caption{Exemplo de saturação no espectrômetro ThorLabs CCT11 (software ThorSpectra): topo plano do pico espectral em LED verde com \textit{Integration Time} elevado e potência 100\% da fonte PWM. Intensidade em $2^{16}$ bits.}
+\label{fig:saturado}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
 
 Antes da saturação abrupta, o sensor pode entrar em regime de ``saturação suave'': a resposta torna-se não linear (compressão de ganho) enquanto a relação irradiância--contagem digital ainda é contínua. Este comportamento é particularmente relevante em webcams com matriz Bayer, onde o crosstalk entre canais RGB e o processamento interno (demosaicing) introduzem artefatos adicionais.
 
