@@ -1159,6 +1159,24 @@ O pico vermelho apresentou taxa de detecção de 92\% (92 das 100 amostras), ind
 
 As incertezas expandidas (calculadas com fator de cobertura $k=1,96$ para nível de confiança de 95\%) variaram entre $\pm$0,134 nm (verde) e $\pm$0,288 nm (azul), valores que estão dentro do objetivo de precisão estabelecido no início deste trabalho ($\pm$2 nm).
 
+A Figura \ref{fig:evolucao_visible_osa} mostra a evolução temporal dos comprimentos de onda para os três picos RGB ao longo das 100 amostras (coletadas a cada $\sim$10 s). A Figura \ref{fig:histogramas_visible_osa} apresenta a distribuição estatística dos comprimentos de onda detectados, com média ($\mu$), desvio padrão ($\sigma$) e incerteza expandida indicados.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{../images/evolucao_temporal_3_picos_RGB.png}
+\caption{Evolução temporal dos comprimentos de onda dos 3 picos principais RGB (100 amostras, $\sim$10 s entre aquisições) -- OSA Visível.}
+\label{fig:evolucao_visible_osa}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{../images/histogramas_3_picos_RGB.png}
+\caption{Distribuição dos comprimentos de onda dos 3 picos principais RGB (100 amostras) -- OSA Visível.}
+\label{fig:histogramas_visible_osa}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
+
 O coeficiente de variação (CV) das intensidades foi inferior a 2\% para todos os picos, indicando excelente estabilidade na medição de potência óptica. Este resultado valida não apenas a calibração do eixo de comprimento de onda ($\lambda$), mas também a precisão na medição da intensidade (eixo Y do espectro).
 
 \section{EXPERIMENTO 2: VALIDAÇÃO CRUZADA COM OSA COMERCIAL (THORLABS)}
@@ -1201,6 +1219,24 @@ RGB-3 (Vermelho) & 639,13 & 1,419 & $\pm$0,140 & 396,0 & 12078,36 & 4,58 \\
 \end{table}
 
 Observa-se que o espectrômetro ThorLabs apresentou desvios padrão ligeiramente maiores que o OSA Visível para os picos verde e vermelho, possivelmente devido à maior sensibilidade e resolução espectral do equipamento comercial, que detecta variações mais sutis no sinal. As incertezas expandidas do espectrômetro ThorLabs estão na mesma ordem de grandeza das do OSA Visível (entre $\pm$0,137 nm e $\pm$0,150 nm), confirmando que o sistema de baixo custo atinge precisão comparável.
+
+A Figura \ref{fig:evolucao_thorlabs} ilustra a evolução temporal dos comprimentos de onda medidos pelo espectrômetro ThorLabs para os três picos RGB (100 amostras selecionadas). A Figura \ref{fig:histogramas_thorlabs} mostra a distribuição estatística correspondente.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{../images/evolucao_temporal_3_picos_RGB_thorlabs.png}
+\caption{Evolução temporal dos comprimentos de onda dos 3 picos principais RGB (100 amostras) -- espectrômetro ThorLabs CCT11.}
+\label{fig:evolucao_thorlabs}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{../images/histogramas_3_picos_RGB_thorlabs.png}
+\caption{Distribuição dos comprimentos de onda dos 3 picos principais RGB (100 amostras) -- espectrômetro ThorLabs CCT11.}
+\label{fig:histogramas_thorlabs}
+\fonte{Elaborada pelo autor (2025).}
+\end{figure}
 
 \subsection{\textbf{Análise Comparativa Entre Sistemas}}
 
