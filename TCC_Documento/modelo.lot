@@ -1,13 +1,13 @@
 \babel@toc {brazilian}{}\relax 
-\contentsline {table}{\numberline {1}{\ignorespaces Comparativo de Requisitos Metrológicos: OSA Comercial vs. OSA Visível}}{22}{table.28}%
-\contentsline {table}{\numberline {2}{\ignorespaces Parâmetros Chave da Calibração Linear do OSA Visível}}{24}{table.35}%
-\contentsline {table}{\numberline {3}{\ignorespaces Algoritmos de Visão Computacional Aplicados à Calibração}}{26}{table.44}%
-\contentsline {table}{\numberline {4}{\ignorespaces Componentes principais do espectrômetro OSA Visível e especificações técnicas}}{31}{table.55}%
-\contentsline {table}{\numberline {5}{\ignorespaces Parâmetros de calibração obtidos experimentalmente}}{42}{table.108}%
-\contentsline {table}{\numberline {6}{\ignorespaces Estatísticas dos 3 picos principais RGB identificados pelo OSA Visível (100 amostras temporais)}}{52}{table.139}%
-\contentsline {table}{\numberline {7}{\ignorespaces Estatísticas dos 3 picos principais RGB identificados pelo espectrômetro ThorLabs (100 amostras selecionadas)}}{54}{table.149}%
-\contentsline {table}{\numberline {8}{\ignorespaces Comparação direta: OSA Visível vs. espectrômetro ThorLabs (3 picos principais RGB)}}{56}{table.153}%
-\contentsline {table}{\numberline {9}{\ignorespaces Parâmetros do ajuste linear do espectrômetro ThorLabs: $y = a \cdot x + b$ (intensidade vs. duty cycle \%)}}{57}{table.156}%
-\contentsline {table}{\numberline {10}{\ignorespaces Coeficientes dos polinômios $f_i(x) = a_i x^2 + b_i x + c_i$ do OSA Visível por fonte e canal}}{59}{table.161}%
-\contentsline {table}{\numberline {11}{\ignorespaces Coeficientes da combinação linear $\alpha _i$ por fonte}}{60}{table.163}%
-\contentsline {table}{\numberline {12}{\ignorespaces Métricas do modelo de combinação de canais por fonte}}{60}{table.164}%
+\contentsline {table}{\numberline {1}{\ignorespaces Comparativo de Requisitos Metrológicos: OSA Comercial vs. OSA Visível}}{21}{table.28}%
+\contentsline {table}{\numberline {2}{\ignorespaces Parâmetros Chave da Calibração Linear do OSA Visível}}{23}{table.35}%
+\contentsline {table}{\numberline {3}{\ignorespaces Algoritmos de Visão Computacional Aplicados à Calibração}}{25}{table.44}%
+\contentsline {table}{\numberline {4}{\ignorespaces Componentes principais do espectrômetro OSA Visível e especificações técnicas}}{30}{table.55}%
+\contentsline {table}{\numberline {5}{\ignorespaces Parâmetros de calibração obtidos experimentalmente}}{41}{table.108}%
+\contentsline {table}{\numberline {6}{\ignorespaces Estatísticas dos 3 picos principais RGB identificados pelo OSA Visível (100 amostras temporais)}}{51}{table.139}%
+\contentsline {table}{\numberline {7}{\ignorespaces Estatísticas dos 3 picos principais RGB identificados pelo espectrômetro ThorLabs (100 amostras selecionadas)}}{53}{table.149}%
+\contentsline {table}{\numberline {8}{\ignorespaces Comparação direta: OSA Visível vs. espectrômetro ThorLabs (3 picos principais RGB)}}{55}{table.153}%
+\contentsline {table}{\numberline {9}{\ignorespaces Parâmetros do ajuste linear do espectrômetro ThorLabs: $y = a \cdot x + b$ (intensidade vs. duty cycle \%)}}{56}{table.156}%
+\contentsline {table}{\numberline {10}{\ignorespaces Coeficientes dos polinômios $f_i(x) = a_i x^2 + b_i x + c_i$ do OSA Visível por fonte e canal}}{58}{table.161}%
+\contentsline {table}{\numberline {11}{\ignorespaces Coeficientes da combinação linear $\alpha _i$ por fonte}}{59}{table.163}%
+\contentsline {table}{\numberline {12}{\ignorespaces Métricas do modelo de combinação de canais por fonte}}{59}{table.164}%

@@ -69,11 +69,11 @@
 
 %% -- Português (brazilian: UFJF usa LISTA DE ILUSTRAÇÕES, SUMÁRIO, etc.)
 \addto\captionsbrazilian{
-  \renewcommand{\contentsname}{\bfseries SUM\'ARIO} 
-  \renewcommand{\bibname}{\bfseries REFER\^ENCIAS}
-  \renewcommand{\indexname}{\bfseries \'INDICE}
-  \renewcommand{\listfigurename}{\bfseries LISTA DE ILUSTRA\c{C}\~{O}ES}
-  \renewcommand{\listtablename}{\bfseries LISTA DE TABELAS}
+  \renewcommand{\contentsname}{SUM\'ARIO} 
+  \renewcommand{\bibname}{REFER\^ENCIAS}
+  \renewcommand{\indexname}{\'INDICE}
+  \renewcommand{\listfigurename}{LISTA DE ILUSTRA\c{C}\~{O}ES}
+  \renewcommand{\listtablename}{LISTA DE TABELAS}
 }
 
 %% ----------------------------
