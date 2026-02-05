@@ -213,8 +213,8 @@
 %------------------------------------
 
 \setsecnumdepth{paragraph}
-\settocdepth{paragraph}
-\setcounter{tocdepth}{5}
+\settocdepth{section}
+\setcounter{tocdepth}{1}
 \setcounter{secnumdepth}{5}
 \maxsecnumdepth{paragraph}
 

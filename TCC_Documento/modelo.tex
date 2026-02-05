@@ -134,7 +134,7 @@ Por fim, agrade\c{c}o a tantos outros professores e colegas que, de diversas for
 
 \begin{resumo}
 
-Este trabalho apresenta o desenvolvimento de um Analisador de Espectro Óptico (OSA) de baixo custo para a faixa visível (380--750 nm), combinando o espectrômetro OSA Visível (impresso em 3D) e a interface OSA Visível (software customizado). A calibração abrange duas dimensões metrológicas: (i) o eixo de comprimento de onda, por técnicas de visão computacional que mapeiam a relação pixel--$\lambda$ com luz branca e lasers de referência (532 nm e 650 nm), incluindo cálculo de centróide, limiarização e regressão linear via OpenCV e Pillow; e (ii) o eixo de intensidade, mediante comparação com o espectrômetro ThorLabs (CCT11) e modelagem polinomial dos canais RGB para capturar o comportamento de saturação do sensor CMOS. A validação experimental demonstrou incertezas expandidas entre $\pm$0,13 nm e $\pm$0,29 nm (100 amostras temporais) e concordância com o espectrômetro ThorLabs, com diferenças inferiores a 3 nm para os picos verde e vermelho. O modelo de combinação de canais alcança $R^2 = 0{,}9999$ na predição da intensidade. Os experimentos incluem repetibilidade temporal, comparação em $\lambda$ e caracterização de intensidade com fonte PWM. Ao reduzir custos de mais de \$30.000 (OSA comercial) para menos de \$200, esta solução democratiza a análise espectral para aplicações educacionais e de pesquisa. \\[18pt]
+Este trabalho apresenta o desenvolvimento de um Analisador de Espectro Óptico (OSA) de baixo custo para a faixa visível (380--750 nm), combinando o espectrômetro OSA Visível (impresso em 3D) e a interface OSA Visível (software customizado). A calibração abrange duas dimensões metrológicas: (i) o eixo de comprimento de onda, por técnicas de visão computacional que mapeiam a relação pixel--$\lambda$ com luz branca e lasers de referência (532 nm e 650 nm), incluindo cálculo de centróide, limiarização e regressão linear via OpenCV e Pillow; e (ii) o eixo de intensidade, mediante comparação com o espectrômetro ThorLabs (CCT11) e modelagem polinomial dos canais RGB para capturar o comportamento de saturação do sensor CMOS. A validação experimental demonstrou incertezas expandidas entre $\pm$0,13 nm e $\pm$0,29 nm (100 amostras temporais) e concordância com o espectrômetro ThorLabs, com diferenças inferiores a 3 nm para os picos verde e vermelho. O modelo de combinação de canais alcança $R^2 = 0{,}9999$ na predição da intensidade. Os experimentos incluem repetibilidade temporal, comparação em $\lambda$ e caracterização de intensidade com fonte PWM. Ao reduzir custos de mais de 30 mil dólares (USD) (OSA comercial) para menos de 200 dólares (USD), esta solução democratiza a análise espectral para aplicações educacionais e de pesquisa. \\[18pt]
 Palavras-chave: analisador de espectro óptico; calibração automatizada; visão computacional; espectro visível; calibração de intensidade; espectrômetro ThorLabs.
 \end{resumo}
  
@@ -142,7 +142,7 @@ Palavras-chave: analisador de espectro óptico; calibração automatizada; visã
 \begin{resumo}[ABSTRACT]
  \begin{otherlanguage*}{english}
 
-This work presents the development of a low-cost Optical Spectrum Analyzer (OSA) for visible light spectra (380--750 nm), combining the OSA Visível spectrometer (3D-printed) and the OSA Visível interface (custom software). Calibration addresses two metrological dimensions: (i) the wavelength axis, through computer vision techniques that map the pixel--$\lambda$ relationship using white light and reference lasers (532 nm and 650 nm), including centroid calculation, thresholding, and linear regression via OpenCV and Pillow; and (ii) the intensity axis, by comparison with a ThorLabs spectrometer (CCT11) and polynomial modeling of RGB channels to capture the CMOS sensor saturation behavior. Experimental validation yielded expanded uncertainties between $\pm$0.13 nm and $\pm$0.29 nm (100 temporal samples) and agreement with the ThorLabs spectrometer, with differences under 3 nm for the green and red peaks. The channel combination model reaches $R^2 = 0{,}9999$ for intensity prediction. The experiments encompass temporal repeatability, wavelength comparison, and intensity characterization with a PWM-controlled source. By reducing costs from over \$30,000 (commercial OSA) to under \$200, this solution democratizes spectral analysis for educational and research applications. \\[18pt]
+This work presents the development of a low-cost Optical Spectrum Analyzer (OSA) for visible light spectra (380--750 nm), combining the OSA Visível spectrometer (3D-printed) and the OSA Visível interface (custom software). Calibration addresses two metrological dimensions: (i) the wavelength axis, through computer vision techniques that map the pixel--$\lambda$ relationship using white light and reference lasers (532 nm and 650 nm), including centroid calculation, thresholding, and linear regression via OpenCV and Pillow; and (ii) the intensity axis, by comparison with a ThorLabs spectrometer (CCT11) and polynomial modeling of RGB channels to capture the CMOS sensor saturation behavior. Experimental validation yielded expanded uncertainties between $\pm$0.13 nm and $\pm$0.29 nm (100 temporal samples) and agreement with the ThorLabs spectrometer, with differences under 3 nm for the green and red peaks. The channel combination model reaches $R^2 = 0{,}9999$ for intensity prediction. The experiments encompass temporal repeatability, wavelength comparison, and intensity characterization with a PWM-controlled source. By reducing costs from over \$30,000 USD (commercial OSA) to under \$200 USD, this solution democratizes spectral analysis for educational and research applications. \\[18pt]
 Keywords: optical spectrum analyzer; automated calibration; computer vision; visible spectrum; intensity calibration; ThorLabs spectrometer.
  \end{otherlanguage*}
 \end{resumo}
@@ -235,15 +235,15 @@ A relevância do OSA na faixa visível está intrinsecamente ligada à capacidad
 
 Um Analisador de Espectro Óptico (OSA) é um instrumento de precisão projetado para medir e exibir a distribuição de potência óptica de uma fonte de luz sobre um determinado intervalo de comprimento de onda \cite{viavi_osa}. Os três parâmetros-chave quantificados por um OSA são o comprimento de onda, o nível de potência e a Relação Sinal-Ruído Óptico (\textit{Optical Signal-to-Noise Ratio} - OSNR) \cite{viavi_osa}. É crucial distinguir a funcionalidade de um OSA de um espectrofotômetro tradicional de bancada. O termo OSA é frequentemente empregado para medir a distribuição espectral de potência de uma fonte de luz (Potência vs. $\lambda$) \cite{viavi_osa}, sendo amplamente utilizado em telecomunicações para caracterizar lasers. No contexto da caracterização de sensores de fibra óptica, como \textit{Long-Period Gratings} (LPGs) e \textit{Fiber Bragg Gratings} (FBGs), o OSA atua como um interrogador espectral, medindo a atenuação ou o pico de reflexão \cite{fiber_sensor_characterization}.
 
-Analisadores de Espectro Óptico comerciais que operam na faixa visível apresentam custos elevados, frequentemente superiores a \$30.000, conforme pesquisa realizada em março de 2025 \cite{thorlabs_osa20xc}. Isso restringe significativamente o acesso desses equipamentos para muitas instituições acadêmicas e laboratórios de pequeno porte, limitando o desenvolvimento de pesquisas e o ensino prático de espectroscopia. A necessidade de precisão na faixa visível é crítica, especialmente em medições ratiométricas como a oximetria de pulso, onde um erro mínimo na calibração do comprimento de onda (eixo $\lambda$) pode levar a erros diagnósticos significativos \cite{smartphone_spectroscopy}.
+Analisadores de Espectro Óptico comerciais que operam na faixa visível apresentam custos elevados, frequentemente superiores a 30 mil dólares (USD), conforme pesquisa realizada em março de 2025 \cite{thorlabs_osa20xc}. Isso restringe significativamente o acesso desses equipamentos para muitas instituições acadêmicas e laboratórios de pequeno porte, limitando o desenvolvimento de pesquisas e o ensino prático de espectroscopia. A precisão na calibração do comprimento de onda é importante em plataformas de espectroscopia, uma vez que a resolução espectral impacta diretamente a capacidade do sistema de identificar e quantificar biomarcadores biomédicos com sensibilidade clínica \cite{smartphone_spectroscopy}.
 
-Como alternativa, o desenvolvimento de soluções de baixo custo tem ganhado destaque na literatura científica. O espectrômetro OSA Visível foi desenvolvido com uma abordagem inovadora, utilizando impressão 3D, uma webcam e uma grade de difração, totalizando menos de \$200 USD, tornando-o uma solução acessível para pesquisa e ensino.
+Como alternativa, o desenvolvimento de soluções de baixo custo tem ganhado destaque na literatura científica. O espectrômetro OSA Visível foi desenvolvido com uma abordagem inovadora, utilizando impressão 3D, uma webcam e uma grade de difração, totalizando menos de 200 dólares (USD), tornando-o uma solução acessível para pesquisa e ensino.
 
 Este trabalho propõe uma solução de baixo custo baseada no espectrômetro OSA Visível (hardware aberto) e na interface OSA Visível (software customizado), desenvolvido pelo Laboratório de Instrumentação e Telemetria (LITel/UFJF). O princípio fundamental é o mesmo dos OSAs tradicionais: a luz, após interagir com a amostra ou sensor, é dispersa (geralmente por uma grade de transmissão simples) e, em vez de atingir um detector de varredura ou um \textit{array} de fotodiodos especializado, é capturada pelo sensor CMOS \cite{smartphone_spectroscopy}. O sensor CMOS, que é um detector de intensidade, torna-se o principal \textit{array} de detecção espectral do sistema.
 
 O diferencial deste trabalho reside no uso de técnicas de visão computacional para calibração automática, substituindo métodos manuais ou baseados em hardware dedicado. O desafio metrológico em sistemas de visão é duplo: converter dados de imagem (coordenada de pixel) em dados espectrais (comprimento de onda, $\lambda$) e assegurar que a intensidade registrada reflita corretamente a potência óptica incidente \cite{smartphone_spectroscopy}. O sensor CMOS, embora otimizado para o VIS ($400$ nm a $700$ nm) devido ao filtro infravermelho \cite{smartphone_spectroscopy}, captura a informação através de uma matriz de filtros Bayer (RGB). Isso significa que a medição não é puramente espectral, mas sim uma resposta de cor que deve ser desmembrada. O processo de dispersão óptica mapeia $\lambda$ para uma posição física no sensor ($p$). A relação entre $p$ e $\lambda$ não é trivialmente linear e é altamente suscetível a desalinhamentos físicos da grade de difração, à temperatura e a não-uniformidades na montagem.
 
-A visão computacional é o motor que realiza a conversão de pixel-para-wavelength \cite{smartphone_spectroscopy}. Esta etapa é o cerne da calibração do eixo $\lambda$, transformando uma imagem de difração (dados de pixel RGB) em um espectro quantitativo (Intensidade vs. $\lambda$). A calibração desenvolvida neste trabalho combina duas etapas principais: (i) captura do espectro contínuo de luz branca, com detecção do centróide e ajuste inicial de uma reta via regressão linear; e (ii) correlação direta entre picos de intensidade de lasers (532 nm e 650 nm) e suas posições na imagem, definindo a relação comprimento de onda-posição de pixel. Já o eixo de intensidade (potência) é validado por meio da comparação com um espectrômetro de referência, permitindo modelar a resposta dos canais RGB do OSA Visível em função da irradiância incidente.
+A visão computacional é o meio que realiza a conversão de pixel-para-wavelength \cite{smartphone_spectroscopy}. Esta etapa proporciona a calibração do eixo $\lambda$, transformando uma imagem de difração (dados de pixel RGB) em um espectro quantitativo (Intensidade vs. $\lambda$). A calibração desenvolvida neste trabalho combina duas etapas principais: (i) captura do espectro contínuo de luz branca, com detecção do centróide e ajuste inicial de uma reta via regressão linear; e (ii) correlação direta entre picos de intensidade de lasers (532 nm e 650 nm) e suas posições na imagem, definindo a relação comprimento de onda-posição de pixel. Já o eixo de intensidade (potência) é validado por meio da comparação com um espectrômetro de referência, permitindo modelar a resposta dos canais RGB do OSA Visível em função da irradiância incidente.
 
 Ao contrário dos OSAs tradicionais, que garantem a precisão através de componentes ópticos e eletrônicos caros (monocromadores de alta qualidade, arquiteturas de feixe duplo) \cite{agilent_uvvis}, o método deste trabalho utiliza software (visão computacional) para compensar as deficiências inerentes ao hardware óptico de baixo custo. Essa abordagem representa uma mudança de paradigma metrológico, onde a garantia de precisão migra da engenharia óptica de \textit{hardware} para a engenharia algorítmica de \textit{software}. O algoritmo de calibração deve ser robusto o suficiente para realizar a compensação de instabilidade da fonte de luz e a correção de ruído via \textit{software}, replicando funções que os sistemas ópticos de alto custo executam em hardware \cite{agilent_uvvis}.
 
@@ -257,13 +257,13 @@ Os objetivos específicos incluem:
     \item Criar sistema de calibração automatizada utilizando técnicas de visão computacional que realize a conversão precisa de pixel-para-wavelength \cite{smartphone_spectroscopy};
     \item Validar a precisão do eixo $\lambda$ através de experimentos de repetibilidade temporal e comparação com espectrômetro ThorLabs (CCT11), utilizando uma fonte de luz RGB;
     \item Validar a calibração do eixo de intensidade mediante comparação com o espectrômetro ThorLabs e modelagem da relação entre os canais RGB do OSA Visível e as medições do equipamento de referência, utilizando uma fonte com controle de intensidade por PWM;
-    \item Reduzir custos de mais de \$30.000 (OSA comercial) para menos de \$200;
+    \item Reduzir custos de mais de 30 mil dólares (USD) (OSA comercial) para menos de 200 dólares (USD);
     \item Alcançar precisão de calibração de $\pm$2 nm na faixa visível e incertezas expandidas compatíveis com aplicações educacionais e de pesquisa.
 \end{itemize}
 
 A metodologia adotada compreende o desenvolvimento de hardware baseado em impressão 3D, implementação de algoritmos de visão computacional em Python, calibração híbrida com luz branca e lasers de referência, e validação experimental em duas frentes complementares. Na primeira frente, uma fonte de luz RGB com picos espectrais característicos (azul, verde e vermelho) é utilizada para avaliar a repetibilidade temporal do OSA Visível e para comparar os comprimentos de onda medidos com os do espectrômetro ThorLabs. Na segunda frente, uma fonte com controle PWM (LEDs verde, vermelho e azul acionados individualmente, com duty cycle variável) permite caracterizar a resposta de intensidade de ambos os equipamentos e modelar a relação entre os canais RGB do OSA Visível e as medições do ThorLabs. As duas fontes são distintas e foram projetadas para atender aos requisitos específicos de cada validação; sua descrição detalhada encontra-se no Capítulo 3. Os métodos de calibração por visão envolvem: localização geométrica da linha de difração na imagem \cite{smartphone_spectroscopy}; mapeamento espectral com fontes de referência; e processamento de dados para extrair a curva intensidade vs. comprimento de onda \cite{smartphone_spectroscopy}.
 
-A importância dos OSAs transcende o laboratório de pesquisa, estendendo-se a setores de alta tecnologia, saúde e manufatura. Nas telecomunicações, o OSA monitora a precisão do comprimento de onda para garantir que os canais estejam corretamente separados em redes DWDM \cite{viavi_osa}. Na caracterização de sensores de fibra óptica, como FBGs e LPGs, o OSA permite quantificar a sensibilidade com precisões da ordem de $0.037$ nm/kPa \cite{fbg_sensor}. Em aplicações biomédicas, como a oximetria de pulso, a precisão na faixa visível (especialmente em $660$ nm) é crítica para diagnósticos precisos \cite{smartphone_spectroscopy}. O desenvolvimento de um método de calibração por visão computacional habilita diretamente a transição industrial para dispositivos \textit{Point-of-Care} (POC) em ambientes com recursos limitados.
+A importância dos OSAs não se restringe somente ao laboratório de pesquisa, estendendo-se a setores de alta tecnologia, saúde e manufatura. Nas telecomunicações, o OSA monitora a precisão do comprimento de onda para garantir que os canais estejam corretamente separados em redes DWDM \cite{viavi_osa}. Na caracterização de sensores de fibra óptica, como FBGs e LPGs, o OSA permite quantificar a sensibilidade com precisões da ordem de $0.037$ nm/kPa \cite{fbg_sensor}. Em aplicações biomédicas, como a oximetria de pulso, a precisão na faixa visível (especialmente em $660$ nm) é crítica para diagnósticos precisos \cite{smartphone_spectroscopy}. O desenvolvimento de um método de calibração por visão computacional habilita diretamente a transição industrial para dispositivos \textit{Point-of-Care} (POC) em ambientes com recursos limitados.
 
 Este trabalho está organizado da seguinte forma: o Capítulo 2 apresenta a fundamentação teórica sobre espectroscopia óptica e analisadores de espectro; o Capítulo 3 detalha a metodologia de desenvolvimento do hardware e software, incluindo os algoritmos de visão computacional e a descrição dos experimentos de validação; o Capítulo 4 descreve os resultados experimentais, abrangendo repetibilidade temporal, comparação em comprimento de onda, caracterização de intensidade e modelagem por combinação de canais; e o Capítulo 5 apresenta as conclusões e trabalhos futuros.
 
@@ -273,7 +273,7 @@ Este capítulo apresenta a fundamentação teórica necessária para o desenvolv
 
 \section{FUNDAMENTOS DA ESPECTROSCOPIA ÓPTICA}
 
-A espectroscopia óptica constitui o pilar fundamental para a caracterização da matéria, explorando a interação entre a radiação eletromagnética e as propriedades atômicas e moleculares de uma amostra. A radiação ultravioleta (UV) e a luz visível representam uma pequena fração do espectro eletromagnético, que inclui outras formas de radiação como rádio, infravermelho (IR), raios cósmicos e raios X \cite{agilent_uvvis}. A Figura \ref{fig:espectro_eletromagnetico} ilustra o espectro eletromagnético completo, com a região visível expandida em destaque. O Analisador de Espectro Óptico (OSA) de baixo custo, denominado OSA Visível (espectrômetro e interface), é projetado para operar na faixa de luz visível (VIS, 380-750 nm). Neste intervalo, a absorção de energia luminosa tipicamente desencadeia transições eletrônicas em moléculas ou íons, permitindo a identificação e quantificação de compostos químicos através de seus espectros característicos.
+A espectroscopia óptica é uma ferramenta importante para a caracterização da matéria, explorando a interação entre a radiação eletromagnética e as propriedades atômicas e moleculares de uma amostra. A radiação ultravioleta (UV) e a luz visível representam uma pequena fração do espectro eletromagnético, que inclui outras formas de radiação como rádio, infravermelho (IR), raios cósmicos e raios X \cite{agilent_uvvis}. A Figura \ref{fig:espectro_eletromagnetico} ilustra o espectro eletromagnético completo, com a região visível expandida em destaque. O Analisador de Espectro Óptico (OSA) de baixo custo, denominado OSA Visível (espectrômetro e interface), é projetado para operar na faixa de luz visível (VIS, 380-750 nm). Neste intervalo, a absorção de energia luminosa tipicamente desencadeia transições eletrônicas em moléculas ou íons, permitindo a identificação e quantificação de compostos químicos através de seus espectros característicos.
 
 \begin{figure}[ht]
 \centering
@@ -287,7 +287,7 @@ A espectroscopia óptica constitui o pilar fundamental para a caracterização d
 
 A separação dos diferentes comprimentos de onda que incidem sobre o detector do OSA é realizada por um elemento dispersor, neste caso, uma grade de difração. A difração de Fraunhofer (também chamada de difração de campo distante) descreve o padrão de difração que ocorre quando as ondas planas incidem sobre o objeto dispersor e o padrão é observado a uma distância suficientemente longa ou no plano focal de uma lente de imagem, que é o arranjo típico de um espectrômetro \cite{fraunhofer_wiki}.
 
-A relação fundamental que governa a dispersão angular de uma grade de difração é dada pela Equação da Grade:
+A relação para a dispersão angular de uma grade de difração é dada pela Equação da Grade:
 
 \begin{equation}
 n\lambda = d(\sin\theta + \sin\alpha)
@@ -335,7 +335,7 @@ A calibração de OSAs de alta precisão é regida por normas internacionais, co
     \item Modelagem Polinomial Avançada: Empregando lâmpadas de arco (neon, argônio) para gerar múltiplos picos espectrais conhecidos, ajustados por polinômios de segunda ou terceira ordem para mapear a relação comprimento de onda-pixel. \cite{liu2013} empregam métodos de calibração precisos utilizando parâmetros do sistema para espectrômetros de grade \cite{henriksen_calibration}.
 \end{enumerate}
 
-O custo desses métodos e dos equipamentos comerciais é proibitivo, variando de mais de \$30.000 a mais de \$100.000 para modelos de alta performance. Diante dessa realidade, o sistema OSA Visível representa uma abordagem estratégica para democratizar a análise espectral. A substituição da instrumentação metrológica de ponta pela inteligência algorítmica (visão computacional) permite alcançar acurácia adequada a um custo total inferior a \$200, justificando a inovação do processo de calibração automatizada.
+O custo desses métodos e dos equipamentos comerciais é proibitivo, variando de mais de 30 mil a mais de 100 mil dólares (USD) para modelos de alta performance. Diante dessa realidade, o sistema OSA Visível representa uma abordagem estratégica para democratizar a análise espectral. A substituição da instrumentação metrológica de ponta pela inteligência algorítmica (visão computacional) permite alcançar acurácia adequada a um custo total inferior a 200 dólares (USD), justificando a inovação do processo de calibração automatizada.
 
 A Tabela \ref{tab:comparativo_osa} apresenta um comparativo entre OSAs comerciais e o OSA Visível desenvolvido neste trabalho.
 
@@ -347,10 +347,10 @@ A Tabela \ref{tab:comparativo_osa} apresenta um comparativo entre OSAs comerciai
 \hline
 Modelo (Referência) & Faixa Espectral (nm) & Custo Estimado (USD) & Acurácia Típica & Método de Calibração \\
 \hline
-OSA201C \cite{thorlabs_osa20xc} & 350-1100 & > \$30.000 & Sub-nm & Interno, Rastreado a Padrões \\
-CCT11 \cite{thorlabs_cct11} & 350-700 & \$3.000-6.000 & $<$ 0,5 nm & Referência nos experimentos \\
-AQ6380 \cite{yokogawa_aq6374} & 350-1750 & \$100.000-200.000 & Sub-pm & Padrões de Gás/Wavemeter \cite{terra_calibration} \\
-espectrômetro OSA Visível & 380-750 & < \$200 & Incerteza exp. $<$ 0,3 nm & Híbrido (Visão Computacional + Laser) \\
+OSA201C \cite{thorlabs_osa20xc} & 350-1100 & > 30 mil USD & Sub-nm & Interno, Rastreado a Padrões \\
+CCT11 \cite{thorlabs_cct11} & 350-700 & 3--6 mil USD & $<$ 0,5 nm & Referência nos experimentos \\
+AQ6380 \cite{yokogawa_aq6374} & 350-1750 & 100--200 mil USD & Sub-pm & Padrões de Gás/Wavemeter \cite{terra_calibration} \\
+espectrômetro OSA Visível & 380-750 & < 200 USD & Incerteza exp. $<$ 0,3 nm & Híbrido (Visão Computacional + Laser) \\
 \hline
 \end{tabular}
 \fonte{Elaborada pelo autor (2025).}
@@ -490,9 +490,9 @@ O perfil Lorentziano está ligado ao alargamento homogêneo: o efeito atua da me
 \begin{equation}
     I(\lambda) = I_0 \frac{\gamma^2}{(\lambda - \lambda_0)^2 + \gamma^2}
 \end{equation}
-onde $I_0$ é a intensidade máxima, $\lambda_0$ a posição central do pico e $\gamma$ está relacionado à largura à meia altura (FWHM $= 2\gamma$). O decaimento das ``asas'' da Lorentziana é lento ($\propto 1/\lambda^2$).
+onde $I_0$ é a intensidade máxima, $\lambda_0$ a posição central do pico e $\gamma$ está relacionado à largura à meia altura (FWHM $= 2\gamma$). O decaimento da curva da Lorentziana é lento ($\propto 1/\lambda^2$).
 
-O perfil Gaussiano está associado ao alargamento inhomogêneo, como o efeito Doppler em amostras gasosas. A Gaussiana tem a forma $I(\lambda) = I_0 \exp\bigl(-(\lambda - \lambda_0)^2 / (2\sigma^2)\bigr)$, com FWHM $= 2\sigma\sqrt{2\ln 2}$. Suas asas decaem mais rapidamente que as da Lorentziana. A Figura \ref{fig:gauss_lorentz} ilustra a comparação visual entre os dois perfis padronizados.
+A Gaussiana tem a forma $I(\lambda) = I_0 \exp\bigl(-(\lambda - \lambda_0)^2 / (2\sigma^2)\bigr)$, com FWHM $= 2\sigma\sqrt{2\ln 2}$. Ela decai mais rapidamente que a da Lorentziana. A Figura \ref{fig:gauss_lorentz} ilustra a comparação visual entre os dois perfis padronizados.
 
 \begin{figure}[ht]
 \centering
@@ -512,21 +512,21 @@ A calibração do eixo de intensidade (potência) em espectrômetros que utiliza
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.9\textwidth]{../images/saturado.png}
+\includegraphics[width=1\textwidth]{../images/saturado.png}
 \caption{Exemplo de saturação no espectrômetro ThorLabs CCT11 (software ThorSpectra): topo plano do pico espectral em LED verde com \textit{Integration Time} elevado e potência 100\% da fonte PWM. Intensidade em $2^{16}$ bits.}
 \label{fig:saturado}
 \fonte{Elaborada pelo autor (2025).}
 \end{figure}
 
-Antes da saturação abrupta, o sensor pode entrar em regime de ``saturação suave'': a resposta torna-se não linear (compressão de ganho) enquanto a relação irradiância--contagem digital ainda é contínua. Este comportamento é particularmente relevante em webcams com matriz Bayer, onde o crosstalk entre canais RGB e o processamento interno (demosaicing) introduzem artefatos adicionais.
+Antes da saturação abrupta, o sensor pode entrar em regime de ``saturação suave'': a resposta torna-se não linear (compressão de ganho) enquanto a relação irradiância--contagem digital ainda é contínua. Este comportamento é particularmente relevante em webcams com matriz Bayer, onde o crosstalk entre canais RGB e o processamento interno (demosaicing) introduzem desafios adicionais.
 
-Para modelar a resposta intensidade--duty cycle em uma faixa definida onde a saturação suave predomina, um polinômio de grau 2 ($f(x) = ax^2 + bx + c$) pode capturar a concavidade para baixo típica da compressão de ganho. Os coeficientes quadráticos negativos ($a < 0$) refletem a diminuição do ganho à medida que a irradiância aumenta. É importante notar que o polinômio de segundo grau é adequado apenas para uma região limitada do domínio: se extrapolado, a concavidade para baixo levaria a intensidades que diminuem e eventualmente tornam-se negativas para valores altos de $x$, em vez de atingir um platô como em uma saturação real. Portanto, o modelo polinomial deve ser utilizado estritamente dentro da faixa experimental calibrada.
+Para modelar a resposta intensidade--duty cycle em uma faixa definida onde a saturação suave predomina, um polinômio de grau 2 ($f(x) = ax^2 + bx + c$) pode capturar a concavidade para baixo típica da compressão de ganho. Os coeficientes quadráticos negativos ($a < 0$) refletem a diminuição do ganho à medida que a irradiância aumenta. É importante notar que o polinômio de segundo grau é adequado apenas para uma região limitada do domínio: se extrapolado, a concavidade para baixo levaria a intensidades que diminuem e eventualmente tornam-se negativas para valores altos de $x$, em vez de atingir um determinado patamar como em uma saturação real. Portanto, o modelo polinomial deve ser utilizado estritamente dentro da faixa experimental calibrada.
 
 \section{O PROCESSO HÍBRIDO DE CALIBRAÇÃO DO OSA VISÍVEL}
 
-O processo de calibração da interface OSA Visível combina a visão computacional (Seções 2.4 e 2.5) com referências metrológicas de comprimento de onda conhecido. Consiste em duas etapas: (i) calibração preliminar com luz branca, para obter a orientação espacial do espectro na imagem (centróide, regressão da reta espectral) e os parâmetros iniciais $a$ e $b$; e (ii) calibração absoluta com lasers Verde (532 nm) e Vermelho (650 nm), para ancorar a escala: o software captura 20 quadros com média temporal, determina as posições dos picos ($x_{532}$, $x_{650}$) e calcula os coeficientes finais via \ref{eq:coeficientes}. A precisão metrológica é avaliada experimentalmente conforme descrito no Capítulo 4.
+O processo de calibração da interface OSA Visível combina a visão computacional (Seções 2.4 e 2.5) com referências metrológicas de comprimento de onda conhecido. Consiste em duas etapas: (i) calibração preliminar com luz branca, para obter a orientação espacial do espectro na imagem (centróide, regressão da reta espectral) e os parâmetros iniciais $a$ e $b$; e (ii) calibração absoluta com lasers Verde (532 nm) e Vermelho (650 nm), para calibrar a escala: o software captura 20 quadros com média temporal, determina as posições dos picos ($x_{532}$, $x_{650}$) e calcula os coeficientes finais via \ref{eq:coeficientes}. A precisão metrológica é avaliada experimentalmente conforme descrito no Capítulo 4.
 
-Essa correspondência entre as posições dos picos na reta de calibração e os comprimentos de onda reais garante que a dispersão (nm/pixel) seja corretamente escalada em toda a faixa de operação do OSA. A utilização de dois pontos fixos é essencial para definir inequivocamente tanto o \textit{offset} quanto a dispersão da reta linear.
+Essa correspondência entre as posições dos picos na reta de calibração e os comprimentos de onda reais garante que a dispersão (nm/pixel) seja corretamente escalada em toda a faixa de operação do OSA. A utilização de dois pontos fixos é essencial para definir corretamente tanto o \textit{offset} quanto a dispersão da reta linear.
 
 \chapter{METODOLOGIA DE DESENVOLVIMENTO DO HARDWARE E SOFTWARE}
 
@@ -538,7 +538,7 @@ A calibração de analisadores de espectro óptico (OSA) para a faixa visível t
 
 No contexto de espectrômetros de baixo custo, trabalhos recentes têm demonstrado a viabilidade de utilizar componentes comerciais prontos para uso (COTS) e técnicas de fabricação aditiva. \cite{gaudi_spectrometer} desenvolveram o projeto \textit{Open Fiber Spectrometer}, um espectrômetro de código aberto que fornece modelos 3D e instruções detalhadas para construção, servindo como base para diversos projetos educacionais e de pesquisa.
 
-A metodologia adotada neste trabalho diferencia-se das abordagens existentes por combinar uma estratégia híbrida de calibração: a calibração inicial com luz branca fornece uma relação linear preliminar, enquanto lasers de referência (532 nm e 650 nm) definem a escala absoluta, combinando assim simplicidade e baixo custo. Esta abordagem permite alcançar precisão metrológica adequada a um custo total inferior a \$200, democratizando o acesso à análise espectral.
+A metodologia adotada neste trabalho diferencia-se das abordagens existentes por combinar uma estratégia híbrida de calibração: a calibração inicial com luz branca fornece uma relação linear preliminar, enquanto lasers de referência (532 nm e 650 nm) definem a escala absoluta, combinando assim simplicidade e baixo custo. Esta abordagem permite alcançar precisão metrológica adequada a um custo total inferior a 200 dólares (USD), democratizando o acesso à análise espectral.
 
 \section{CONSTRUÇÃO DO ESPECTRÔMETRO OSA VISÍVEL}
 
@@ -563,7 +563,7 @@ Fonte de Luz Branca & LED RGB, CRI 82 & Calibração preliminar & 10-15 \\
 Lasers de Referência & 532 nm (verde), 650 nm (vermelho) & Calibração absoluta & 30-50 \\
 Fenda Óptica & Ajustável, 50-200 $\mu$m & Controle de resolução & 5-10 \\
 \hline
-Total & & & < \$200 \\
+Total & & & < 200 USD \\
 \hline
 \end{tabular}
 \fonte{Elaborada pelo autor (2025).}
@@ -575,7 +575,7 @@ A arquitetura óptica do espectrômetro OSA Visível segue o princípio clássic
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.6\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/Osinha - PAPER.png}
+\includegraphics[width=0.9\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/Osinha - PAPER.png}
 \caption{Arquitetura do espectrômetro OSA Visível: (1) Luz incidente, (2) Fenda óptica, (3) Grade de difração, (4) Webcam CMOS. Adaptado de \cite{gaudi_spectrometer}.}
 \label{fig:osinha}
 \end{figure}
@@ -585,7 +585,7 @@ O caminho óptico segue a seguinte sequência:
 \begin{enumerate}
     \item Entrada de Luz: A luz proveniente da amostra ou fonte de calibração entra através de uma fenda óptica ajustável, que controla a largura do feixe incidente e, consequentemente, a resolução espectral do sistema.
     
-    \item Dispersão Espectral: A luz colimada incide sobre uma grade de difração de transmissão com densidade de 1000 linhas/mm. A relação entre o comprimento de onda ($\lambda$) e o ângulo de difração ($\theta$) é governada pela equação da grade de Fraunhofer:
+    \item Dispersão Espectral: A luz colimada incide sobre uma grade de difração de transmissão com densidade de 1000 linhas/mm. A relação entre o comprimento de onda ($\lambda$) e o ângulo de difração ($\theta$) é dado pela equação da grade de Fraunhofer:
     
     \begin{equation}
         n\lambda = d(\sin\theta + \sin\alpha)
@@ -602,7 +602,7 @@ O caminho óptico segue a seguinte sequência:
 A estrutura física do espectrômetro foi projetada utilizando software de modelagem 3D (CAD) e fabricada por meio de impressão 3D utilizando tecnologia de modelagem por deposição fundida (FDM - \textit{Fused Deposition Modeling}). Esta abordagem oferece várias vantagens estratégicas:
 
 \begin{itemize}
-    \item Custo Reduzido: A impressão 3D elimina a necessidade de ferramentas especializadas e processos de usinagem de precisão, reduzindo drasticamente os custos de fabricação \cite{stanford_3d_optics}.
+    \item Custo Reduzido: A impressão 3D elimina a necessidade de ferramentas especializadas e processos de usinagem de precisão, reduzindo muito os custos de fabricação \cite{stanford_3d_optics}.
     
     \item Personalização: O design pode ser facilmente modificado e adaptado para diferentes aplicações ou requisitos específicos, sem custos adicionais significativos.
     
@@ -646,7 +646,7 @@ Uma característica importante do sensor CMOS é a presença de uma matriz de fi
 
 \subsection{Arquitetura e plataforma de desenvolvimento}
 
-A interface OSA Visível foi desenvolvida em Python 3.8+, escolhido por sua portabilidade, vasta gama de bibliotecas científicas e facilidade de integração com hardware. A arquitetura do software segue um modelo modular, separando as funcionalidades de aquisição de dados, processamento de imagem, calibração e visualização.
+A interface OSA Visível foi desenvolvida em Python 3.8+, escolhido por sua portabilidade, variedade de bibliotecas científicas e facilidade de integração com hardware. A arquitetura do software segue um modelo modular, separando as funcionalidades de aquisição de dados, processamento de imagem, calibração e visualização.
 
 As principais bibliotecas utilizadas incluem:
 
@@ -791,7 +791,7 @@ Os parâmetros preliminares $a$ e $b$ da relação $\lambda(x) = a \cdot x + b$ 
 
 \subsection{Etapa 2: calibração absoluta com lasers de referência}
 
-A segunda etapa do processo de calibração é a fase de ancoragem metrológica. Após a calibração inicial que alinha espacialmente o espectro, os lasers de referência são utilizados para mapear essa reta de dispersão preliminar aos comprimentos de onda absolutos conhecidos.
+A segunda etapa do processo de calibração é a fase metrológica de calibração de intensidade. Após a calibração inicial que alinha espacialmente o espectro, os lasers de referência são utilizados para mapear essa reta de dispersão preliminar aos comprimentos de onda absolutos conhecidos.
 
 \subsubsection{\textit{Seleção das fontes de referência}}
 
@@ -885,13 +885,13 @@ Os coeficientes são calculados diretamente a partir da posição dos picos de i
 
 onde $x_{\text{verd}}$ e $x_{\text{verm}}$ são as posições dos picos dos lasers verde e vermelho, respectivamente.
 
-A utilização de dois pontos fixos é essencial para definir inequivocamente tanto o \textit{offset} ($b$) quanto a dispersão ($a$) da reta linear. Um único ponto definiria apenas o \textit{offset}, mas deixaria a taxa de dispersão sujeita a erros sistêmicos. A determinação de ambos os parâmetros por dois pontos de referência garante que o escalonamento da dispersão angular seja corretamente aplicado em toda a faixa de operação do espectrômetro, minimizando o erro de inclinação.
+A utilização de dois pontos fixos é essencial para definir corretamente tanto o \textit{offset} ($b$) quanto a dispersão ($a$) da reta linear. Um único ponto definiria apenas o \textit{offset}, mas deixaria a taxa de dispersão sujeita a erros sistêmicos. A determinação de ambos os parâmetros por dois pontos de referência garante que o escalonamento da dispersão angular seja corretamente aplicado em toda a faixa de operação do espectrômetro, minimizando o erro de inclinação.
 
 A Figura \ref{fig:calib_curve} ilustra a curva de calibração obtida experimentalmente.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.5\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/calibration_curve.png}
+\includegraphics[width=1\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/calibration_curve.png}
 \caption{Reta de calibração $\lambda(x) = a \cdot x + b$ ajustada via regressão linear utilizando lasers de referência (532 nm e 650 nm).}
 \label{fig:calib_curve}
 \end{figure}
@@ -928,7 +928,7 @@ O módulo de calibração da interface OSA Visível foi projetado para guiar o u
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.5\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/calibration_window.png}
+\includegraphics[width=1\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/calibration_window.png}
 \caption{Janela de calibração da interface OSA Visível: (1) Botão "Calibrar Luz Branca" para calibração automática preliminar, (2) Botões "Iniciar Laser (Verde/Vermelho)" para calibração absoluta passo a passo.}
 \label{fig:calib_window}
 \end{figure}
@@ -961,13 +961,13 @@ Esta seção descreve a metodologia adotada para o experimento de caracterizaç�
 
 A fonte de luz utilizada consistiu em três LEDs de cores verde, vermelho e azul, permitindo o acionamento individual de cada cor. A intensidade de cada LED foi controlada mediante modulação por largura de pulso (PWM), com a possibilidade de salvar espectros para cada LED separadamente.
 
-Conforme a fundamentação sobre saturação (Seção 2.7), em experimentos preliminares com duty cycle de até 100\% (variando de 5\% em 5\%), todos os canais RGB da câmera do OSA Visível saturaram, ao passo que o espectrômetro ThorLabs manteve resposta linear. A Figura \ref{fig:saturacao_osa_visible} ilustra esse fenômeno para o LED vermelho: o espectro combinado (todos os canais) do OSA Visível mantém formato esperado em 5\% de PWM (topo), enquanto em 50\% e 100\% (centro e base) o espectro se distorce. A saturação do canal R leva os demais canais (G e B) a reconstruir o sinal, gerando artefatos visíveis. Esse comportamento justifica a necessidade da calibração de intensidade não apenas para o vermelho, mas para todas as fontes e canais do OSA Visível. Diante disso, optou-se por restringir o experimento à faixa de 1\% a 10\% do duty cycle total da fonte, com variação de 1\% em 1\%, garantindo regime não saturado para a modelagem.
+Conforme a fundamentação sobre saturação (Seção 2.7), em experimentos preliminares com duty cycle de até 100\% (variando de 5\% em 5\%), todos os canais RGB da câmera do OSA Visível saturaram, ao passo que o espectrômetro ThorLabs manteve resposta linear. A Figura \ref{fig:saturacao_osa_visible} ilustra esse fenômeno para o LED vermelho: o espectro combinado (todos os canais) do OSA Visível mantém formato esperado em 5\% de PWM (topo), enquanto em 50\% e 100\% (centro e base) o espectro se distorce. A saturação do canal R leva os demais canais (G e B) a reconstruir o sinal, gerando deformações visíveis no espectro. Esse comportamento justifica a necessidade da calibração de intensidade não apenas para o vermelho, mas para todas as fontes e canais do OSA Visível. Diante disso, optou-se por restringir o experimento à faixa de 1\% a 10\% do duty cycle total da fonte, com variação de 1\% em 1\%, garantindo regime não saturado para a modelagem.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.7\textwidth]{../images/vermelho_pwm_5_não_saturado.png}\\[0.5em]
-\includegraphics[width=0.7\textwidth]{../images/vermelho_pwm_50_saturado.png}\\[0.5em]
-\includegraphics[width=0.7\textwidth]{../images/vermelho_pwm_100_saturado.png}
+\includegraphics[width=0.85\textwidth]{../images/vermelho_pwm_5_não_saturado.png}\\[0.5em]
+\includegraphics[width=0.85\textwidth]{../images/vermelho_pwm_50_saturado.png}\\[0.5em]
+\includegraphics[width=0.85\textwidth]{../images/vermelho_pwm_100_saturado.png}
 \caption{Espectro do OSA Visível (interface) para LED vermelho em diferentes níveis de PWM, \textit{antes} da calibração de intensidade: 5\% (formato esperado), 50\% e 100\% (espectro distorcido por saturação do canal R e reconstrução pelos demais canais).}
 \label{fig:saturacao_osa_visible}
 \fonte{Elaborada pelo autor (2025).}
@@ -977,7 +977,7 @@ Conforme a fundamentação sobre saturação (Seção 2.7), em experimentos prel
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.85\textwidth]{../images/setup_visible_osa_fonte_pwm.png}
+\includegraphics[width=0.9\textwidth]{../images/setup_visible_osa_fonte_pwm.png}
 \caption{Setup do experimento de caracterização: (1) Fonte de luz com LEDs verde, vermelho e azul e controle PWM; (2) Espectrômetro OSA Visível; (3) Interface OSA Visível.}
 \label{fig:setup_caracterizacao}
 \fonte{Elaborada pelo autor (2025).}
@@ -1363,17 +1363,17 @@ A Figura \ref{fig:modelo_combinacao} ilustra a concordância entre os dados reai
 
 \chapter{CONCLUSÃO}
 
-Este trabalho prova que é possível obter precisão metrológica compatível com aplicações educacionais e de pesquisa básica em espectroscopia visível utilizando hardware de baixo custo (impressão 3D, webcam, grade de difração) e calibração automatizada via visão computacional. Os experimentos validam empiricamente o OSA Visível, demonstrando que o processo híbrido de calibração (luz branca + lasers de referência) permite atingir incertezas expandidas inferiores a $\pm$0,3 nm e que o modelo de combinação de canais reproduz a intensidade do espectrômetro ThorLabs com $R^2 = 0{,}9999$ na faixa calibrada. Os objetivos propostos no Capítulo 1 foram atendidos.
+Este trabalho mostra que é possível obter precisão metrológica compatível com aplicações educacionais e de pesquisa básica em espectroscopia visível utilizando hardware de baixo custo (impressão 3D, webcam, grade de difração) e calibração automatizada via visão computacional. Os experimentos validam empiricamente o OSA Visível, demonstrando que o processo híbrido de calibração (luz branca + lasers de referência) permite atingir incertezas expandidas inferiores a $\pm$0,3 nm e que o modelo de combinação de canais reproduz a intensidade do espectrômetro ThorLabs com $R^2 = 0{,}9999$ na faixa calibrada. Os objetivos propostos no Capítulo 1 foram atendidos.
 
 Onde o OSA Visível pode ser usado: ensino de espectroscopia em instituições com orçamento limitado; caracterização preliminar de fontes de luz em laboratórios de óptica; projetos de pesquisa que não exijam precisão sub-nanômetro; ambientes de monitoramento onde o custo e a portabilidade são prioritários.
 
-O que este trabalho entrega que antes não existia (ou existia de forma muito mais cara): um conjunto hardware--software integrado (espectrômetro impresso em 3D + interface OSA Visível) que realiza análise espectral quantitativa na faixa 380--750 nm com calibração automatizada, acessível por menos de \$200 USD --- em contraste com os mais de \$30.000 dos OSAs comerciais. A inovação reside na migração da garantia de precisão da engenharia óptica de alto custo para algoritmos de visão computacional, mantendo resultados satisfatórios para a faixa visível.
+O que este trabalho entrega que antes não existia (ou existia de forma muito mais cara): um conjunto hardware--software integrado (espectrômetro impresso em 3D + interface OSA Visível) que realiza análise espectral quantitativa na faixa 380--750 nm com calibração automatizada, acessível por menos de 200 dólares (USD) --- em contraste com os mais de 30 mil dólares (USD) dos OSAs comerciais. A inovação reside na migração da garantia de precisão da engenharia óptica de alto custo para algoritmos de visão computacional, mantendo resultados satisfatórios para a faixa visível.
 
 A calibração do eixo de comprimento de onda apresentou incertezas expandidas entre $\pm$0,134 nm e $\pm$0,288 nm (100 amostras temporais), superando o objetivo de $\pm$2 nm. A análise de repetibilidade revelou coeficientes de variação de intensidade inferiores a 2\% e taxas de detecção superiores a 90\% para todos os picos principais. A comparação com o espectrômetro ThorLabs evidenciou concordância adequada para os picos verde (diferença de 2,96 nm) e vermelho (1,42 nm). Por melhor que sejam esses resultados, houve sim uma diferença no pico azul: 9,21 nm entre o OSA Visível e o ThorLabs. Para as demais frequências (LEDs verde e vermelho), os valores ficaram muito próximos entre os dois equipamentos.
 
 Quanto à calibração de intensidade, o espectrômetro ThorLabs apresentou resposta linear, como esperado, enquanto o OSA Visível exigiu modelo polinomial de grau 2 para capturar o comportamento de saturação. O modelo de combinação de canais alcançou $R^2 = 0{,}9999$ e erro percentual inferior a 0,5\% para cada fonte. Ressalta-se que, apesar do mesmo duty cycle PWM aplicado aos diferentes LEDs da fonte do Experimento 2, o LED vermelho apresentou maior intensidade no ThorLabs. Isso explica por que o canal R do OSA Visível saturou tanto em relação aos demais canais. O ideal seria uma fonte onde cada LED emitisse a mesma potência luminosa para o mesmo valor de PWM, permitindo comparação mais equitativa entre canais.
 
-É importante enfatizar que o conjunto espectrômetro e software OSA Visível não substitui, e nem tem como objetivo substituir, um OSA profissional. O sistema introduz e democratiza o estudo em espectroscopia para a faixa visível, tornando-o acessível a contextos educacionais, de pesquisa básica e ambientes com recursos limitados. Pesquisas que exijam alta precisão, faixas dinâmicas amplas de potência sem saturação ou resolução espectral de sub-nanômetro requerem equipamento profissional. Por outro lado, os resultados obtidos são satisfatórios para um equipamento de tão baixo custo (inferior a \$200 USD, redução superior a 99\% em relação aos OSAs comerciais), permitindo análise espectral quantitativa onde a precisão metrológica extrema não é necessária.
+É importante enfatizar que o conjunto espectrômetro e software OSA Visível não substitui, e nem tem como objetivo substituir, um OSA profissional. O sistema introduz e democratiza o estudo em espectroscopia para a faixa visível, tornando-o acessível a contextos educacionais, de pesquisa básica e ambientes com recursos limitados. Pesquisas que exijam alta precisão, faixas dinâmicas amplas de potência sem saturação ou resolução espectral de sub-nanômetro requerem equipamento profissional. Por outro lado, os resultados obtidos são satisfatórios para um equipamento de tão baixo custo (inferior a 200 dólares (USD), redução superior a 99\% em relação aos OSAs comerciais), permitindo análise espectral quantitativa onde a precisão metrológica extrema não é necessária.
 
 As limitações observadas incluem a taxa de detecção de 92\% para o pico vermelho e a diferença de 9 nm no azul. Três fatores adicionais merecem destaque. (i) Linearização: a relação $\lambda(x)$ é modelada por regressão linear, justificada pela aproximação de pequenos ângulos na equação de Fraunhofer (Seção 2.2). Em primeira ordem, o OSA Visível aproxima a distribuição real de comprimento de onda, mas não a representa com perfeição, especialmente nos extremos do espectro (abaixo de 400 nm e acima de 700 nm), onde a não linearidade da grade se manifesta. (ii) Recalibração periódica: a calibração com lasers foi realizada há mais de seis meses; tratando-se de um espectrômetro impresso em 3D, cujas dimensões físicas (posicionamento da grade, fenda, sensor) são críticas, é difícil garantir que o equipamento se comporte de forma idêntica ao longo do tempo sem recalibrar. A recomendação é recalibrar periodicamente ou antes de medições de maior exigência. (iii) Método de extração de picos: no Experimento 1 não se utilizou a mesma abordagem do Experimento 3 (ajuste Lorentziano via Peaks Viewer); a detecção foi feita diretamente com \texttt{scipy.signal.find\_peaks}. A adoção de ajuste de curva nos experimentos de comprimento de onda poderia refinar ainda mais as estimativas de $\lambda$.
 
