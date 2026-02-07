@@ -1,0 +1,31 @@
+\changetocdepth {4}
+\babel@toc {brazil}{}\relax 
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {1}INTRODU\c {C}\~AO}{13}{chapter.16}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {2}NOME DA SE\c {C}\~{A}O}{14}{chapter.17}%
+\contentsline {section}{\numberline {2.1}SE\c {C}\~AO SECUND\'ARIA}{14}{section.19}%
+\contentsline {subsection}{\numberline {\textbf {{2.1}.1}}\textbf {Se\c {c}\~ao terci\'aria}}{14}{subsection.20}%
+\contentsline {subsubsection}{\numberline {\textit {{2.1}.1.1}}\textit {Se\c {c}\~ao quatern\'aria}}{14}{subsubsection.21}%
+\contentsline {paragraph}{\numberline {{2.1}.1.1.1}Se\c {c}\~ao quin\'aria}{14}{paragraph.22}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {3}CITA\c {C}\~{O}ES}{15}{chapter.23}%
+\contentsline {section}{\numberline {3.1}SISTEMA AUTOR-DATA}{15}{section.24}%
+\contentsline {section}{\numberline {3.2}SISTEMA NUM\'ERICO}{15}{section.25}%
+\contentsline {section}{\numberline {3.3}NOTAS}{16}{section.26}%
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {chapter}{\chapternumberline {4}CONCLUS\~AO}{17}{chapter.28}%
+\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
+\contentsline {chapter}{\bfseries REFER\^ENCIAS}{18}{chapter*.30}%
+\renewcommand *{\cftappendixname }{}
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {appendix}{\chapternumberline {}\bfseries AP\^ENDICE A \textendash ~T\'itulo}{19}{appendix.31}%
+\renewcommand *{\cftappendixname }{}
+\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
+\contentsline {appendix}{\chapternumberline {}\bfseries ANEXO A \textendash ~T\'itulo}{20}{appendix.32}%

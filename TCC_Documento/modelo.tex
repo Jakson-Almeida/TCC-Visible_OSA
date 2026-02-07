@@ -23,7 +23,7 @@
 \autor{Jakson da Rocha Almeida}
 \autorVirg{Almeida, Jakson da Rocha}
 \local{Juiz de Fora}
-\data{2025}
+\data{2026}
 \orientador[Orientador:]{Alexandre Bessa dos Santos}
 \coorientador[Coorientador:]{}
 \orientadorTitulo{Professor}
@@ -51,7 +51,7 @@ Engenharia Elétrica.
 \renewcommand{\listtablename}{LISTA DE TABELAS}
 \renewcommand{\bibname}{REFER\^ENCIAS}
 
-% Remove negrito do título na capa e folha de rosto
+% Título em negrito, subtítulo em peso normal (conforme template UFJF)
 \makeatletter
 \renewcommand{\inserecapa}{
   \begin{capa}
@@ -62,7 +62,7 @@ Engenharia Elétrica.
     {
     \insereautor}
     \vfill
-    {\normalfont \inseretitulo \IfNonempty{\inseresubtitulo}{: \inseresubtitulo}}
+    {\bfseries \inseretitulo \mdseries \IfNonempty{\inseresubtitulo}{: \inseresubtitulo}}
     \vfill
     \inserelocal \par \inseredata 
    \end{center}
@@ -75,7 +75,7 @@ Engenharia Elétrica.
     \vspace*{\fill}
     \begin{center}
       {
-      \normalfont \inseretitulo 
+      \bfseries \inseretitulo \mdseries 
         \IfNonempty{\inseresubtitulo}{: \inseresubtitulo}}
     \end{center}
     \vspace*{\fill}
@@ -1385,7 +1385,7 @@ MVP de SaaS para o OSA Visível. Outra linha de evolução é a expansão da int
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.9\textwidth]{../images/saas_home.png}
+\includegraphics[width=1\textwidth]{../images/saas_home.png}
 \caption{Conceito de interface \textit{web} (SaaS) para o OSA Visível: landing page com armazenamento em nuvem, suporte a múltiplos dispositivos e análise em tempo real.}
 \label{fig:saas_home}
 \fonte{Elaborada pelo autor (2025).}
@@ -1393,7 +1393,7 @@ MVP de SaaS para o OSA Visível. Outra linha de evolução é a expansão da int
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.9\textwidth]{../images/saas_dashboard.png}
+\includegraphics[width=1\textwidth]{../images/saas_dashboard.png}
 \caption{Conceito de painel \textit{web}: conexão ao host OSA, transmissão da webcam e gráfico de espectro em tempo real.}
 \label{fig:saas_dashboard}
 \fonte{Elaborada pelo autor (2025).}
