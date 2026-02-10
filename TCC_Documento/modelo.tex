@@ -304,17 +304,7 @@ O Analisador de Espectro Óptico (OSA) é um instrumento essencial para medir a 
 
 \subsection{Definição e arquitetura do espectrômetro OSA Visível}
 
-Historicamente, OSAs utilizavam arquiteturas baseadas em monocromadores sintonizáveis (varredura), onde um filtro óptico ajustável resolvia os componentes espectrais individualmente. Em contraste, o OSA Visível utiliza uma arquitetura baseada em \textit{array} de detectores (grade/CMOS), que captura todo o espectro simultaneamente, melhorando a velocidade de aquisição \cite{keysight_osa}.
-
-O espectrômetro OSA Visível foi desenvolvido com base no projeto \textit{Open Fiber Spectrometer} \cite{gaudi_spectrometer}, um espectrômetro de código aberto que fornece modelos 3D e instruções detalhadas para construção. O projeto original foi adaptado para atender às necessidades específicas deste trabalho, com foco na faixa visível do espectro (380-750 nm). O uso da impressão 3D reduz drasticamente os custos e permite a personalização rápida do design, superando a necessidade de polimento de precisão laboriosa, comum em óptica tradicional \cite{stanford_3d_optics}.
-
-Os componentes principais são:
-
-\begin{itemize}
-    \item Estrutura Impressa em 3D: Proporciona a geometria necessária para o caminho óptico, fenda, e posicionamento da grade e do sensor.
-    \item Grade de Difração: Responsável por separar os comprimentos de onda, com $1000$ linhas/mm.
-    \item Detector: Uma Webcam USB, utilizando um sensor CMOS de $640 \times 480$ pixels.
-\end{itemize}
+Historicamente, OSAs utilizavam arquiteturas baseadas em monocromadores sintonizáveis (varredura), onde um filtro óptico ajustável resolvia os componentes espectrais individualmente. Em contraste, o OSA Visível utiliza uma arquitetura baseada em \textit{array} de detectores (grade/CMOS), que captura todo o espectro simultaneamente, melhorando a velocidade de aquisição \cite{keysight_osa}. A estrutura emprega uma grade de difração como elemento dispersor e um sensor CMOS (típico de webcams) como detector, combinando simplicidade e baixo custo. A especificação detalhada dos componentes e a descrição da construção encontram-se no Capítulo 3.
 
 O sinal de luz, depois de disperso, é discretizado pelo sensor CMOS. A intensidade digital no pixel $(x,y)$ é representada pela equação de amostragem:
 
@@ -355,6 +345,10 @@ espectrômetro OSA Visível & 380-750 & < 200 USD & Incerteza exp. $<$ 0,3 nm & 
 \end{tabular}
 \fonte{Elaborada pelo autor (2025).}
 \end{table}
+
+\subsection{Resolução espectral e resolução amostral}
+
+É fundamental distinguir resolução espectral de resolução amostral em OSAs \cite{yokogawa_osa_specs}. A \textbf{resolução espectral} (\textit{wavelength resolution}) refere-se à capacidade física do instrumento de separar componentes espectrais individuais. Ela é determinada pela largura e formato do filtro óptico (monocromador ou, em espectrômetros de grade, pela fenda e pela dispersão): uma fenda estreita permite distinguir detalhes espectrais finos, enquanto uma fenda larga favorece a medição precisa da potência total de picos largos. A \textbf{resolução amostral} (\textit{min. sampling resolution}) refere-se à densidade de pontos ao longo do eixo de comprimento de onda --- o menor passo (\textit{step size}) entre amostras. Um passo de amostragem grosseiro pode provocar perda de detalhes entre pontos, mesmo quando a óptica seria capaz de resolvê-los \cite{yokogawa_osa_specs}. Em OSAs de varredura, há tipicamente uma relação entre ambas (e.g., várias amostras por unidade de resolução espectral); em espectrômetros baseados em \textit{array} de detectores, como o OSA Visível, a resolução amostral é fixada pelo número de pixels e pela dispersão (nm/pixel).
 
 \section{FUNDAMENTAÇÃO DO MAPEAMENTO COMPRIMENTO DE ONDA-PIXEL}
 
@@ -524,7 +518,7 @@ Para modelar a resposta intensidade--duty cycle em uma faixa definida onde a sat
 
 \section{O PROCESSO HÍBRIDO DE CALIBRAÇÃO DO OSA VISÍVEL}
 
-O processo de calibração da interface OSA Visível combina a visão computacional (Seções 2.4 e 2.5) com referências metrológicas de comprimento de onda conhecido. Consiste em duas etapas: (i) calibração preliminar com luz branca, para obter a orientação espacial do espectro na imagem (centróide, regressão da reta espectral) e os parâmetros iniciais $a$ e $b$; e (ii) calibração absoluta com lasers Verde (532 nm) e Vermelho (650 nm), para calibrar a escala: o software captura 20 quadros com média temporal, determina as posições dos picos ($x_{532}$, $x_{650}$) e calcula os coeficientes finais via \ref{eq:coeficientes}. A precisão metrológica é avaliada experimentalmente conforme descrito no Capítulo 4.
+O processo de calibração da interface OSA Visível combina a visão computacional (Seções 2.4 e 2.5) com referências metrológicas de comprimento de onda conhecido. Consiste em duas etapas: (i) calibração preliminar com luz branca, para obter a orientação espacial do espectro na imagem (centróide, regressão da reta espectral) e os parâmetros iniciais $a$ e $b$; e (ii) calibração absoluta com lasers Verde (532 nm) e Vermelho (650 nm), para calibrar a escala: o software captura 20 quadros com média temporal, determina as posições dos picos ($x_{532}$, $x_{650}$) e calcula os coeficientes finais via Equação \ref{eq:coeficientes}. A precisão metrológica é avaliada experimentalmente conforme descrito no Capítulo 4.
 
 Essa correspondência entre as posições dos picos na reta de calibração e os comprimentos de onda reais garante que a dispersão (nm/pixel) seja corretamente escalada em toda a faixa de operação do OSA. A utilização de dois pontos fixos é essencial para definir corretamente tanto o \textit{offset} quanto a dispersão da reta linear.
 
@@ -534,11 +528,7 @@ Este capítulo detalha os procedimentos metodológicos adotados para o desenvolv
 
 \section{FUNDAMENTAÇÃO METODOLÓGICA E TRABALHOS CORRELATOS}
 
-A calibração de analisadores de espectro óptico (OSA) para a faixa visível tem sido amplamente explorada na literatura científica. \cite{dubard1995} discutiram a necessidade de caracterizar com precisão as fontes ópticas em medições de fibras ópticas e apresentaram técnicas de calibração para OSAs comerciais. Abordagens modernas, como as propostas por \cite{liu2013}, empregam métodos de calibração precisos utilizando parâmetros do sistema para espectrômetros de grade. Alternativamente, \cite{terra_calibration} propuseram três métodos para calibrar um OSA baseado em grade, utilizando fontes laser bem caracterizadas, duplicação de frequência em cristais não lineares e uma célula de gás de cianeto de hidrogênio (HCN) como referência de comprimento de onda.
-
-No contexto de espectrômetros de baixo custo, trabalhos recentes têm demonstrado a viabilidade de utilizar componentes comerciais prontos para uso (COTS) e técnicas de fabricação aditiva. \cite{gaudi_spectrometer} desenvolveram o projeto \textit{Open Fiber Spectrometer}, um espectrômetro de código aberto que fornece modelos 3D e instruções detalhadas para construção, servindo como base para diversos projetos educacionais e de pesquisa.
-
-A metodologia adotada neste trabalho diferencia-se das abordagens existentes por combinar uma estratégia híbrida de calibração: a calibração inicial com luz branca fornece uma relação linear preliminar, enquanto lasers de referência (532 nm e 650 nm) definem a escala absoluta, combinando assim simplicidade e baixo custo. Esta abordagem permite alcançar precisão metrológica adequada a um custo total inferior a 200 dólares (USD), democratizando o acesso à análise espectral.
+A calibração de OSAs para a faixa visível tem sido amplamente explorada na literatura (Seção 2.2 e 2.3). No contexto de espectrômetros de baixo custo, \cite{gaudi_spectrometer} desenvolveram o projeto \textit{Open Fiber Spectrometer}, espectrômetro de código aberto que serviu de base para este trabalho. A metodologia adotada diferencia-se por combinar calibração preliminar com luz branca e calibração absoluta com lasers (532 nm e 650 nm), alcançando precisão adequada a custo inferior a 200 dólares (USD).
 
 \section{CONSTRUÇÃO DO ESPECTRÔMETRO OSA VISÍVEL}
 
@@ -585,14 +575,7 @@ O caminho óptico segue a seguinte sequência:
 \begin{enumerate}
     \item Entrada de Luz: A luz proveniente da amostra ou fonte de calibração entra através de uma fenda óptica ajustável, que controla a largura do feixe incidente e, consequentemente, a resolução espectral do sistema.
     
-    \item Dispersão Espectral: A luz colimada incide sobre uma grade de difração de transmissão com densidade de 1000 linhas/mm. A relação entre o comprimento de onda ($\lambda$) e o ângulo de difração ($\theta$) é dado pela equação da grade de Fraunhofer:
-    
-    \begin{equation}
-        n\lambda = d(\sin\theta + \sin\alpha)
-        \label{eq:diffraction_metodologia}
-    \end{equation}
-    
-    onde $n$ representa a ordem de difração (geralmente $n=1$), $d = 1\,\mu\text{m}$ é o espaçamento da grade (inverso da densidade de linhas), e $\alpha$ é o ângulo de incidência da luz na grade \cite{fraunhofer_wiki}.
+    \item Dispersão Espectral: A luz colimada incide sobre uma grade de difração de transmissão com densidade de 1000 linhas/mm. A relação entre o comprimento de onda ($\lambda$) e o ângulo de difração ($\theta$) é dada pela Equação \ref{eq:diffraction} (Seção 2.1), onde $n$ representa a ordem de difração (geralmente $n=1$), $d = 1\,\mu\text{m}$ é o espaçamento da grade (inverso da densidade de linhas), e $\alpha$ é o ângulo de incidência da luz na grade \cite{fraunhofer_wiki}.
     
     \item Detecção: O espectro disperso é capturado por um sensor CMOS de uma webcam USB, posicionado no plano focal da grade. O sensor discretiza a informação espectral em uma matriz de pixels, onde cada coluna corresponde a uma faixa de comprimentos de onda.
 \end{enumerate}
@@ -631,14 +614,7 @@ O processo de montagem seguiu uma sequência sistemática para garantir o alinha
 
 \subsection{Caracterização do sistema de detecção}
 
-O sistema de detecção baseado em webcam USB apresenta características específicas que influenciam o desempenho do espectrômetro. O sensor CMOS utilizado possui resolução de $640 \times 480$ pixels, com taxa de amostragem de 30 fps. A discretização do sinal óptico é representada pela equação:
-
-\begin{equation}
-    I(x,y) = \sum_{k=0}^{255} k \cdot P(k|x,y)
-    \label{eq:sampling_metodologia}
-\end{equation}
-
-onde $I(x,y)$ é a intensidade digital no pixel $(x,y)$, $k$ representa os níveis de intensidade (0 a 255 em escala de 8 bits), e $P(k|x,y)$ é a probabilidade do pixel $(x,y)$ registrar a intensidade $k$.
+O sistema de detecção baseado em webcam USB apresenta características específicas que influenciam o desempenho do espectrômetro. O sensor CMOS utilizado possui resolução de $640 \times 480$ pixels, com taxa de amostragem de 30 fps. A discretização do sinal óptico segue a Equação \ref{eq:sampling}, onde $I(x,y)$ é a intensidade digital no pixel $(x,y)$, $k$ representa os níveis de intensidade (0 a 255 em escala de 8 bits), e $P(k|x,y)$ é a probabilidade do pixel $(x,y)$ registrar a intensidade $k$.
 
 Uma característica importante do sensor CMOS é a presença de uma matriz de filtros Bayer (RGB), que significa que cada pixel é sensível a uma faixa específica do espectro (vermelho, verde ou azul). Para a calibração espectral, esta característica é contornada através da conversão para escala de cinza, que integra a resposta espectral dos três canais de cor.
 
@@ -672,7 +648,7 @@ A interface gráfica foi projetada para guiar o usuário através de um fluxo in
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.7\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/janela_principal_recursos.png}
+\includegraphics[width=0.9\textwidth]{../SBAI_SBSE_2025___OSA_Visível___Review/data/janela_principal_recursos.png}
 \caption{Janela principal da interface OSA Visível: (1) Visualização do espectro em tempo real, (2) Gráfico de intensidade $I(\lambda)$ vs. comprimento de onda, (3) Painel de controle e calibração.}
 \label{fig:gui_principal}
 \end{figure}
@@ -748,31 +724,11 @@ O método de Otsu opera da seguinte forma:
     \item Seleção do limiar $T$ que maximiza $\sigma_B^2(t)$.
 \end{enumerate}
 
-A aplicação do limiar resulta em uma máscara binária $M(x,y)$:
-
-\begin{equation}
-    M(x,y) = \begin{cases}
-        I_{gray}(x,y), & \text{se } I_{gray}(x,y) \geq T \\
-        0, & \text{caso contrário}
-    \end{cases}
-    \label{eq:threshold_metodologia}
-\end{equation}
-
-A utilização de um limiar adaptativo torna o processo robusto a variações na iluminação da fonte de luz branca e às condições ambientais, eliminando a necessidade de ajustes manuais.
+A aplicação do limiar resulta em uma máscara binária $M(x,y)$ conforme a Equação \ref{eq:threshold}. A utilização de um limiar adaptativo torna o processo robusto a variações na iluminação da fonte de luz branca e às condições ambientais, eliminando a necessidade de ajustes manuais.
 
 \subsubsection{\textit{Cálculo do centróide e regressão linear preliminar}}
 
-Cálculo do Centróide:
-
-O centróide $(x_c, y_c)$ representa o centro de massa ponderado pela intensidade dos pixels ativos dentro da máscara $M$ \cite{spectral_centroid_wiki}:
-
-\begin{equation}
-    x_c = \frac{\sum_{x,y} x \cdot M(x,y)}{\sum_{x,y} M(x,y)}, \quad
-    y_c = \frac{\sum_{x,y} y \cdot M(x,y)}{\sum_{x,y} M(x,y)}
-    \label{eq:centroid_metodologia}
-\end{equation}
-
-Este cálculo é vital, pois o espectrômetro OSA Visível, devido à sua construção 3D com tolerâncias inerentes, pode apresentar um desalinhamento rotacional do espectro no sensor CMOS. O centróide fornece um ponto de referência central que permite à regressão linear preliminar definir corretamente a orientação espacial da linha espectral na imagem.
+Cálculo do Centróide: O centróide $(x_c, y_c)$ é calculado conforme a Equação \ref{eq:centroid}. Este cálculo é vital, pois o espectrômetro OSA Visível, devido à sua construção 3D com tolerâncias inerentes, pode apresentar um desalinhamento rotacional do espectro no sensor CMOS. O centróide fornece um ponto de referência central que permite à regressão linear preliminar definir corretamente a orientação espacial da linha espectral na imagem.
 
 Regressão Linear para Orientação Espacial:
 
@@ -843,51 +799,15 @@ A escolha destes dois comprimentos de onda específicos é estratégica:
 
 \subsubsection{\textit{Aquisição com média temporal}}
 
-Para a calibração utilizando lasers, $N=20$ quadros são capturados em um intervalo homogêneo de tempo (aproximadamente 2 segundos). A média temporal é aplicada para reduzir o ruído aleatório inerente a sensores CMOS de baixo custo:
-
-\begin{equation}
-    \bar{I}(x,y) = \frac{1}{N}\sum_{i=1}^{N} I_i(x,y)
-    \label{eq:frame_avg_metodologia}
-\end{equation}
-
-O cálculo da média temporal melhora drasticamente a Relação Sinal-Ruído (SNR), permitindo a detecção mais precisa dos picos de intensidade dos lasers. Em sensores CMOS de baixo custo, o ruído aleatório (ruído de disparo, ruído térmico) é significativo, e a média temporal é uma técnica eficaz e computacionalmente simples para mitigá-lo.
+Para a calibração utilizando lasers, $N=20$ quadros são capturados em um intervalo homogêneo de tempo (aproximadamente 2 segundos). A média temporal é aplicada conforme a Equação \ref{eq:frame_avg}, reduzindo o ruído aleatório inerente a sensores CMOS de baixo custo e melhorando drasticamente a Relação Sinal-Ruído (SNR), permitindo a detecção mais precisa dos picos de intensidade dos lasers. Em sensores CMOS de baixo custo, o ruído aleatório (ruído de disparo, ruído térmico) é significativo, e a média temporal é uma técnica eficaz e computacionalmente simples para mitigá-lo.
 
 \subsubsection{\textit{Detecção de picos de intensidade}}
 
-A posição exata dos picos de intensidade dos lasers ($x_{532}$ e $x_{650}$) é determinada pelo cálculo do argumento máximo (Arg Max) ao longo da linha espectral previamente identificada:
-
-\begin{equation}
-    x_{peak} = \arg \max_{x} \, I(x)
-    \label{eq:peak_metodologia}
-\end{equation}
-
-onde $I(x)$ é a intensidade média ao longo da direção vertical (eixo $y$) para cada posição horizontal $x$:
-
-\begin{equation}
-    I(x) = \frac{1}{H}\sum_{y=0}^{H-1} \bar{I}(x,y)
-\end{equation}
-
-e $H$ é a altura da imagem (480 pixels).
-
-Esta precisão na localização dos picos é o que garante a acurácia metrológica final da calibração, fornecendo os pontos fixos necessários para a determinação dos coeficientes $a$ e $b$.
+A posição exata dos picos de intensidade dos lasers ($x_{532}$ e $x_{650}$) é determinada conforme a Equação \ref{eq:peak}, onde $I(x) = \frac{1}{H}\sum_{y=0}^{H-1} \bar{I}(x,y)$ é a intensidade média ao longo da direção vertical (eixo $y$) para cada posição horizontal $x$, e $H$ é a altura da imagem (480 pixels).
 
 \subsubsection{\textit{Cálculo dos coeficientes de calibração final}}
 
-Utilizando as coordenadas absolutas (pico de pixel, comprimento de onda real), o software calcula os coeficientes finais $a$ e $b$ que definem a relação $\lambda(x) = a \cdot x + b$.
-
-Os coeficientes são calculados diretamente a partir da posição dos picos de intensidade dos lasers:
-
-\begin{equation}
-    a = \frac{\lambda_{\text{verm}} - \lambda_{\text{verd}}}{x_{\text{verm}} - x_{\text{verd}}}, \quad
-    b = \lambda_{\text{verd}} - a \cdot x_{\text{verd}}
-    \label{eq:coeficientes_metodologia}
-\end{equation}
-
-onde $x_{\text{verd}}$ e $x_{\text{verm}}$ são as posições dos picos dos lasers verde e vermelho, respectivamente.
-
-A utilização de dois pontos fixos é essencial para definir corretamente tanto o \textit{offset} ($b$) quanto a dispersão ($a$) da reta linear. Um único ponto definiria apenas o \textit{offset}, mas deixaria a taxa de dispersão sujeita a erros sistêmicos. A determinação de ambos os parâmetros por dois pontos de referência garante que o escalonamento da dispersão angular seja corretamente aplicado em toda a faixa de operação do espectrômetro, minimizando o erro de inclinação.
-
-A Figura \ref{fig:calib_curve} ilustra a curva de calibração obtida experimentalmente.
+Utilizando as coordenadas absolutas (pico de pixel, comprimento de onda real), o software calcula os coeficientes finais $a$ e $b$ conforme a Equação \ref{eq:coeficientes}, onde $x_{\text{verd}}$ e $x_{\text{verm}}$ são as posições dos picos dos lasers verde e vermelho, respectivamente (a justificativa para o uso de dois pontos fixos encontra-se na Seção 2.3.2). A Figura \ref{fig:calib_curve} ilustra a curva de calibração obtida experimentalmente.
 
 \begin{figure}[ht]
 \centering
@@ -898,9 +818,7 @@ A Figura \ref{fig:calib_curve} ilustra a curva de calibração obtida experiment
 
 \subsection{Validação da calibração e métricas de precisão}
 
-A acurácia do mapeamento comprimento de onda-pixel é avaliada utilizando o Erro Quadrático Médio (Root Mean Square Error - RMS), uma métrica padrão na metrologia espectral que quantifica a magnitude média do erro entre os valores medidos e os valores de referência \cite{henriksen_calibration}.
-
-O processo híbrido demonstra melhoria de precisão em relação ao ajuste preliminar; a validação experimental (Capítulo 4) reporta incertezas expandidas e concordância com espectrômetro de referência.
+Conforme a Seção 2.3.3, a acurácia é avaliada pelo Erro Quadrático Médio (RMS). A validação experimental (Capítulo 4) reporta incertezas expandidas e concordância com espectrômetro de referência.
 
 A Tabela \ref{tab:calib_params_metodologia} apresenta os parâmetros de calibração obtidos experimentalmente.
 
@@ -1054,7 +972,7 @@ A metodologia desenvolvida apresenta algumas limitações inerentes à escolha d
 \begin{itemize}
     \item Modelo Linear: A escolha da regressão linear de primeira ordem, embora funcional na faixa visível, pode introduzir erros sistemáticos maiores nas extremidades do espectro (abaixo de 400 nm e acima de 700 nm), onde a não-linearidade da Equação de Difração de Fraunhofer se manifesta mais intensamente.
     
-    \item Resolução Espectral: A resolução espectral do sistema é limitada pela resolução espacial do sensor CMOS (640 pixels) e pela largura da fenda óptica, resultando em uma resolução de aproximadamente 0.5 nm/pixel na faixa visível.
+    \item Resolução espectral e amostral (conforme Seção 2.2.3 e \cite{yokogawa_osa_specs}): A resolução espectral (capacidade de separar componentes espectrais) é limitada pela largura da fenda óptica e pela dispersão da grade. A resolução amostral (passo de amostragem em $\lambda$) corresponde à dispersão do sistema, de aproximadamente 1,5 nm/pixel (coeficiente $a$ da calibração), resultando em cerca de 250 pontos efetivos na faixa 380--750 nm. O sensor CMOS (640 pixels) define o limite superior de amostras; a fração utilizada depende do alinhamento e da projeção do espectro sobre o detector.
     
     \item Estabilidade Temporal: Componentes de baixo custo podem apresentar variações temporais de calibração devido a efeitos térmicos ou envelhecimento, requerendo recalibração periódica.
     
@@ -1124,9 +1042,9 @@ Os resultados demonstram excelente estabilidade e repetibilidade do sistema. O p
 
 O pico vermelho apresentou taxa de detecção de 92\% (92 das 100 amostras), indicando que este pico pode estar próximo do limite de sensibilidade do sistema ou sujeito a variações mais significativas. No entanto, quando detectado, apresentou desvio padrão de apenas 0,701 nm, comparável ao pico verde.
 
-As incertezas expandidas (calculadas com fator de cobertura $k=1,96$ para nível de confiança de 95\%) variaram entre $\pm$0,134 nm (verde) e $\pm$0,288 nm (azul), valores que estão dentro do objetivo de precisão estabelecido no início deste trabalho ($\pm$2 nm).
+As incertezas expandidas foram calculadas como $U = k \cdot \sigma/\sqrt{n}$, com $k=1{,}96$ (nível de confiança de 95\%) e $\sigma$ o desvio padrão amostral. É importante salientar que essa fórmula é convencional e não assume que a distribuição dos sinais seja gaussiana; as distribuições observadas (Figura \ref{fig:histogramas_visible_osa}) podem apresentar formas não gaussianas, como multimodalidade no pico vermelho. Além disso, as 100 amostras correspondem a uma medição contínua no tempo (a cada $\sim$10 s), em regime de estabilidade da fonte e do espectrômetro. As medições não são, \textit{a priori}, independentes: amostras consecutivas podem exibir correlação temporal (e.g., deriva térmica lenta, flutuações da fonte). Nessas condições, o erro padrão da média $\sigma/\sqrt{n}$ pode subestimar a incerteza real, pois assume independência. Os valores reportados ($\pm$0,134 nm a $\pm$0,288 nm) devem ser interpretados como indicadores de repetibilidade sob o protocolo adotado, dentro do objetivo de precisão de $\pm$2 nm.
 
-A Figura \ref{fig:evolucao_visible_osa} mostra a evolução temporal dos comprimentos de onda para os três picos RGB ao longo das 100 amostras (coletadas a cada $\sim$10 s). A Figura \ref{fig:histogramas_visible_osa} apresenta a distribuição estatística dos comprimentos de onda detectados, com média ($\mu$), desvio padrão ($\sigma$) e incerteza expandida indicados.
+A Figura \ref{fig:evolucao_visible_osa} mostra a evolução temporal dos comprimentos de onda para os três picos RGB ao longo das 100 amostras. A Figura \ref{fig:histogramas_visible_osa} apresenta a distribuição estatística, com bins de largura igual à resolução amostral (1,5 nm), média ($\mu$), desvio padrão ($\sigma$) e incerteza expandida indicados.
 
 \begin{figure}[ht]
 \centering
@@ -1139,7 +1057,7 @@ A Figura \ref{fig:evolucao_visible_osa} mostra a evolução temporal dos comprim
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.95\textwidth]{../images/histogramas_3_picos_RGB.png}
-\caption{Distribuição dos comprimentos de onda dos 3 picos principais RGB (100 amostras) -- OSA Visível.}
+\caption{Distribuição dos comprimentos de onda dos 3 picos principais RGB (100 amostras) -- OSA Visível. Bins de 1,5 nm (resolução amostral).}
 \label{fig:histogramas_visible_osa}
 \fonte{Elaborada pelo autor (2025).}
 \end{figure}
@@ -1185,9 +1103,9 @@ RGB-3 (Vermelho) & 639,13 & 1,419 & $\pm$0,140 & 100,0 & 12078,36 & 4,58 \\
 \fonte{Elaborada pelo autor (2025).}
 \end{table}
 
-Observa-se que o espectrômetro ThorLabs apresentou desvios padrão ligeiramente maiores que o OSA Visível para os picos verde e vermelho, possivelmente devido à maior sensibilidade e resolução espectral do equipamento comercial, que detecta variações mais sutis no sinal. As incertezas expandidas do espectrômetro ThorLabs estão na mesma ordem de grandeza das do OSA Visível (entre $\pm$0,137 nm e $\pm$0,150 nm), confirmando que o sistema de baixo custo atinge precisão comparável.
+Observa-se que o espectrômetro ThorLabs apresentou desvios padrão ligeiramente maiores que o OSA Visível para os picos verde e vermelho, possivelmente devido à maior sensibilidade e resolução espectral do equipamento comercial, que detecta variações mais sutis no sinal. As incertezas expandidas foram calculadas com a mesma metodologia do Experimento 1; as mesmas considerações sobre regime de estabilidade, medição contínua e possível correlação temporal aplicam-se, pois as 100 amostras foram extraídas de uma série temporal contínua.
 
-A Figura \ref{fig:evolucao_thorlabs} ilustra a evolução temporal dos comprimentos de onda medidos pelo espectrômetro ThorLabs para os três picos RGB (100 amostras selecionadas). A Figura \ref{fig:histogramas_thorlabs} mostra a distribuição estatística correspondente.
+A Figura \ref{fig:evolucao_thorlabs} ilustra a evolução temporal dos comprimentos de onda medidos pelo espectrômetro ThorLabs para os três picos RGB (100 amostras selecionadas). A Figura \ref{fig:histogramas_thorlabs} mostra a distribuição estatística, com bins de 1,5 nm (resolução amostral).
 
 \begin{figure}[ht]
 \centering
@@ -1200,7 +1118,7 @@ A Figura \ref{fig:evolucao_thorlabs} ilustra a evolução temporal dos comprimen
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.95\textwidth]{../images/histogramas_3_picos_RGB_thorlabs.png}
-\caption{Distribuição dos comprimentos de onda dos 3 picos principais RGB (100 amostras) -- espectrômetro ThorLabs CCT11.}
+\caption{Distribuição dos comprimentos de onda dos 3 picos principais RGB (100 amostras) -- espectrômetro ThorLabs CCT11. Bins de 1,5 nm.}
 \label{fig:histogramas_thorlabs}
 \fonte{Elaborada pelo autor (2025).}
 \end{figure}
@@ -1492,6 +1410,8 @@ Acesso em: 10 nov. 2025.
 \bibitem{spectral_centroid_wiki} Spectral centroid. Wikipedia. Disponível em: 
 https://en.wikipedia.org/wiki/Spectral\_centroid. 
 Acesso em: 10 nov. 2025.
+
+\bibitem{yokogawa_osa_specs} YOKOGAWA. OSA Specifications Explained. Disponível em: https://cdn.tmi.yokogawa.com/files/content/OSA\_specifications\_explained.pdf. Acesso em: 29 jan. 2026.
 
 \bibitem{yokogawa_aq6374} YOKOGAWA. AQ6374E Optical Spectrum Analyzer. Disponível em: 
 https://www.yokogawa.com/solutions/products-platforms/test-measurement/optical-spectrum-analyzer/aq6374e/. 

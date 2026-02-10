@@ -496,16 +496,23 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, pasta_output):
     plt.close()
     
     # Gráfico 2: Histogramas de distribuição dos 3 picos principais RGB
+    # Largura dos bins >= resolução amostral (~1.5 nm/pixel, Seção 2.2.3)
+    BIN_WIDTH_NM = 1.5
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
     
     for idx, (grupo_id, grupo_data) in enumerate(grupos_principais.items()):
         picos = grupo_data['picos']
-        wl_values = [p['wl'] for p in picos]
+        wl_values = np.array([p['wl'] for p in picos])
         cor = grupo_data.get('cor_rgb', 'blue')
         nome_rgb = grupo_data.get('nome_rgb', f'Grupo {grupo_id}')
         
+        # Bins com largura fixa (resolução amostral)
+        wl_min, wl_max = wl_values.min(), wl_values.max()
+        bin_start = np.floor(wl_min / BIN_WIDTH_NM) * BIN_WIDTH_NM
+        bin_end = np.ceil((wl_max - bin_start) / BIN_WIDTH_NM) * BIN_WIDTH_NM + bin_start + BIN_WIDTH_NM
+        bins = np.arange(bin_start, bin_end, BIN_WIDTH_NM)
         ax = axes[idx]
-        ax.hist(wl_values, bins=25, alpha=0.7, edgecolor='black', color=cor, label='Distribuição')
+        ax.hist(wl_values, bins=bins, alpha=0.7, edgecolor='black', color=cor, label='Distribuição')
         
         wl_mean = estatisticas_df[estatisticas_df['Grupo'] == grupo_id]['Comprimento_Onda_Medio_nm'].values[0]
         wl_std = estatisticas_df[estatisticas_df['Grupo'] == grupo_id]['Desvio_Padrao_nm'].values[0]
