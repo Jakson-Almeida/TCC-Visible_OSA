@@ -38,7 +38,7 @@ grau de bacharel em
 Engenharia Elétrica.
 }
 
-\finalcatalog{1. Analisador de espectro óptico. 2. Calibração automatizada. 3. Visão computacional. 4. Espectro visível. I. Sobrenome, Nome do orientador, orient. II. T\'itulo.}
+\finalcatalog{1. Analisador de espectro óptico. 2. Calibração automatizada. 3. Visão computacional. 4. Espectro visível. I. Santos, Alexandre Bessa dos, orient. II. \inseretitulo.}
 
 
 \usepackage[round, numbers]{natbib}
@@ -877,7 +877,7 @@ Esta seção descreve a metodologia adotada para o experimento de caracterizaç�
 
 \subsection{Fonte de luz e configuração do PWM}
 
-A fonte de luz utilizada consistiu em três LEDs de cores verde, vermelho e azul, permitindo o acionamento individual de cada cor. A intensidade de cada LED foi controlada mediante modulação por largura de pulso (PWM), com a possibilidade de salvar espectros para cada LED separadamente.
+A fonte de luz utilizada consistiu em três LEDs de cores verde, vermelho e azul, permitindo o acionamento individual de cada cor. A intensidade de cada LED foi controlada mediante modulação por largura de pulso (PWM), com a possibilidade de salvar espectros para cada LED separadamente. As fontes foram montadas no laboratório; não há especificação detalhada de tensão e corrente de operação de cada componente. O controle por PWM é em malha aberta: o duty cycle define apenas o tempo em que cada LED permanece ligado, sem retroalimentação do brilho efetivo. Assim, não se dispõe de informação do brilho óptico real do LED antes da medição no OSA --- a intensidade incidente é inferida somente a partir do espectro medido. Isso implica que a relação entre duty cycle e potência óptica pode variar entre LEDs (e.g., eficiência luminosa diferente) e ao longo do tempo (deriva térmica), afetando a interpretação da sensibilidade do OSA em relação ao brilho da fonte.
 
 Conforme a fundamentação sobre saturação (Seção 2.7), em experimentos preliminares com duty cycle de até 100\% (variando de 5\% em 5\%), todos os canais RGB da câmera do OSA Visível saturaram, ao passo que o espectrômetro ThorLabs manteve resposta linear. A Figura \ref{fig:saturacao_osa_visible} ilustra esse fenômeno para o LED vermelho: o espectro combinado (todos os canais) do OSA Visível mantém formato esperado em 5\% de PWM (topo), enquanto em 50\% e 100\% (centro e base) o espectro se distorce. A saturação do canal R leva os demais canais (G e B) a reconstruir o sinal, gerando deformações visíveis no espectro. Esse comportamento justifica a necessidade da calibração de intensidade não apenas para o vermelho, mas para todas as fontes e canais do OSA Visível. Diante disso, optou-se por restringir o experimento à faixa de 1\% a 10\% do duty cycle total da fonte, com variação de 1\% em 1\%, garantindo regime não saturado para a modelagem.
 
@@ -977,6 +977,8 @@ A metodologia desenvolvida apresenta algumas limitações inerentes à escolha d
     \item Estabilidade Temporal: Componentes de baixo custo podem apresentar variações temporais de calibração devido a efeitos térmicos ou envelhecimento, requerendo recalibração periódica.
     
     \item Resposta Espectral do Sensor: A matriz de filtros Bayer do sensor CMOS introduz uma resposta espectral não-uniforme que, embora parcialmente compensada pela conversão para escala de cinza, pode afetar a precisão de medições de intensidade absoluta.
+    
+    \item Duty cycle em malha aberta: No Experimento 3, a variação de intensidade é feita via PWM em malha aberta, sem medição do brilho óptico antes da captura pelo OSA. A discussão de sensibilidade OSA \textit{vs.} brilho do LED é limitada por essa ausência de informação \textit{a priori} sobre a potência luminosa incidente.
 \end{itemize}
 
 \chapter{RESULTADOS EXPERIMENTAIS E VALIDAÇÃO}

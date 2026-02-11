@@ -1,0 +1,27 @@
+ENTREGA TCC - FORMATO PDF/A
+===========================
+
+Foi pedido:
+  1) Versao final do TCC em PDF/A (nao serve PDF convencional)
+  2) Termo de Autorizacao de Publicacao assinado
+
+Arquivos a converter para PDF/A:
+  - modelo_oficial.pdf       (TCC completo)
+  - doc1_assinado_260210_194403.pdf  (Termo assinado)
+
+COMO CONVERTER PARA PDF/A
+-------------------------
+
+OPCAO A - Script (apos instalar Ghostscript)
+  1. Instale o Ghostscript: https://ghostscript.com/releases/gsdnld.html
+     (baixe gs10xxw64.exe para Windows 64-bit)
+  2. Execute: python converter_pdfa.py
+  3. Serao gerados: modelo_oficial_PDFA.pdf e doc1_assinado_260210_194403_PDFA.pdf
+
+OPCAO B - Conversor online (nao precisa instalar nada)
+  1. Acesse: https://tools.pdf24.org/en/pdf-to-pdfa
+  2. Envie cada arquivo (modelo_oficial.pdf e doc1_assinado_260210_194403.pdf)
+  3. Baixe os PDF/A gerados
+
+Validar se o PDF esta em PDF/A:
+  https://www.pdf24.org/pdfa-online-validator.html
