@@ -690,25 +690,41 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
         handles_legenda = []
         for idx, (_, gd) in enumerate(pairs_ordered):
             mk = markers_temporal[idx % len(markers_temporal)]
-            nome = gd.get("nome_cor", "?")
-            ms = 7 if mk != "+" else 8
+            nome = str(gd.get("nome_cor", "?")).strip()
+            lbl = f"Picos {nome}"
             c_cor = gd.get("cor_rgb", "blue")
-            mew = 0.9 if mk != "+" else 0.0
-            mec = "0.2" if mk != "+" else c_cor
-            handles_legenda.append(
-                Line2D(
-                    [0],
-                    [0],
-                    marker=mk,
-                    linestyle="none",
-                    color=c_cor,
-                    markerfacecolor=c_cor,
-                    markeredgecolor=mec,
-                    markersize=ms,
-                    markeredgewidth=mew,
-                    label=f"Dados ({nome})",
+            # Marcador '+' na legenda: contorno grosso (sem preenchimento), senão some no PDF.
+            if mk == "+":
+                handles_legenda.append(
+                    Line2D(
+                        [0],
+                        [0],
+                        marker="+",
+                        linestyle="none",
+                        color=c_cor,
+                        markerfacecolor="none",
+                        markeredgecolor=c_cor,
+                        markersize=11,
+                        markeredgewidth=2.0,
+                        label=lbl,
+                    )
                 )
-            )
+            else:
+                ms = 7
+                handles_legenda.append(
+                    Line2D(
+                        [0],
+                        [0],
+                        marker=mk,
+                        linestyle="none",
+                        color=c_cor,
+                        markerfacecolor=c_cor,
+                        markeredgecolor="0.2",
+                        markersize=ms,
+                        markeredgewidth=0.9,
+                        label=lbl,
+                    )
+                )
         handles_legenda.append(
             Line2D([0], [0], color="0.2", linestyle="--", linewidth=1.35, label="Média")
         )
@@ -721,6 +737,10 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
             framealpha=0.95,
             edgecolor="0.85",
             fontsize=9,
+            handletextpad=0.28,
+            columnspacing=0.9,
+            handlelength=0.6,
+            borderpad=0.35,
         )
         out1 = pasta_output / "evolucao_temporal_3_picos_RGB.png"
         fig.savefig(out1, dpi=300, bbox_inches="tight")
