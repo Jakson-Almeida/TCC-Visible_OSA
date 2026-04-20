@@ -4,8 +4,8 @@
 Análise de espectros do OSA Visível — variantes de figuras para artigo.
 
 Mesma lógica que analise.py; os gráficos estatísticos são salvos em
-``paper_figures/`` com tipografia e elementos visuais adequados a publicações
-(valores numéricos detalhados ficam no texto/tabelas, não na legenda).
+``resultados/paper_figures/<fonte>/`` e um resumo textual comparável vai para
+``resultados/resultados_paper.txt`` (UTF-8, texto simples).
 """
 
 import numpy as np
@@ -77,6 +77,68 @@ def _paper_output_dir(fonte):
     output_dir = projeto_root / "resultados" / "paper_figures" / fonte_normalizada
     output_dir.mkdir(parents=True, exist_ok=True)
     return output_dir
+
+
+def _resultados_paper_path():
+    """Caminho do arquivo de resumo para comparacao: <raiz>/resultados/resultados_paper.txt"""
+    projeto_root = Path(__file__).resolve().parents[2]
+    out_dir = projeto_root / "resultados"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    return out_dir / "resultados_paper.txt"
+
+
+def _formatar_bloco_resultados_paper(nome_equipamento, estatisticas_df):
+    """
+    Texto conciso com metricas dos picos principais RGB (sem simbolos especiais).
+    """
+    df = estatisticas_df[estatisticas_df["Principal_RGB"] == "Sim"].copy()
+    df = df.sort_values("Comprimento_Onda_Medio_nm")
+    linhas = []
+    linhas.append(f"--- {nome_equipamento} ---")
+    linhas.append(f"Numero de picos principais: {len(df)}")
+    linhas.append("")
+    for _, row in df.iterrows():
+        ident = str(row.get("Identificacao", "")).strip()
+        cor = str(row.get("Cor", "")).strip()
+        linhas.append(f"Pico: {ident}  Cor: {cor}")
+        linhas.append(f"  Lambda medio (nm): {row['Comprimento_Onda_Medio_nm']:.3f}")
+        linhas.append(f"  Desvio padrao (nm): {row['Desvio_Padrao_nm']:.3f}")
+        linhas.append(f"  Incerteza expandida k 1.96 (nm): {row['Incerteza_Expandida_nm']:.3f}")
+        linhas.append(f"  Taxa deteccao (%): {row['Taxa_Deteccao_%']:.1f}")
+        linhas.append(f"  Intensidade media (u.a.): {row['Intensidade_Media']:.2f}")
+        linhas.append(f"  CV intensidade (%): {row['Coeficiente_Variacao_Intensidade_%']:.2f}")
+        linhas.append(
+            f"  Lambda min (nm): {row['Min_nm']:.2f}  Lambda max (nm): {row['Max_nm']:.2f}"
+        )
+        linhas.append("")
+    return "\n".join(linhas).rstrip()
+
+
+def _escrever_resultados_paper_texto(fonte_arg, resultados):
+    """Grava resultados/resultados_paper.txt em UTF-8."""
+    partes = []
+    partes.append("Resumo estatistico temporal - picos principais RGB")
+    partes.append("UTF-8. Texto simples para comparacao entre equipamentos.")
+    partes.append("")
+
+    if fonte_arg == "both" and isinstance(resultados, dict):
+        for key in ("visible", "thorlabs"):
+            r = resultados.get(key)
+            if not r or "estatisticas" not in r:
+                continue
+            label = _config_fonte(key)["label"]
+            partes.append(_formatar_bloco_resultados_paper(label, r["estatisticas"]))
+            partes.append("")
+    elif isinstance(resultados, dict) and "estatisticas" in resultados:
+        label = _config_fonte(fonte_arg)["label"]
+        partes.append(_formatar_bloco_resultados_paper(label, resultados["estatisticas"]))
+    else:
+        return
+
+    texto = "\n".join(partes).rstrip() + "\n"
+    path = _resultados_paper_path()
+    path.write_text(texto, encoding="utf-8")
+    print(f"\n[OK] Resumo para comparacao: {path.resolve()}")
 
 
 def carregar_espectro(arquivo_spectrum):
@@ -897,6 +959,8 @@ def main():
             )
     
     if resultados is not None:
+        if not args.amostra_livre:
+            _escrever_resultados_paper_texto(args.fonte, resultados)
         print("\n[OK] Análise concluída com sucesso!")
         return resultados
     else:

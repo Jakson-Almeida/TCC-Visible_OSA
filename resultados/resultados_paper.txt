@@ -1,0 +1,62 @@
+Resumo estatistico temporal - picos principais RGB
+UTF-8. Texto simples para comparacao entre equipamentos.
+
+--- OSA Visível ---
+Numero de picos principais: 3
+
+Pico: RGB-2 (Azul)  Cor: Azul
+  Lambda medio (nm): 468.221
+  Desvio padrao (nm): 1.469
+  Incerteza expandida k 1.96 (nm): 0.288
+  Taxa deteccao (%): 100.0
+  Intensidade media (u.a.): 122.12
+  CV intensidade (%): 1.12
+  Lambda min (nm): 464.15  Lambda max (nm): 470.05
+
+Pico: RGB-1 (Verde)  Cor: Verde
+  Lambda medio (nm): 516.099
+  Desvio padrao (nm): 0.682
+  Incerteza expandida k 1.96 (nm): 0.134
+  Taxa deteccao (%): 100.0
+  Intensidade media (u.a.): 177.85
+  CV intensidade (%): 0.61
+  Lambda min (nm): 514.30  Lambda max (nm): 517.25
+
+Pico: RGB-3 (Vermelho)  Cor: Vermelho
+  Lambda medio (nm): 637.703
+  Desvio padrao (nm): 0.701
+  Incerteza expandida k 1.96 (nm): 0.143
+  Taxa deteccao (%): 92.0
+  Intensidade media (u.a.): 84.23
+  CV intensidade (%): 0.38
+  Lambda min (nm): 636.73  Lambda max (nm): 638.20
+
+--- ThorLabs OSA ---
+Numero de picos principais: 3
+
+Pico: RGB-1 (Azul)  Cor: Azul
+  Lambda medio (nm): 461.226
+  Desvio padrao (nm): 0.594
+  Incerteza expandida k 1.96 (nm): 0.115
+  Taxa deteccao (%): 100.0
+  Intensidade media (u.a.): 14449.52
+  CV intensidade (%): 0.81
+  Lambda min (nm): 459.20  Lambda max (nm): 463.12
+
+Pico: RGB-3 (Verde)  Cor: Verde
+  Lambda medio (nm): 519.553
+  Desvio padrao (nm): 0.827
+  Incerteza expandida k 1.96 (nm): 0.162
+  Taxa deteccao (%): 100.0
+  Intensidade media (u.a.): 6400.41
+  CV intensidade (%): 0.86
+  Lambda min (nm): 518.13  Lambda max (nm): 521.70
+
+Pico: RGB-2 (Vermelho)  Cor: Vermelho
+  Lambda medio (nm): 641.256
+  Desvio padrao (nm): 0.532
+  Incerteza expandida k 1.96 (nm): 0.104
+  Taxa deteccao (%): 100.0
+  Intensidade media (u.a.): 12637.15
+  CV intensidade (%): 1.64
+  Lambda min (nm): 639.76  Lambda max (nm): 642.57
