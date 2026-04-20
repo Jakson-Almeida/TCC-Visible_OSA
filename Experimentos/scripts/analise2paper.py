@@ -619,18 +619,19 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
     letters = "abcdefghijklmnopqrstuvwxyz"
 
     # --- Gráfico 1: evolução temporal (enxuto para paper) ---
-    # Marcadores por painel (ordem RVG): triângulo, +, círculo; legenda em cinza escuro.
+    # Marcadores por painel (ordem RVG): triângulo, +, círculo; legenda com mesma cor.
     markers_temporal = ("^", "+", "o")
-    cor_legenda_dados = "0.28"
 
     with plt.rc_context(_matplotlib_paper_context()):
         fig, axes = plt.subplots(
             num_grupos,
             1,
-            figsize=(6.2, 2.35 * num_grupos + 0.9),
+            figsize=(6.2, 2.35 * num_grupos + 1.05),
             sharex=True,
             constrained_layout=True,
         )
+        # Reserva faixa superior para a legenda sem sobrepor titulos dos paineis
+        fig.set_constrained_layout_pads(rect=(0.02, 0.03, 0.98, 0.84))
         if num_grupos == 1:
             axes = [axes]
 
@@ -691,17 +692,20 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
             mk = markers_temporal[idx % len(markers_temporal)]
             nome = gd.get("nome_cor", "?")
             ms = 7 if mk != "+" else 8
+            c_cor = gd.get("cor_rgb", "blue")
+            mew = 0.9 if mk != "+" else 0.0
+            mec = "0.2" if mk != "+" else c_cor
             handles_legenda.append(
                 Line2D(
                     [0],
                     [0],
                     marker=mk,
                     linestyle="none",
-                    color=cor_legenda_dados,
-                    markerfacecolor=cor_legenda_dados,
-                    markeredgecolor=cor_legenda_dados,
+                    color=c_cor,
+                    markerfacecolor=c_cor,
+                    markeredgecolor=mec,
                     markersize=ms,
-                    markeredgewidth=0.8,
+                    markeredgewidth=mew,
                     label=f"Dados ({nome})",
                 )
             )
@@ -710,8 +714,9 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
         )
         fig.legend(
             handles=handles_legenda,
-            loc="upper center",
-            bbox_to_anchor=(0.5, 1.02),
+            loc="center",
+            bbox_to_anchor=(0.5, 0.935),
+            bbox_transform=fig.transFigure,
             ncol=min(4, len(handles_legenda)),
             framealpha=0.95,
             edgecolor="0.85",
