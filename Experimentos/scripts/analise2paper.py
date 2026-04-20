@@ -621,12 +621,17 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
     # --- Gráfico 1: evolução temporal (enxuto para paper) ---
     # Marcadores por painel (ordem RVG): triângulo, +, círculo; legenda com mesma cor.
     markers_temporal = ("^", "+", "o")
+    largura_fig_temporal = 6.2 * 1.3
+    # Eixo de amostra ~30% mais longo (centrado em 0..100)
+    _cx_amostra = 49.5
+    _meia_span_amostra = 0.5 * 101.0 * 1.3
+    xlim_amostra = (_cx_amostra - _meia_span_amostra, _cx_amostra + _meia_span_amostra)
 
     with plt.rc_context(_matplotlib_paper_context()):
         fig, axes = plt.subplots(
             num_grupos,
             1,
-            figsize=(6.2, 2.35 * num_grupos + 1.05),
+            figsize=(largura_fig_temporal, 2.35 * num_grupos + 1.05),
             sharex=True,
             constrained_layout=True,
         )
@@ -644,7 +649,7 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
             nome_cor = grupo_data.get("nome_cor", "?")
             panel = f"({letters[idx]}) {nome_cor}"
             mk = markers_temporal[idx % len(markers_temporal)]
-            pt_size = 30 if mk == "+" else 24
+            pt_size = 21 if mk == "+" else 24
             if mk == "+":
                 ax.scatter(
                     amostras,
@@ -674,7 +679,7 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
             ax.set_title(panel, loc="left", fontweight="600")
             ax.grid(True, axis="y", linestyle="-", alpha=0.45)
             _spines_clean(ax)
-            ax.set_xlim(-1, 100)
+            ax.set_xlim(*xlim_amostra)
 
             # Dobrar o intervalo vertical de visualização, centrado nos dados
             wl_arr = np.asarray(wl_values, dtype=float)
@@ -704,8 +709,8 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
                         color=c_cor,
                         markerfacecolor="none",
                         markeredgecolor=c_cor,
-                        markersize=11,
-                        markeredgewidth=2.0,
+                        markersize=8,
+                        markeredgewidth=1.4,
                         label=lbl,
                     )
                 )
@@ -726,7 +731,14 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
                     )
                 )
         handles_legenda.append(
-            Line2D([0], [0], color="0.2", linestyle="--", linewidth=1.35, label="Média")
+            Line2D(
+                [0, 1],
+                [0, 0],
+                color="0.2",
+                linestyle=(0, (4.0, 2.0, 4.0, 2.0)),
+                linewidth=1.5,
+                label="Média",
+            )
         )
         fig.legend(
             handles=handles_legenda,
@@ -739,7 +751,7 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
             fontsize=9,
             handletextpad=0.28,
             columnspacing=0.9,
-            handlelength=0.6,
+            handlelength=2.2,
             borderpad=0.35,
         )
         out1 = pasta_output / "evolucao_temporal_3_picos_RGB.png"
