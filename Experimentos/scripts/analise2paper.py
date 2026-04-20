@@ -10,6 +10,7 @@ Mesma lógica que analise.py; os gráficos estatísticos são salvos em
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 from scipy.signal import find_peaks
 from scipy.cluster.hierarchy import linkage, fcluster
 from pathlib import Path
@@ -64,6 +65,18 @@ def _config_fonte(fonte):
             "peak_params": {"prominence": 500, "distance": 10},
         }
     raise ValueError(f"Fonte inválida: {fonte}. Use 'visible' ou 'thorlabs'.")
+
+
+def _paper_output_dir(fonte):
+    """
+    Diretório consolidado de figuras do paper:
+    <raiz>/resultados/paper_figures/<visible|thorlabs>
+    """
+    fonte_normalizada = str(fonte).strip().lower()
+    projeto_root = Path(__file__).resolve().parents[2]
+    output_dir = projeto_root / "resultados" / "paper_figures" / fonte_normalizada
+    output_dir.mkdir(parents=True, exist_ok=True)
+    return output_dir
 
 
 def carregar_espectro(arquivo_spectrum):
@@ -482,18 +495,16 @@ def calcular_estatisticas_picos(grupos_picos, num_amostras_total):
     return df
 
 
-def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, pasta_output):
+def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
     """
     Gera os mesmos gráficos estatísticos que analise.py, com formatação para artigo.
 
-    Salva em ``pasta_output/paper_figures/``: legendas enxutas (sem repetir tabelas),
-    tipografia legível e menos elementos redundantes.
+    Salva em ``resultados/paper_figures/<fonte>/``: legendas enxutas
+    (sem repetir tabelas), tipografia legível e menos elementos redundantes.
     """
     print("\n[GRAFICOS] Gerando figuras (modo artigo)...")
 
-    pasta_base = Path(pasta_output)
-    pasta_output = pasta_base / "paper_figures"
-    pasta_output.mkdir(parents=True, exist_ok=True)
+    pasta_output = _paper_output_dir(fonte)
 
     picos_principais_df = estatisticas_df[estatisticas_df["Principal_RGB"] == "Sim"].copy()
     grupos_principais = {
@@ -514,7 +525,7 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, pasta_output):
         fig, axes = plt.subplots(
             num_grupos,
             1,
-            figsize=(6.2, 2.35 * num_grupos + 0.6),
+            figsize=(6.2, 2.35 * num_grupos + 0.9),
             sharex=True,
             constrained_layout=True,
         )
@@ -530,6 +541,10 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, pasta_output):
             nome_cor = grupo_data.get("nome_cor", "?")
             panel = f"({letters[idx]}) {nome_cor}"
             ax.scatter(amostras, wl_values, alpha=0.72, s=22, color=cor, edgecolors="none")
+            wl_mean = estatisticas_df[estatisticas_df["Grupo"] == grupo_id][
+                "Comprimento_Onda_Medio_nm"
+            ].values[0]
+            ax.axhline(y=wl_mean, color="0.2", linestyle="--", linewidth=1.35)
 
             ax.set_ylabel(r"$\lambda$ (nm)")
             ax.set_title(panel, loc="left", fontweight="600")
@@ -538,6 +553,17 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, pasta_output):
             ax.set_xlim(-1, 100)
 
         axes[-1].set_xlabel("Amostra")
+        fig.legend(
+            handles=[
+                Line2D([0], [0], marker="o", linestyle="", color="#3f57ff", markersize=6, label="Dados"),
+                Line2D([0], [0], color="0.2", linestyle="--", linewidth=1.35, label="Média"),
+            ],
+            loc="upper center",
+            bbox_to_anchor=(0.5, 1.02),
+            ncol=2,
+            framealpha=0.95,
+            edgecolor="0.85",
+        )
         out1 = pasta_output / "evolucao_temporal_3_picos_RGB.png"
         fig.savefig(out1, dpi=300, bbox_inches="tight")
         plt.close(fig)
@@ -602,6 +628,7 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, pasta_output):
             ax.set_title(f"({letters[idx]}) {nome_cor}", loc="left", fontweight="600")
             ax.grid(True, axis="y", alpha=0.45)
             _spines_clean(ax)
+            ax.set_ylim(0, 150)
             ax.legend(loc="upper right", framealpha=0.95, edgecolor="0.85")
 
         out2 = pasta_output / "histogramas_3_picos_RGB.png"
@@ -796,7 +823,7 @@ def analise_estatistica_temporal(pasta_temporal=None, tolerancia_nm=5.0, fonte="
     print(f"\n[OK] Estatísticas salvas em: {csv_file}")
     
     # Gera gráficos
-    gerar_graficos_estatisticos(grupos_picos, estatisticas_df, pasta_temporal)
+    gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte=fonte)
     
     return {
         'resultados_todos': resultados_todos,
@@ -810,7 +837,7 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(
-        description='Análise de espectros do OSA Visível — figuras estatísticas em paper_figures/'
+        description='Análise de espectros (Visible/ThorLabs) — figuras em resultados/paper_figures/'
     )
     parser.add_argument('--temporal', action='store_true', help='Análise estatística temporal')
     parser.add_argument('--amostra-livre', action='store_true', help='Análise de amostra livre')
@@ -846,7 +873,7 @@ def main():
         # Por padrão, faz análise temporal
         print(
             f"[INFO] Análise temporal (padrão, fonte={args.fonte}). "
-            "Figuras em */paper_figures/. Use --amostra-livre para amostra livre."
+            "Figuras em resultados/paper_figures/. Use --amostra-livre para amostra livre."
         )
         if args.fonte == 'both':
             resultados = {
