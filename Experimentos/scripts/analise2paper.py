@@ -552,6 +552,16 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
             _spines_clean(ax)
             ax.set_xlim(-1, 100)
 
+            # Dobrar o intervalo vertical de visualização, centrado nos dados
+            wl_arr = np.asarray(wl_values, dtype=float)
+            ymin_data = float(wl_arr.min())
+            ymax_data = float(wl_arr.max())
+            centro = 0.5 * (ymin_data + ymax_data)
+            meia_largura = (ymax_data - ymin_data)  # dobro do atual
+            if meia_largura <= 0:
+                meia_largura = 1.0
+            ax.set_ylim(centro - meia_largura, centro + meia_largura)
+
         axes[-1].set_xlabel("Amostra")
         fig.legend(
             handles=[
