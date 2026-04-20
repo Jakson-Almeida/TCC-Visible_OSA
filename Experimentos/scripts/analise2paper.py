@@ -6,6 +6,9 @@ Análise de espectros do OSA Visível — variantes de figuras para artigo.
 Mesma lógica que analise.py; os gráficos estatísticos são salvos em
 ``resultados/paper_figures/<fonte>/`` e um resumo textual comparável vai para
 ``resultados/resultados_paper.txt`` (UTF-8, texto simples).
+
+Ordem dos picos principais nas figuras e resumos do paper: Vermelho, Verde, Azul
+(lambda medio decrescente).
 """
 
 import numpy as np
@@ -87,12 +90,40 @@ def _resultados_paper_path():
     return out_dir / "resultados_paper.txt"
 
 
+def _ordem_picos_paper_rvg(grupos_principais_dict, picos_principais_df):
+    """
+    Ordem fixa para figuras e textos do paper: Vermelho, Verde, Azul
+    (comprimento de onda medio decrescente nos picos principais).
+
+    Retorna lista [(grupo_id, grupo_data), ...] e o DataFrame de picos
+    principais alinhado a essa ordem.
+    """
+    if len(grupos_principais_dict) == 0:
+        return [], picos_principais_df
+
+    triplas = []
+    for gid, gdata in grupos_principais_dict.items():
+        sub = picos_principais_df.loc[picos_principais_df["Grupo"] == gid, "Comprimento_Onda_Medio_nm"]
+        if len(sub) > 0:
+            wl_m = float(sub.iloc[0])
+        else:
+            wl_m = float(gdata.get("wl_medio", np.nan))
+        triplas.append((gid, gdata, wl_m))
+
+    triplas.sort(key=lambda t: t[2], reverse=True)
+    pairs_ordered = [(t[0], t[1]) for t in triplas]
+    ordem_ids = [t[0] for t in triplas]
+    idx = picos_principais_df.set_index("Grupo")
+    pdf = idx.loc[ordem_ids].reset_index()
+    return pairs_ordered, pdf
+
+
 def _formatar_bloco_resultados_paper(nome_equipamento, estatisticas_df):
     """
     Texto conciso com metricas dos picos principais RGB (sem simbolos especiais).
     """
     df = estatisticas_df[estatisticas_df["Principal_RGB"] == "Sim"].copy()
-    df = df.sort_values("Comprimento_Onda_Medio_nm")
+    df = df.sort_values("Comprimento_Onda_Medio_nm", ascending=False)
     linhas = []
     linhas.append(f"--- {nome_equipamento} ---")
     linhas.append(f"Numero de picos principais: {len(df)}")
@@ -578,11 +609,20 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
     if len(grupos_principais) == 0:
         print("[AVISO] Nenhum pico principal identificado. Gerando gráficos de todos os picos.")
         grupos_principais = grupos_picos
+        pairs_ordered = list(grupos_principais.items())
+    else:
+        pairs_ordered, picos_principais_df = _ordem_picos_paper_rvg(
+            grupos_principais, picos_principais_df
+        )
 
-    num_grupos = len(grupos_principais)
+    num_grupos = len(pairs_ordered)
     letters = "abcdefghijklmnopqrstuvwxyz"
 
     # --- Gráfico 1: evolução temporal (enxuto para paper) ---
+    # Marcadores por painel (ordem RVG): triângulo, +, círculo; legenda em cinza escuro.
+    markers_temporal = ("^", "+", "o")
+    cor_legenda_dados = "0.28"
+
     with plt.rc_context(_matplotlib_paper_context()):
         fig, axes = plt.subplots(
             num_grupos,
@@ -594,7 +634,7 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
         if num_grupos == 1:
             axes = [axes]
 
-        for idx, (grupo_id, grupo_data) in enumerate(grupos_principais.items()):
+        for idx, (grupo_id, grupo_data) in enumerate(pairs_ordered):
             picos = grupo_data["picos"]
             amostras = [p["amostra_idx"] for p in picos]
             wl_values = [p["wl"] for p in picos]
@@ -602,7 +642,28 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
             cor = grupo_data.get("cor_rgb", "blue")
             nome_cor = grupo_data.get("nome_cor", "?")
             panel = f"({letters[idx]}) {nome_cor}"
-            ax.scatter(amostras, wl_values, alpha=0.72, s=22, color=cor, edgecolors="none")
+            mk = markers_temporal[idx % len(markers_temporal)]
+            pt_size = 30 if mk == "+" else 24
+            if mk == "+":
+                ax.scatter(
+                    amostras,
+                    wl_values,
+                    alpha=0.72,
+                    s=pt_size,
+                    marker=mk,
+                    color=cor,
+                )
+            else:
+                ax.scatter(
+                    amostras,
+                    wl_values,
+                    alpha=0.72,
+                    s=pt_size,
+                    marker=mk,
+                    color=cor,
+                    edgecolors="0.25",
+                    linewidths=0.35,
+                )
             wl_mean = estatisticas_df[estatisticas_df["Grupo"] == grupo_id][
                 "Comprimento_Onda_Medio_nm"
             ].values[0]
@@ -625,16 +686,36 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
             ax.set_ylim(centro - meia_largura, centro + meia_largura)
 
         axes[-1].set_xlabel("Amostra")
+        handles_legenda = []
+        for idx, (_, gd) in enumerate(pairs_ordered):
+            mk = markers_temporal[idx % len(markers_temporal)]
+            nome = gd.get("nome_cor", "?")
+            ms = 7 if mk != "+" else 8
+            handles_legenda.append(
+                Line2D(
+                    [0],
+                    [0],
+                    marker=mk,
+                    linestyle="none",
+                    color=cor_legenda_dados,
+                    markerfacecolor=cor_legenda_dados,
+                    markeredgecolor=cor_legenda_dados,
+                    markersize=ms,
+                    markeredgewidth=0.8,
+                    label=f"Dados ({nome})",
+                )
+            )
+        handles_legenda.append(
+            Line2D([0], [0], color="0.2", linestyle="--", linewidth=1.35, label="Média")
+        )
         fig.legend(
-            handles=[
-                Line2D([0], [0], marker="o", linestyle="", color="#3f57ff", markersize=6, label="Dados"),
-                Line2D([0], [0], color="0.2", linestyle="--", linewidth=1.35, label="Média"),
-            ],
+            handles=handles_legenda,
             loc="upper center",
             bbox_to_anchor=(0.5, 1.02),
-            ncol=2,
+            ncol=min(4, len(handles_legenda)),
             framealpha=0.95,
             edgecolor="0.85",
+            fontsize=9,
         )
         out1 = pasta_output / "evolucao_temporal_3_picos_RGB.png"
         fig.savefig(out1, dpi=300, bbox_inches="tight")
@@ -646,7 +727,7 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
     with plt.rc_context(_matplotlib_paper_context()):
         fig, axes = plt.subplots(1, 3, figsize=(10.2, 3.35), constrained_layout=True)
 
-        for idx, (grupo_id, grupo_data) in enumerate(grupos_principais.items()):
+        for idx, (grupo_id, grupo_data) in enumerate(pairs_ordered):
             picos = grupo_data["picos"]
             wl_values = np.array([p["wl"] for p in picos])
             cor = grupo_data.get("cor_rgb", "blue")
@@ -714,7 +795,7 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
 
         dados_wl, labels_wl, cores_wl = [], [], []
         dados_int, labels_int, cores_int = [], [], []
-        for grupo_id, grupo_data in grupos_principais.items():
+        for grupo_id, grupo_data in pairs_ordered:
             picos = grupo_data["picos"]
             nome_cor = grupo_data.get("nome_cor", "?")
             cor = grupo_data.get("cor_rgb", "lightblue")
@@ -845,8 +926,12 @@ def analise_estatistica_temporal(pasta_temporal=None, tolerancia_nm=5.0, fonte="
     # Calcula estatísticas
     estatisticas_df = calcular_estatisticas_picos(grupos_picos, num_amostras)
     
-    # Separa picos principais dos secundários
+    # Separa picos principais dos secundários (ordem paper: Vermelho, Verde, Azul)
     picos_principais_df = estatisticas_df[estatisticas_df['Principal_RGB'] == 'Sim'].copy()
+    if len(picos_principais_df) > 0:
+        picos_principais_df = picos_principais_df.sort_values(
+            "Comprimento_Onda_Medio_nm", ascending=False
+        )
     picos_secundarios_df = estatisticas_df[estatisticas_df['Principal_RGB'] == 'Não'].copy()
     
     # Exibe tabela de estatísticas dos 3 picos principais RGB
