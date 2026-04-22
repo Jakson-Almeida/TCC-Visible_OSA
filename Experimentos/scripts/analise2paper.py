@@ -797,7 +797,7 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
 
             ax.set_xlabel(r"$\lambda$ (nm)")
             if idx == 0:
-                ax.set_ylabel("Contagem")
+                ax.set_ylabel("Amostras")
             ax.set_title(f"({letters[idx]}) {nome_cor}", loc="left", fontweight="600")
             ax.grid(True, axis="y", alpha=0.45)
             _spines_clean(ax)
