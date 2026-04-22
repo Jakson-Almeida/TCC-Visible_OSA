@@ -621,11 +621,9 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
     # --- Gráfico 1: evolução temporal (enxuto para paper) ---
     # Marcadores por painel (ordem RVG): triângulo, +, círculo; legenda com mesma cor.
     markers_temporal = ("^", "+", "o")
+    # Largura da figura +30%: mais espaco horizontal em polegadas, sem alterar xlim
+    # (evita deslocar o zero em relacao aos dados).
     largura_fig_temporal = 6.2 * 1.3
-    # Eixo de amostra ~30% mais longo (centrado em 0..100)
-    _cx_amostra = 49.5
-    _meia_span_amostra = 0.5 * 101.0 * 1.3
-    xlim_amostra = (_cx_amostra - _meia_span_amostra, _cx_amostra + _meia_span_amostra)
 
     with plt.rc_context(_matplotlib_paper_context()):
         fig, axes = plt.subplots(
@@ -679,7 +677,8 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
             ax.set_title(panel, loc="left", fontweight="600")
             ax.grid(True, axis="y", linestyle="-", alpha=0.45)
             _spines_clean(ax)
-            ax.set_xlim(*xlim_amostra)
+            # Amostras 0..99: eixo x fixo sem deslocar a escala (zero na origem do eixo).
+            ax.set_xlim(0, 100)
 
             # Dobrar o intervalo vertical de visualização, centrado nos dados
             wl_arr = np.asarray(wl_values, dtype=float)
@@ -730,13 +729,14 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
                         label=lbl,
                     )
                 )
+        # Mesmo estilo que ax.axhline (--) — padrões longos na legenda cabem mal no handle curto.
         handles_legenda.append(
             Line2D(
                 [0, 1],
                 [0, 0],
                 color="0.2",
-                linestyle=(0, (4.0, 2.0, 4.0, 2.0)),
-                linewidth=1.5,
+                linestyle="--",
+                linewidth=1.35,
                 label="Média",
             )
         )
@@ -787,30 +787,13 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
                 edgecolor="0.25",
                 linewidth=0.45,
                 color=cor,
-                label="Contagens",
             )
 
             wl_mean = estatisticas_df[estatisticas_df["Grupo"] == grupo_id][
                 "Comprimento_Onda_Medio_nm"
             ].values[0]
-            wl_std = estatisticas_df[estatisticas_df["Grupo"] == grupo_id][
-                "Desvio_Padrao_nm"
-            ].values[0]
-            wl_incerteza = estatisticas_df[estatisticas_df["Grupo"] == grupo_id][
-                "Incerteza_Expandida_nm"
-            ].values[0]
 
             ax.axvline(wl_mean, color="0.2", linestyle="--", linewidth=1.5, label="Média")
-            ax.axvline(wl_mean + wl_std, color="#cc6600", linestyle=":", linewidth=1.35)
-            ax.axvline(wl_mean - wl_std, color="#cc6600", linestyle=":", linewidth=1.35, label=r"$\pm 1\sigma$")
-            ax.axvline(wl_mean + wl_incerteza, color="#8b0000", linestyle="-.", linewidth=1.2)
-            ax.axvline(
-                wl_mean - wl_incerteza,
-                color="#8b0000",
-                linestyle="-.",
-                linewidth=1.2,
-                label=r"Incerteza ($k = 1{,}96$)",
-            )
 
             ax.set_xlabel(r"$\lambda$ (nm)")
             if idx == 0:
@@ -818,7 +801,7 @@ def gerar_graficos_estatisticos(grupos_picos, estatisticas_df, fonte="visible"):
             ax.set_title(f"({letters[idx]}) {nome_cor}", loc="left", fontweight="600")
             ax.grid(True, axis="y", alpha=0.45)
             _spines_clean(ax)
-            ax.set_ylim(0, 150)
+            ax.set_ylim(0, 100)
             ax.legend(loc="upper right", framealpha=0.95, edgecolor="0.85")
 
         out2 = pasta_output / "histogramas_3_picos_RGB.png"
