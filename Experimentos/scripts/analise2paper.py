@@ -4,8 +4,9 @@
 Análise de espectros do OSA Visível — variantes de figuras para artigo.
 
 Mesma lógica que analise.py; os gráficos estatísticos são salvos em
-``resultados/paper_figures/<fonte>/`` e um resumo textual comparável vai para
-``resultados/resultados_paper.txt`` (UTF-8, texto simples).
+``resultados/paper_figures/<fonte>/``. Com ``--fonte both``, uma figura
+comparativa de boxplot de lambda fica em ``resultados/paper_figures/comparison/``.
+Um resumo textual comparável vai para ``resultados/resultados_paper.txt`` (UTF-8).
 
 Ordem dos picos principais nas figuras e resumos do paper: Vermelho, Verde, Azul
 (lambda medio decrescente).
@@ -80,6 +81,108 @@ def _paper_output_dir(fonte):
     output_dir = projeto_root / "resultados" / "paper_figures" / fonte_normalizada
     output_dir.mkdir(parents=True, exist_ok=True)
     return output_dir
+
+
+def _paper_comparison_output_dir():
+    """Figuras que comparam equipamentos: <raiz>/resultados/paper_figures/comparison"""
+    projeto_root = Path(__file__).resolve().parents[2]
+    out = projeto_root / "resultados" / "paper_figures" / "comparison"
+    out.mkdir(parents=True, exist_ok=True)
+    return out
+
+
+def _pairs_ordered_principais_paper(grupos_picos, estatisticas_df):
+    """Picos principais em ordem RVG (mesma regra que gerar_graficos_estatisticos)."""
+    picos_principais_df = estatisticas_df[estatisticas_df["Principal_RGB"] == "Sim"].copy()
+    grupos_principais = {
+        gid: grupos_picos[gid]
+        for gid in picos_principais_df["Grupo"].values
+        if gid in grupos_picos
+    }
+    if len(grupos_principais) == 0:
+        return list(grupos_picos.items())
+    pairs_ordered, _ = _ordem_picos_paper_rvg(grupos_principais, picos_principais_df)
+    return pairs_ordered
+
+
+def gerar_boxplot_wl_comparacao_visible_thorlabs(resultado_visible, resultado_thorlabs):
+    """
+    Uma figura só: boxplots de comprimento de onda (lambda) dos 3 picos RGB,
+    OSA Visível vs ThorLabs, para comparação direta.
+
+    Salva em ``resultados/paper_figures/comparison/boxplots_wl_rgb_visible_thorlabs.png``.
+    """
+    if not resultado_visible or not resultado_thorlabs:
+        print("[AVISO] Comparacao boxplot WL: resultado de uma fonte ausente; figura omitida.")
+        return
+    gp_v = resultado_visible.get("grupos_picos")
+    gp_t = resultado_thorlabs.get("grupos_picos")
+    est_v = resultado_visible.get("estatisticas")
+    est_t = resultado_thorlabs.get("estatisticas")
+    if gp_v is None or gp_t is None or est_v is None or est_t is None:
+        print("[AVISO] Comparacao boxplot WL: dados incompletos; figura omitida.")
+        return
+
+    pairs_v = _pairs_ordered_principais_paper(gp_v, est_v)
+    pairs_t = _pairs_ordered_principais_paper(gp_t, est_t)
+    if not pairs_v or not pairs_t:
+        print("[AVISO] Comparacao boxplot WL: sem grupos ordenados; figura omitida.")
+        return
+
+    def _wl_cores_nomes(pairs):
+        dados, cores, nomes = [], [], []
+        for _, gd in pairs:
+            dados.append([p["wl"] for p in gd["picos"]])
+            cores.append(gd.get("cor_rgb", "lightblue"))
+            nomes.append(str(gd.get("nome_cor", "?")).strip())
+        return dados, cores, nomes
+
+    dados_v, cores_v, nomes_v = _wl_cores_nomes(pairs_v)
+    dados_t, cores_t, nomes_t = _wl_cores_nomes(pairs_t)
+    if len(dados_v) == 0 or len(dados_t) == 0:
+        print("[AVISO] Comparacao boxplot WL: listas vazias; figura omitida.")
+        return
+    if len(dados_v) != len(dados_t):
+        print(
+            f"[AVISO] Comparacao boxplot WL: numero de grupos difere "
+            f"({len(dados_v)} vs {len(dados_t)}); os paineis manterao seus grupos."
+        )
+
+    pasta = _paper_comparison_output_dir()
+    out_path = pasta / "boxplots_wl_rgb_visible_thorlabs.png"
+
+    print("\n[GRAFICOS] Figura comparativa (boxplot WL, Visivel vs ThorLabs)...")
+    with plt.rc_context(_matplotlib_paper_context()):
+        fig, axes = plt.subplots(1, 2, figsize=(9.3, 3.7), constrained_layout=True, sharey=True)
+        ax_v, ax_t = axes
+
+        bp_v = ax_v.boxplot(dados_v, tick_labels=nomes_v, patch_artist=True)
+        bp_t = ax_t.boxplot(dados_t, tick_labels=nomes_t, patch_artist=True)
+
+        for patch, cor in zip(bp_v["boxes"], cores_v):
+            patch.set_facecolor(cor)
+            patch.set_alpha(0.66)
+            patch.set_edgecolor("0.25")
+            patch.set_linewidth(1.0)
+        for patch, cor in zip(bp_t["boxes"], cores_t):
+            patch.set_facecolor(cor)
+            patch.set_alpha(0.66)
+            patch.set_edgecolor("0.2")
+            patch.set_linewidth(1.0)
+            patch.set_hatch("///")
+
+        ax_v.set_title("(a) OSA Visível", loc="left", fontweight="600")
+        ax_t.set_title("(b) ThorLabs", loc="left", fontweight="600")
+        ax_v.set_ylabel(r"$\lambda$ (nm)")
+        for ax in axes:
+            ax.grid(True, axis="y", alpha=0.45)
+            _spines_clean(ax)
+
+        fig.savefig(out_path, dpi=300, bbox_inches="tight")
+        plt.close(fig)
+
+    rel = out_path.relative_to(Path(__file__).resolve().parents[2])
+    print(f"  [OK] {out_path.name} ({rel.as_posix()})")
 
 
 def _resultados_paper_path():
@@ -1066,6 +1169,11 @@ def main():
     if resultados is not None:
         if not args.amostra_livre:
             _escrever_resultados_paper_texto(args.fonte, resultados)
+            if args.fonte == "both" and isinstance(resultados, dict):
+                rv = resultados.get("visible")
+                rt = resultados.get("thorlabs")
+                if rv and rt:
+                    gerar_boxplot_wl_comparacao_visible_thorlabs(rv, rt)
         print("\n[OK] Análise concluída com sucesso!")
         return resultados
     else:
