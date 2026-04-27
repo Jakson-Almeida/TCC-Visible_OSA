@@ -5,7 +5,8 @@ Análise de espectros do OSA Visível — variantes de figuras para artigo.
 
 Mesma lógica que analise.py; os gráficos estatísticos são salvos em
 ``resultados/paper_figures/<fonte>/``. Com ``--fonte both``, uma figura
-comparativa de boxplot de lambda fica em ``resultados/paper_figures/comparison/``.
+comparativa (boxplot de lambda por cor RGB, Visivel vs ThorLabs) fica em
+``resultados/paper_figures/comparison/``.
 Um resumo textual comparável vai para ``resultados/resultados_paper.txt`` (UTF-8).
 
 Ordem dos picos principais nas figuras e resumos do paper: Vermelho, Verde, Azul
@@ -107,8 +108,9 @@ def _pairs_ordered_principais_paper(grupos_picos, estatisticas_df):
 
 def gerar_boxplot_wl_comparacao_visible_thorlabs(resultado_visible, resultado_thorlabs):
     """
-    Uma figura só: boxplots de comprimento de onda (lambda) dos 3 picos RGB,
-    OSA Visível vs ThorLabs, para comparação direta.
+    Uma figura só: um painel por cor (Vermelho, Verde, Azul), cada um com dois
+    boxplots de lambda (OSA Visível vs ThorLabs). O eixo vertical de cada painel
+    usa um intervalo de nm centrado nos dados daquela cor para facilitar a leitura.
 
     Salva em ``resultados/paper_figures/comparison/boxplots_wl_rgb_visible_thorlabs.png``.
     """
@@ -129,54 +131,91 @@ def gerar_boxplot_wl_comparacao_visible_thorlabs(resultado_visible, resultado_th
         print("[AVISO] Comparacao boxplot WL: sem grupos ordenados; figura omitida.")
         return
 
-    def _wl_cores_nomes(pairs):
-        dados, cores, nomes = [], [], []
+    def _mapa_canal_cor(pairs):
+        """nome_cor (minúsculo) -> wl, cor_rgb, rótulo original."""
+        out = {}
         for _, gd in pairs:
-            dados.append([p["wl"] for p in gd["picos"]])
-            cores.append(gd.get("cor_rgb", "lightblue"))
-            nomes.append(str(gd.get("nome_cor", "?")).strip())
-        return dados, cores, nomes
+            nome = str(gd.get("nome_cor", "?")).strip()
+            ch = nome.lower()
+            out[ch] = {
+                "wl": [p["wl"] for p in gd["picos"]],
+                "cor": gd.get("cor_rgb", "lightblue"),
+                "nome": nome,
+            }
+        return out
 
-    dados_v, cores_v, nomes_v = _wl_cores_nomes(pairs_v)
-    dados_t, cores_t, nomes_t = _wl_cores_nomes(pairs_t)
-    if len(dados_v) == 0 or len(dados_t) == 0:
-        print("[AVISO] Comparacao boxplot WL: listas vazias; figura omitida.")
+    map_v = _mapa_canal_cor(pairs_v)
+    map_t = _mapa_canal_cor(pairs_t)
+    # Ordem fixa do paper: Vermelho, Verde, Azul (chaves alinhadas ao nome da cor)
+    canais = (("vermelho", "Vermelho"), ("verde", "Verde"), ("azul", "Azul"))
+    for k, tit in canais:
+        if k in map_v and k not in map_t:
+            print(f"[AVISO] Comparacao boxplot WL: canal '{tit}' ausente no ThorLabs; painel omitido.")
+        elif k in map_t and k not in map_v:
+            print(f"[AVISO] Comparacao boxplot WL: canal '{tit}' ausente no OSA Visível; painel omitido.")
+    paineis = [(k, tit) for k, tit in canais if k in map_v and k in map_t]
+    if not paineis:
+        print("[AVISO] Comparacao boxplot WL: sem canais em comum; figura omitida.")
         return
-    if len(dados_v) != len(dados_t):
-        print(
-            f"[AVISO] Comparacao boxplot WL: numero de grupos difere "
-            f"({len(dados_v)} vs {len(dados_t)}); os paineis manterao seus grupos."
-        )
+
+    lbl_vis = _config_fonte("visible")["label"]
+    lbl_thor = _config_fonte("thorlabs")["label"]
 
     pasta = _paper_comparison_output_dir()
     out_path = pasta / "boxplots_wl_rgb_visible_thorlabs.png"
 
-    print("\n[GRAFICOS] Figura comparativa (boxplot WL, Visivel vs ThorLabs)...")
+    print("\n[GRAFICOS] Figura comparativa (boxplot WL por cor, Visivel vs ThorLabs)...")
+    n_p = len(paineis)
+    letters = "abcdefghijklmnopqrstuvwxyz"
     with plt.rc_context(_matplotlib_paper_context()):
-        fig, axes = plt.subplots(1, 2, figsize=(9.3, 3.7), constrained_layout=True, sharey=True)
-        ax_v, ax_t = axes
+        fig, axes = plt.subplots(
+            n_p,
+            1,
+            figsize=(6.0, 2.25 * n_p + 0.55),
+            constrained_layout=True,
+            sharex=True,
+        )
+        if n_p == 1:
+            axes = [axes]
 
-        bp_v = ax_v.boxplot(dados_v, tick_labels=nomes_v, patch_artist=True)
-        bp_t = ax_t.boxplot(dados_t, tick_labels=nomes_t, patch_artist=True)
+        for idx, (ch_key, ch_titulo) in enumerate(paineis):
+            ax = axes[idx]
+            wv = map_v[ch_key]["wl"]
+            wt = map_t[ch_key]["wl"]
+            cor_v = map_v[ch_key]["cor"]
+            cor_t = map_t[ch_key]["cor"]
 
-        for patch, cor in zip(bp_v["boxes"], cores_v):
-            patch.set_facecolor(cor)
-            patch.set_alpha(0.66)
-            patch.set_edgecolor("0.25")
-            patch.set_linewidth(1.0)
-        for patch, cor in zip(bp_t["boxes"], cores_t):
-            patch.set_facecolor(cor)
-            patch.set_alpha(0.66)
-            patch.set_edgecolor("0.2")
-            patch.set_linewidth(1.0)
-            patch.set_hatch("///")
+            bp = ax.boxplot(
+                [wv, wt],
+                positions=[1, 2],
+                widths=0.52,
+                patch_artist=True,
+                tick_labels=[lbl_vis, lbl_thor],
+            )
+            boxes = bp["boxes"]
+            boxes[0].set_facecolor(cor_v)
+            boxes[0].set_alpha(0.66)
+            boxes[0].set_edgecolor("0.25")
+            boxes[0].set_linewidth(1.0)
+            boxes[1].set_facecolor(cor_t)
+            boxes[1].set_alpha(0.66)
+            boxes[1].set_edgecolor("0.2")
+            boxes[1].set_linewidth(1.0)
+            boxes[1].set_hatch("///")
 
-        ax_v.set_title("(a) OSA Visível", loc="left", fontweight="600")
-        ax_t.set_title("(b) ThorLabs", loc="left", fontweight="600")
-        ax_v.set_ylabel(r"$\lambda$ (nm)")
-        for ax in axes:
+            comb = np.asarray(wv + wt, dtype=float)
+            ymin, ymax = float(comb.min()), float(comb.max())
+            span = ymax - ymin
+            pad = max(span * 0.12, 0.6)
+            ax.set_ylim(ymin - pad, ymax + pad)
+
+            ax.set_title(f"({letters[idx]}) {ch_titulo}", loc="left", fontweight="600")
+            ax.set_ylabel(r"$\lambda$ (nm)")
             ax.grid(True, axis="y", alpha=0.45)
             _spines_clean(ax)
+            ax.tick_params(axis="x", labelrotation=12)
+
+        axes[-1].set_xlabel("Equipamento")
 
         fig.savefig(out_path, dpi=300, bbox_inches="tight")
         plt.close(fig)
