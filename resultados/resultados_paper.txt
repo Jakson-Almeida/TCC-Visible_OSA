@@ -31,7 +31,7 @@ Pico: RGB-2 (Azul)  Cor: Azul
   CV intensidade (%): 1.12
   Lambda min (nm): 464.15  Lambda max (nm): 470.05
 
---- ThorLabs OSA ---
+--- ThorLabs ---
 Numero de picos principais: 3
 
 Pico: RGB-2 (Vermelho)  Cor: Vermelho

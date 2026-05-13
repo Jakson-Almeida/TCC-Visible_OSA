@@ -63,7 +63,7 @@ def _config_fonte(fonte):
     if fonte_normalizada == "thorlabs":
         return {
             "fonte": "thorlabs",
-            "label": "ThorLabs OSA",
+            "label": "ThorLabs",
             "pasta_temporal": script_dir.parent / "ThorLabs" / "Temporal_Selecionado",
             # ThorLabs tem maior resolução e mais flutuações de alta frequência.
             # Prominence alto reduz detecção de ruído como "pico".
@@ -109,8 +109,15 @@ def _pairs_ordered_principais_paper(grupos_picos, estatisticas_df):
 def gerar_boxplot_wl_comparacao_visible_thorlabs(resultado_visible, resultado_thorlabs):
     """
     Uma figura só: um painel por cor (Vermelho, Verde, Azul), cada um com dois
-    boxplots de lambda (OSA Visível vs ThorLabs). O eixo vertical de cada painel
-    usa um intervalo de nm centrado nos dados daquela cor para facilitar a leitura.
+    grupos (OSA Visível vs ThorLabs). Para cada grupo:
+      - boxplot sem fliers (evita falsos outliers gerados pela grade discreta do
+        OSA Visível, que colapsa a caixa em uma linha quando muitas amostras caem
+        no mesmo bin de lambda);
+      - barra com media e +/- 1 sigma sobreposta para uma comparacao justa entre
+        os dois equipamentos independentemente da continuidade da grade.
+
+    O eixo vertical de cada painel usa um intervalo de nm centrado nos dados
+    daquela cor para facilitar a leitura.
 
     Salva em ``resultados/paper_figures/comparison/boxplots_wl_rgb_visible_thorlabs.png``.
     """
@@ -167,11 +174,13 @@ def gerar_boxplot_wl_comparacao_visible_thorlabs(resultado_visible, resultado_th
     print("\n[GRAFICOS] Figura comparativa (boxplot WL por cor, Visivel vs ThorLabs)...")
     n_p = len(paineis)
     letters = "abcdefghijklmnopqrstuvwxyz"
+
     with plt.rc_context(_matplotlib_paper_context()):
+        # Figura mais horizontal e compacta na vertical para uso em paper.
         fig, axes = plt.subplots(
             n_p,
             1,
-            figsize=(6.0, 2.25 * n_p + 0.55),
+            figsize=(7.4, 1.85 * n_p + 0.35),
             constrained_layout=True,
             sharex=True,
         )
@@ -180,30 +189,50 @@ def gerar_boxplot_wl_comparacao_visible_thorlabs(resultado_visible, resultado_th
 
         for idx, (ch_key, ch_titulo) in enumerate(paineis):
             ax = axes[idx]
-            wv = map_v[ch_key]["wl"]
-            wt = map_t[ch_key]["wl"]
+            wv = np.asarray(map_v[ch_key]["wl"], dtype=float)
+            wt = np.asarray(map_t[ch_key]["wl"], dtype=float)
             cor_v = map_v[ch_key]["cor"]
             cor_t = map_t[ch_key]["cor"]
 
+            # Boxplot sem fliers: evita falsos outliers da grade discreta do OSA Visivel.
             bp = ax.boxplot(
                 [wv, wt],
                 positions=[1, 2],
                 widths=0.52,
                 patch_artist=True,
+                showfliers=False,
                 tick_labels=[lbl_vis, lbl_thor],
             )
             boxes = bp["boxes"]
             boxes[0].set_facecolor(cor_v)
-            boxes[0].set_alpha(0.66)
+            boxes[0].set_alpha(0.40)
             boxes[0].set_edgecolor("0.25")
             boxes[0].set_linewidth(1.0)
             boxes[1].set_facecolor(cor_t)
-            boxes[1].set_alpha(0.66)
+            boxes[1].set_alpha(0.40)
             boxes[1].set_edgecolor("0.2")
             boxes[1].set_linewidth(1.0)
-            boxes[1].set_hatch("///")
+            for med in bp["medians"]:
+                med.set_color("0.15")
+                med.set_linewidth(1.4)
 
-            comb = np.asarray(wv + wt, dtype=float)
+            # Media +/- 1 sigma: referencia estatistica que e fiel mesmo quando
+            # a caixa colapsa por causa da quantizacao do OSA Visivel.
+            ax.errorbar(
+                [1, 2],
+                [wv.mean(), wt.mean()],
+                yerr=[wv.std(ddof=1), wt.std(ddof=1)],
+                fmt="D",
+                markersize=4.5,
+                color="0.15",
+                ecolor="0.15",
+                elinewidth=1.2,
+                capsize=4.5,
+                capthick=1.2,
+                zorder=4,
+            )
+
+            comb = np.concatenate([wv, wt])
             ymin, ymax = float(comb.min()), float(comb.max())
             span = ymax - ymin
             pad = max(span * 0.12, 0.6)
@@ -214,8 +243,214 @@ def gerar_boxplot_wl_comparacao_visible_thorlabs(resultado_visible, resultado_th
             ax.grid(True, axis="y", alpha=0.45)
             _spines_clean(ax)
             ax.tick_params(axis="x", labelrotation=12)
+            ax.set_xlim(0.4, 2.6)
 
         axes[-1].set_xlabel("Equipamento")
+
+        fig.savefig(out_path, dpi=300, bbox_inches="tight")
+        plt.close(fig)
+
+    rel = out_path.relative_to(Path(__file__).resolve().parents[2])
+    print(f"  [OK] {out_path.name} ({rel.as_posix()})")
+
+
+def gerar_evolucao_temporal_comparacao_visible_thorlabs(resultado_visible, resultado_thorlabs):
+    """
+    Comparacao temporal: 3 paineis (Vermelho, Verde, Azul). Em cada painel,
+    a evolucao de lambda ao longo das amostras para os dois equipamentos
+    (OSA Visivel e ThorLabs OSA), com marcadores distintos e linhas
+    tracejadas indicando a media de cada equipamento.
+
+    Estilo similar ao ``evolucao_temporal_3_picos_RGB``, mas comparativo:
+    - marcador + = OSA Visivel; marcador o = ThorLabs OSA;
+    - cor por canal (Vermelho, Verde, Azul);
+    - linhas tracejadas com a media de cada equipamento por painel.
+
+    Salva em
+    ``resultados/paper_figures/comparison/evolucao_temporal_rgb_visible_thorlabs.png``.
+    """
+    if not resultado_visible or not resultado_thorlabs:
+        print("[AVISO] Comparacao evolucao temporal: resultado de uma fonte ausente; figura omitida.")
+        return
+    gp_v = resultado_visible.get("grupos_picos")
+    gp_t = resultado_thorlabs.get("grupos_picos")
+    est_v = resultado_visible.get("estatisticas")
+    est_t = resultado_thorlabs.get("estatisticas")
+    if gp_v is None or gp_t is None or est_v is None or est_t is None:
+        print("[AVISO] Comparacao evolucao temporal: dados incompletos; figura omitida.")
+        return
+
+    pairs_v = _pairs_ordered_principais_paper(gp_v, est_v)
+    pairs_t = _pairs_ordered_principais_paper(gp_t, est_t)
+    if not pairs_v or not pairs_t:
+        print("[AVISO] Comparacao evolucao temporal: sem grupos ordenados; figura omitida.")
+        return
+
+    def _mapa_canal_temporal(pairs):
+        """nome_cor (minusculo) -> picos completos, cor_rgb, rotulo."""
+        out = {}
+        for _, gd in pairs:
+            nome = str(gd.get("nome_cor", "?")).strip()
+            ch = nome.lower()
+            picos = gd.get("picos", [])
+            out[ch] = {
+                "amostras": [p["amostra_idx"] for p in picos],
+                "wl": [p["wl"] for p in picos],
+                "cor": gd.get("cor_rgb", "lightblue"),
+                "nome": nome,
+            }
+        return out
+
+    map_v = _mapa_canal_temporal(pairs_v)
+    map_t = _mapa_canal_temporal(pairs_t)
+    canais = (("vermelho", "Vermelho"), ("verde", "Verde"), ("azul", "Azul"))
+    for k, tit in canais:
+        if k in map_v and k not in map_t:
+            print(
+                f"[AVISO] Comparacao evolucao temporal: canal '{tit}' ausente no ThorLabs; painel omitido."
+            )
+        elif k in map_t and k not in map_v:
+            print(
+                f"[AVISO] Comparacao evolucao temporal: canal '{tit}' ausente no OSA Visivel; painel omitido."
+            )
+    paineis = [(k, tit) for k, tit in canais if k in map_v and k in map_t]
+    if not paineis:
+        print("[AVISO] Comparacao evolucao temporal: sem canais em comum; figura omitida.")
+        return
+
+    pasta = _paper_comparison_output_dir()
+    out_path = pasta / "evolucao_temporal_rgb_visible_thorlabs.png"
+
+    print("\n[GRAFICOS] Figura comparativa (evolucao temporal RGB, Visivel vs ThorLabs)...")
+    n_p = len(paineis)
+    letters = "abcdefghijklmnopqrstuvwxyz"
+    largura_fig = 6.2 * 1.3
+    lbl_vis = _config_fonte("visible")["label"]
+    lbl_thor = _config_fonte("thorlabs")["label"]
+
+    with plt.rc_context(_matplotlib_paper_context()):
+        fig, axes = plt.subplots(
+            n_p,
+            1,
+            figsize=(largura_fig, 2.35 * n_p + 1.05),
+            sharex=True,
+            constrained_layout=True,
+        )
+        # Reserva faixa superior para a legenda sem sobrepor titulos dos paineis.
+        fig.set_constrained_layout_pads(rect=(0.02, 0.03, 0.98, 0.84))
+        if n_p == 1:
+            axes = [axes]
+
+        for idx, (ch_key, ch_titulo) in enumerate(paineis):
+            ax = axes[idx]
+            cor = map_v[ch_key]["cor"]
+
+            x_v = map_v[ch_key]["amostras"]
+            y_v = np.asarray(map_v[ch_key]["wl"], dtype=float)
+            x_t = map_t[ch_key]["amostras"]
+            y_t = np.asarray(map_t[ch_key]["wl"], dtype=float)
+
+            ax.scatter(
+                x_v,
+                y_v,
+                marker="+",
+                s=21,
+                color=cor,
+                alpha=0.78,
+                zorder=3,
+            )
+            ax.scatter(
+                x_t,
+                y_t,
+                marker="o",
+                s=22,
+                facecolors="none",
+                edgecolors=cor,
+                linewidths=1.2,
+                alpha=0.85,
+                zorder=3,
+            )
+
+            mean_v = float(np.mean(y_v)) if y_v.size else np.nan
+            mean_t = float(np.mean(y_t)) if y_t.size else np.nan
+            if np.isfinite(mean_v):
+                ax.axhline(y=mean_v, color="0.2", linestyle="--", linewidth=1.2)
+            if np.isfinite(mean_t):
+                ax.axhline(y=mean_t, color="0.2", linestyle=":", linewidth=1.4)
+
+            ax.set_ylabel(r"$\lambda$ (nm)")
+            ax.set_title(f"({letters[idx]}) {ch_titulo}", loc="left", fontweight="600")
+            ax.grid(True, axis="y", linestyle="-", alpha=0.45)
+            _spines_clean(ax)
+            ax.set_xlim(0, 100)
+
+            comb = np.concatenate([y_v, y_t]) if y_v.size and y_t.size else (y_v if y_v.size else y_t)
+            if comb.size:
+                ymin, ymax = float(comb.min()), float(comb.max())
+                centro = 0.5 * (ymin + ymax)
+                meia = (ymax - ymin)
+                if meia <= 0:
+                    meia = 1.0
+                ax.set_ylim(centro - meia, centro + meia)
+
+        axes[-1].set_xlabel("Amostra")
+
+        handles_legenda = [
+            Line2D(
+                [0],
+                [0],
+                marker="+",
+                linestyle="none",
+                color="0.35",
+                markerfacecolor="none",
+                markeredgecolor="0.35",
+                markersize=8,
+                markeredgewidth=1.4,
+                label=lbl_vis,
+            ),
+            Line2D(
+                [0],
+                [0],
+                marker="o",
+                linestyle="none",
+                color="0.4",
+                markerfacecolor="none",
+                markeredgecolor="0.2",
+                markersize=7,
+                markeredgewidth=1.2,
+                label=lbl_thor,
+            ),
+            Line2D(
+                [0, 1],
+                [0, 0],
+                color="0.2",
+                linestyle="--",
+                linewidth=1.2,
+                label=f"Média {lbl_vis}",
+            ),
+            Line2D(
+                [0, 1],
+                [0, 0],
+                color="0.2",
+                linestyle=":",
+                linewidth=1.4,
+                label=f"Média {lbl_thor}",
+            ),
+        ]
+        fig.legend(
+            handles=handles_legenda,
+            loc="center",
+            bbox_to_anchor=(0.5, 0.935),
+            bbox_transform=fig.transFigure,
+            ncol=min(4, len(handles_legenda)),
+            framealpha=0.95,
+            edgecolor="0.85",
+            fontsize=9,
+            handletextpad=0.32,
+            columnspacing=0.9,
+            handlelength=2.2,
+            borderpad=0.35,
+        )
 
         fig.savefig(out_path, dpi=300, bbox_inches="tight")
         plt.close(fig)
@@ -1213,6 +1448,7 @@ def main():
                 rt = resultados.get("thorlabs")
                 if rv and rt:
                     gerar_boxplot_wl_comparacao_visible_thorlabs(rv, rt)
+                    gerar_evolucao_temporal_comparacao_visible_thorlabs(rv, rt)
         print("\n[OK] Análise concluída com sucesso!")
         return resultados
     else:
